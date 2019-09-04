@@ -29,10 +29,6 @@ import java.util.List;
 @ImportResource(reader = ResourceAwareXmlBeanDefinitionReader.class,
         value = {
                 "classpath:/com/coremedia/cap/common/uapi-services.xml",
-                "classpath:/com/coremedia/blueprint/base/settings/impl/bpbase-settings-services.xml",
-                "classpath:/com/coremedia/rest/coremedia-rest-core-linking.xml",
-                "classpath:/com/coremedia/cap/multisite/multisite-services.xml",
-                "classpath:/com/coremedia/blueprint/base/links/bpbase-links-services.xml",
                 "classpath:/META-INF/coremedia/component-social-hub-api.xml"
         }
 )

@@ -25,7 +25,7 @@ import static com.coremedia.blueprint.studio.social.MessageResource.ADAPTER_ID;
 import static com.coremedia.blueprint.studio.social.MessageResource.ID;
 
 @RestController
-@RequestMapping(value = "socialhub/adapter/{" + ADAPTER_ID + ":[^/]+}/message/{" + ID + ":[^/]+}")
+@RequestMapping(value = "socialhub/adapter/{" + ADAPTER_ID + "}/message/{" + ID + "}")
 public class MessageResource extends AbstractSocialHubResource implements EntityResource<Message> {
   public static final String ID = "id";
   public static final String ADAPTER_ID = "adapterId";

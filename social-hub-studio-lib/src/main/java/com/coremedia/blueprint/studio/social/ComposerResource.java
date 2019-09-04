@@ -42,7 +42,7 @@ import static com.coremedia.blueprint.studio.social.ComposerResource.ID;
  *
  */
 @RestController
-@RequestMapping(value = "socialhub/composermodel/{" + ID + ":[^/]+}/{" + ADAPTER_ID + ":[^/]+}")
+@RequestMapping(value = "socialhub/composermodel/{" + ID + "}/{" + ADAPTER_ID + "}")
 public class ComposerResource extends AbstractSocialHubResource implements EntityResource<ComposerModel> {
   private static final Logger LOG = LoggerFactory.getLogger(ComposerResource.class);
   static final String ID = "id";
