@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<droparea:DropItemThumbnailBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                                xmlns:droparea="com.coremedia.blueprint.social.composer.droparea.*"
+                                xmlns="exml:ext.config" xmlns:ui="exml:com.coremedia.ui.config"
+                                width="{DropItemThumbnailBase.PREVIEW_WIDTH}"
+                                ui="{ContainerSkin.GRID_100.getSkin()}">
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.ContainerSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.dropItemContainer";
+    public static const PREVIEW_ITEM_ID:String = "preview";
+    private var config:DropItemThumbnail;
+
+    public native function DropItemThumbnail(config:DropItemThumbnail = null);
+    ]]></fx:Script>
+
+  <droparea:items>
+    <Container ui="{ContainerSkin.FRAME.getSkin()}"
+               itemId="{PREVIEW_ITEM_ID}"
+               style="background-color:#f1f1f1;"
+               width="{DropItemThumbnailBase.PREVIEW_WIDTH}"
+               height="{DropItemThumbnailBase.PREVIEW_HEIGHT}">
+      <items>
+      </items>
+      <layout>
+        <layout_Center/>
+      </layout>
+    </Container>
+    <Container>
+      <items>
+        <DisplayField value="{formatName(config.dropItem.getName())}"/>
+        <Container flex="1" />
+        <ui:IconButton itemId="remove"
+                       hidden="true"
+                       text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_attachment_text')}"
+                       tooltip="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_attachment_text')}"
+                       iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'trash_bin')}"
+                       handler="{removeThumbnail}"/>
+      </items>
+      <layout>
+        <layout_HBox align="stretch" />
+      </layout>
+    </Container>
+  </droparea:items>
+  <droparea:layout>
+    <layout_VBox align="stretch"/>
+  </droparea:layout>
+
+</droparea:DropItemThumbnailBase>

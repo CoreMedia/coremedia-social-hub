@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:MessageRichtextAreaBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                               xmlns:local="com.coremedia.blueprint.social.composer.*"
+                               xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                               xmlns:ui="exml:com.coremedia.ui.config"
+                               height="80">
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.data.ValueExpression;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.messageRichtextArea";
+
+    private var config:MessageRichtextArea;
+
+    [Bindable]
+    public var bindTo:ValueExpression;
+
+    public native function MessageRichtextArea(config:MessageRichtextArea = null);
+    ]]></fx:Script>
+  <fx:Declarations>
+  </fx:Declarations>
+
+  <local:plugins>
+    <ui:BindPropertyPlugin bindTo="{config.bindTo}" bidirectional="true"/>
+    <ui:ResizablePlugin fitComponent="true">
+      <ui:resizableConfig>
+        <ui:StatefulResizer minHeight="{30}"
+                            handles="s"
+                            pinned="{true}"
+                            dynamic="{false}"
+                            embed="{false}"
+                            horizontalResize="{false}"/>
+      </ui:resizableConfig>
+    </ui:ResizablePlugin>
+  </local:plugins>
+
+
+</local:MessageRichtextAreaBase>

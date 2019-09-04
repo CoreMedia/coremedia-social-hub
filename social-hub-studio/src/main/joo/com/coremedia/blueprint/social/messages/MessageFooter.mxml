@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages:MessageFooterBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                            xmlns="exml:ext.config"
+                            xmlns:ui="exml:com.coremedia.ui.config"
+                            xmlns:messages="com.coremedia.blueprint.social.messages.*"
+                            dock="bottom"
+                            ui="{ContainerSkin.DARK_200.getSkin()}"
+                            style="{getStyle(config.message)}">
+  <fx:Script><![CDATA[
+    import com.coremedia.blueprint.social.beans.Message;
+    import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
+    import com.coremedia.ui.data.ValueExpressionFactory;
+    import com.coremedia.ui.skins.ButtonSkin;
+    import com.coremedia.ui.skins.ContainerSkin;
+    import com.coremedia.ui.skins.DisplayFieldSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.messageFooter";
+    private var config:MessageFooter;
+
+    public native function MessageFooter(config:MessageFooter = null);
+    ]]></fx:Script>
+
+  <messages:items>
+    <Container>
+      <items>
+        <DisplayField ui="{DisplayFieldSkin.BOLD.getSkin()}" html="true" value="<b>{getDateLabel(config.message)}</b>"/>
+        <DisplayField>
+          <plugins>
+            <ui:BindPropertyPlugin transformer="{transformDate}"
+                                   componentProperty="value"
+                                   bindTo="{ValueExpressionFactory.create(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE, config.message)}"/>
+            <ui:BindVisibilityPlugin
+                    transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SCHEDULED;}}"
+                    bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
+          </plugins>
+        </DisplayField>
+        <DisplayField>
+          <plugins>
+            <ui:BindPropertyPlugin transformer="{transformDate}"
+                                   componentProperty="value"
+                                   bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE)}"/>
+            <ui:BindVisibilityPlugin
+                    transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SENT;}}"
+                    bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
+          </plugins>
+        </DisplayField>
+      </items>
+      <layout>
+        <layout_VBox align="stretch"/>
+      </layout>
+    </Container>
+    <Container width="12"/>
+
+    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                           propertyName="{SocialHubPropertyNames.MESSAGE_SHARE_COUNT}"/>
+    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                           propertyName="{SocialHubPropertyNames.MESSAGE_LIKE_COUNT}"/>
+    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                           propertyName="{SocialHubPropertyNames.MESSAGE_DISLIKE_COUNT}"/>
+    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                           propertyName="{SocialHubPropertyNames.MESSAGE_VIEW_COUNT}"/>
+    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                           propertyName="{SocialHubPropertyNames.MESSAGE_COMMENT_COUNT}"/>
+
+    <Container flex="1"/>
+
+    <Button itemId="openInBrowserButton"
+            ui="{ButtonSkin.SIMPLE.getSkin()}"
+            ariaLabel="{resourceManager.getString('com.coremedia.cms.editor.Editor', 'PreviewPanelToolbar_openInBrowser_btn_tooltip')}"
+            iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'open_in_browser')}"
+            scale="small"
+            handler="{openInTab}">
+      <plugins>
+        <ui:BindVisibilityPlugin
+                transformer="{function(msg:Message):Boolean {return msg.getUrl() !== null &amp;&amp; msg.getUrl() !== undefined &amp;&amp; msg.getUrl() !== ''; }}"
+                bindTo="{ValueExpressionFactory.createFromValue(config.message)}"/>
+      </plugins>
+    </Button>
+    <!--//TODO replace button skin -->
+    <Button itemId="deleteButton"
+            ui="{ButtonSkin.FOOTER_SECONDARY.getSkin()}"
+            ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
+            scale="small"
+            handler="{deleteFromScheduler}">
+      <plugins>
+        <ui:BindVisibilityPlugin
+                transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SCHEDULED;}}"
+                bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
+      </plugins>
+    </Button>
+  </messages:items>
+  <messages:plugins>
+    <ui:BindVisibilityPlugin
+            bindTo="{ValueExpressionFactory.create(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE, config.message)}"/>
+  </messages:plugins>
+  <messages:layout>
+    <layout_HBox align="bottom"/>
+  </messages:layout>
+</messages:MessageFooterBase>

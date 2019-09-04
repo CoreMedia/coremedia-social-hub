@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMSettings folder="/Settings/Options/Settings/Social Hub/" name="Twitter">
+  <locale></locale>
+  <master/>
+  <settings>
+    <Struct xmlns="http://www.coremedia.com/2008/struct">
+    <StructListProperty Name="channels">
+      <Struct>
+        <StringProperty Name="id">twitter1</StringProperty>
+        <StringProperty Name="type">twitter</StringProperty>
+        <StringProperty Name="displayName">YOUR Twitter Account</StringProperty>
+        <BooleanProperty Name="enabled">false</BooleanProperty>
+        <StructProperty Name="connector">
+          <Struct>
+            <StringProperty Name="consumerKey"></StringProperty>
+            <StringProperty Name="consumerSecret"></StringProperty>
+            <StringProperty Name="accessToken"></StringProperty>
+            <StringProperty Name="accessTokenSecret"></StringProperty>
+          </Struct>
+        </StructProperty>
+      </Struct>
+    </StructListProperty>
+  </Struct></settings>
+  <identifier></identifier>
+</CMSettings>

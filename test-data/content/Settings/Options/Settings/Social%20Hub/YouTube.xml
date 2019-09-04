@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMSettings folder="/Settings/Options/Settings/Social Hub/" name="YouTube">
+  <locale></locale>
+  <master/>
+  <settings>
+    <Struct xmlns="http://www.coremedia.com/2008/struct">
+    <StructListProperty Name="channels">
+      <Struct>
+        <StringProperty Name="id">youtube1</StringProperty>
+        <StringProperty Name="type">youtube</StringProperty>
+        <StringProperty Name="displayName">YOUR YouTube Channel</StringProperty>
+        <BooleanProperty Name="enabled">false</BooleanProperty>
+        <StructProperty Name="connector">
+          <Struct>
+            <StringProperty Name="credentialsJson"></StringProperty>
+            <StringProperty Name="channelId"></StringProperty>
+            <StringProperty Name="playlistId"></StringProperty>
+          </Struct>
+        </StructProperty>
+      </Struct>
+    </StructListProperty>
+  </Struct></settings>
+  <identifier></identifier>
+</CMSettings>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<social:SocialHubStudioPluginBase
+        xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns="exml:ext.config"
+        xmlns:exml="http://www.jangaroo.net/exml/0.8"
+        xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+        xmlns:ui="exml:com.coremedia.ui.config"
+        xmlns:social="com.coremedia.blueprint.social.*">
+  <fx:Script><![CDATA[
+    import com.coremedia.blueprint.social.beans.ComposerModelImpl;
+    import com.coremedia.blueprint.social.beans.MessageImpl;
+    import com.coremedia.blueprint.social.beans.SocialHubAdapterImpl;
+    import com.coremedia.blueprint.social.beans.SocialHubAdaptersImpl;
+
+    import mx.resources.ResourceManager;
+
+    private var config:SocialHubStudioPlugin;
+
+    public native function SocialHubStudioPlugin(config:SocialHubStudioPlugin = null);
+    ]]></fx:Script>
+
+  <social:rules>
+
+    <editor:ExtensionsMenuToolbar>
+      <editor:plugins>
+        <ui:AddItemsPlugin>
+          <ui:containers>
+            <Container>
+              <items>
+                <Button itemId="socialHubButton"
+                        tooltip="{ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_tooltip')}"
+                        iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'content_hub')}"
+                        text="{ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_text')}">
+                  <baseAction>
+                    <editor:OpenTabAction singleton="true">
+                      <editor:tab>
+                        <social:SocialHubMainTab/>
+                      </editor:tab>
+                    </editor:OpenTabAction>
+                  </baseAction>
+                </Button>
+              </items>
+            </Container>
+          </ui:containers>
+        </ui:AddItemsPlugin>
+      </editor:plugins>
+    </editor:ExtensionsMenuToolbar>
+
+  </social:rules>
+
+  <social:configuration>
+    <editor:RegisterRestResource beanClass="{SocialHubAdapterImpl}"/>
+    <editor:RegisterRestResource beanClass="{SocialHubAdaptersImpl}"/>
+    <editor:RegisterRestResource beanClass="{MessageImpl}"/>
+    <editor:RegisterRestResource beanClass="{ComposerModelImpl}"/>
+
+    <!-- Used to localize the scheduled date property field -->
+    <editor:CopyResourceBundleProperties
+            destination="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.cms.editor.ContentTypes')}"
+            source="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.blueprint.social.SocialHubComposerProperties')}"/>
+  </social:configuration>
+
+</social:SocialHubStudioPluginBase>

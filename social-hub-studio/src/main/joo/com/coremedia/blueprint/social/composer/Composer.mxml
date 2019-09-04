@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composer:ComposerBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                       xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                       xmlns="exml:ext.config"
+                       xmlns:composer="com.coremedia.blueprint.social.composer.*"
+                       xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+                       xmlns:ui="exml:com.coremedia.ui.config"
+                       header="{false}"
+                       closable="true"
+                       width="460"
+                       resizable="false"
+                       minWidth="460">
+  <fx:Script><![CDATA[
+    import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
+    import com.coremedia.ui.bem.SpacingBEMEntities;
+    import com.coremedia.ui.skins.ButtonSkin;
+    import com.coremedia.ui.skins.ContainerSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.composer";
+    public static const EDITOR_PANEL:String = "editorPanel";
+    private var config:Composer;
+
+    public native function Composer(config:Composer = null);
+    ]]></fx:Script>
+
+  <composer:items>
+    <Container style="padding: 8px;background-color:{config.adapter.getColor()}">
+      <items>
+        <DisplayField value="{getComposerTitle(config.adapter)}" ui="{null}" style="color:#fff;font-weight:bold;"/>
+        <Container flex="1"/>
+        <!--<ui:IconButton iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'remove_small')}"-->
+        <!--scale="small"-->
+        <!--handler="{closeComposer}"/>-->
+      </items>
+      <layout>
+        <layout_HBox align="stretch" pack="center"/>
+      </layout>
+    </Container>
+    <Container itemId="{EDITOR_PANEL}"
+               ui="{ContainerSkin.GRID_200.getSkin()}"
+               autoScroll="true"
+               maxHeight="550"
+               scrollable="true">
+      <items>
+        <editor:DateTimePropertyField bindTo="{config.bindTo}"
+                                      labelSeparator=""
+                                      labelAlign="top"
+                                      fieldLabel=""
+                                      propertyName="{SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE}"/>
+        <!-- Editors are added here -->
+      </items>
+      <plugins>
+        <ui:VerticalSpacingPlugin modifier="{SpacingBEMEntities.VERTICAL_SPACING_MODIFIER_200}"/>
+      </plugins>
+      <layout>
+        <layout_VBox align="stretch"/>
+      </layout>
+    </Container>
+
+  </composer:items>
+  <composer:buttons>
+    <Button itemId="postBtn"
+            ui="{ButtonSkin.FOOTER_PRIMARY.getSkin()}"
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'post_button_text')}"
+            handler="{sendMessage}"/>
+    <Button itemId="cancelBtn"
+            ui="{ButtonSkin.FOOTER_SECONDARY.getSkin()}"
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'cancel_button_text')}"
+            handler="{closeComposer}"/>
+  </composer:buttons>
+  <composer:plugins>
+    <ui:VerticalSpacingPlugin modifier="{SpacingBEMEntities.VERTICAL_SPACING_MODIFIER_200}"/>
+  </composer:plugins>
+  <composer:layout>
+    <layout_VBox align="stretch"/>
+  </composer:layout>
+
+</composer:ComposerBase>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channels:ColorChooserBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                           xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                           xmlns="exml:ext.config"
+                           xmlns:ui="exml:com.coremedia.ui.config"
+                           ui="{ContainerSkin.GRID_200.getSkin()}"
+                           xmlns:channels="com.coremedia.blueprint.social.channels.*">
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.bem.SpacingBEMEntities;
+    import com.coremedia.ui.skins.ContainerSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.colorChooser";
+    private var config:ColorChooser;
+
+    public native function ColorChooser(config:ColorChooser = null);
+    ]]></fx:Script>
+
+  <channels:items>
+    <Container>
+      <items>
+        <!-- Color Boxes are added here -->
+      </items>
+      <plugins>
+        <ui:BindComponentsPlugin
+                valueExpression="{getColorButtonsExpression()}"
+                configBeanParameterName="color"
+                reuseComponents="true"
+                clearBeforeUpdate="false">
+          <ui:template>
+            <channels:ColorButton adapter="{config.adapter}"/>
+          </ui:template>
+        </ui:BindComponentsPlugin>
+        <ui:HorizontalSpacingPlugin modifier="{SpacingBEMEntities.HORIZONTAL_SPACING_BLOCK}"/>
+      </plugins>
+      <layout>
+        <layout_HBox align="stretch"/>
+      </layout>
+    </Container>
+  </channels:items>
+  <channels:layout>
+    <layout_VBox align="stretch"/>
+  </channels:layout>
+
+</channels:ColorChooserBase>
