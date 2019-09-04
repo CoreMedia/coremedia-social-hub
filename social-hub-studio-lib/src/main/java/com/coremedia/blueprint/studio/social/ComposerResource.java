@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -61,9 +62,11 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
   }
 
   @PostMapping(value = "/compose")
-  public boolean initComposing(@RequestParam("contentIds") String contentIds) {
-    String adapterId = null;//pathVariables.get(ADAPTER_ID);
-    String id = null;//pathVariables.get(ID);
+  public boolean initComposing(@RequestParam("contentIds") String contentIds, HttpServletRequest request) {
+    //TODO
+    String[] segments = getSegments(request);
+    String id = segments[4];
+    String adapterId = segments[5];
 
     String[] contentIdArray = contentIds.split(",");
     List<Content> contents = new ArrayList<>();
@@ -83,28 +86,43 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
   }
 
   @PostMapping
-  public Message sendMessage() {
-    String adapterId = null;//pathVariables.get(ADAPTER_ID);
-    String id = null;//pathVariables.get(ID);
+  public Message sendMessage(HttpServletRequest request) {
+    //TODO
+    String[] segments = getSegments(request);
+    Map<String, String> params = new HashMap<>();
+    params.put(ID, segments[4]);
+    params.put(ADAPTER_ID, segments[5]);
 
-    ComposerModel composerModel = getEntity(null);
+    String adapterId = segments[5];
+
+    ComposerModel composerModel = getEntity(params);
     Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
     Optional<Message> message = adapter.get().createMessage(composerModel);
     LOG.info("Finished composing of {}", composerModel);
-    reset();
+    reset(request);
     return message.get();
   }
 
   @DeleteMapping
-  public void reset() {
-    //TODO messageCache.remove(getKey());
+  public void reset(HttpServletRequest request) {
+    //TODO
+    String[] segments = getSegments(request);
+    String id = segments[4];
+    String adapterId = segments[5];
+    messageCache.remove(getKey(adapterId, id));
   }
 
   @PutMapping
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response put(Map<String, Object> rawJson) {
-    ComposerModel entity = getEntity(null);
+  public Response put(Map<String, Object> rawJson, HttpServletRequest request) {
+    //TODO
+    String[] segments = getSegments(request);
+    Map<String, String> params = new HashMap<>();
+    params.put(ID, segments[4]);
+    params.put(ADAPTER_ID, segments[5]);
+
+    ComposerModel entity = getEntity(params);
     Map<String, Object> properties = (Map<String, Object>) rawJson.get(ComposerModelImpl.PROPERTIES);
     if (properties != null) {
       updateComposerModel(entity, properties);
@@ -117,6 +135,7 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
   @Override
   @Nullable
   public ComposerModel getEntity(@NonNull Map<String, String> pathVariables) {
+    //TODO
     String adapterId = pathVariables.get(ADAPTER_ID);
     String id = pathVariables.get(ID);
     String key = getKey(adapterId, id);
