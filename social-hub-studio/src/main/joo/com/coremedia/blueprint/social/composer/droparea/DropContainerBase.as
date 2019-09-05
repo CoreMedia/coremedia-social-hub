@@ -1,9 +1,11 @@
 package com.coremedia.blueprint.social.composer.droparea {
-import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.MessageProperty;
+import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.content.ContentPropertyNames;
 import com.coremedia.cms.editor.sdk.components.html5.BrowsePlugin;
 import com.coremedia.cms.editor.sdk.editorContext;
+import com.coremedia.cms.editor.sdk.sites.Site;
 import com.coremedia.cms.editor.sdk.upload.FileWrapper;
 import com.coremedia.cms.editor.sdk.upload.UploadManager;
 import com.coremedia.cms.editor.sdk.upload.UploadSettings;
@@ -95,19 +97,26 @@ public class DropContainerBase extends Container {
       width: 300
     });
     EventUtil.invokeLater(function ():void {//otherwise the progress bar does not appear :(
-      var uploadSettings:UploadSettings = new UploadSettings(editorContext.getSitesService().getPreferredSiteId());
-      uploadSettings.load(function ():void {
-        UploadManager.bulkUpload(uploadSettings, '/Settings/Options', files, function (response:XMLHttpRequest):void {
-          for each(var w:FileWrapper in files) {
-            var content:Content = w.getResultObject() as Content;
-            DropItem.create(content, function (item:DropItem):void {
-              addDropItem(item);
-            });
-          }
+      var site:Site = editorContext.getSitesService().getPreferredSite();
+      var uploadSettings:UploadSettings = new UploadSettings(site.getId());
+      var siteRelativePath:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHubSettings', 'social_hub_content_upload_path');
+
+      var siteRoot:Content = site.getSiteRootFolder();
+      ValueExpressionFactory.create(ContentPropertyNames.PATH, siteRoot).loadValue(function ():void {
+        var contentPath:String = siteRoot.getPath() + '/' + siteRelativePath;
+        uploadSettings.load(function ():void {
+          UploadManager.bulkUpload(uploadSettings, contentPath, files, function (response:XMLHttpRequest):void {
+            for each(var w:FileWrapper in files) {
+              var content:Content = w.getResultObject() as Content;
+              DropItem.create(content, function (item:DropItem):void {
+                addDropItem(item);
+              });
+            }
+          });
         });
+        EventUtil.invokeLater(MessageBox.hide);
+        MessageBox.hide();
       });
-      EventUtil.invokeLater(MessageBox.hide);
-      MessageBox.hide();
     });
   }
 
