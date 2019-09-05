@@ -16,6 +16,7 @@
     [ResourceBundle('com.coremedia.icons.CoreIcons')]
   </fx:Metadata>
   <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.DisplayFieldSkin;
     import com.coremedia.ui.skins.PanelSkin;
 
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.socialNetworksMainTab";
@@ -31,6 +32,15 @@
     <ui:SwitchingContainer activeItemValueExpression="{getActiveItemExpression()}">
       <ui:items>
         <Panel itemId="{LOADER_ITEM_ID}"/>
+        <Panel itemId="{EMPTY_ITEM_ID}">
+          <items>
+            <DisplayField ui="{DisplayFieldSkin.EMBEDDED.getSkin()}"
+                          value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channels_empty')}" />
+          </items>
+          <layout>
+            <layout_VBox align="middle" pack="center" />
+          </layout>
+        </Panel>
         <channels:ChannelsContainer itemId="{CHANNELS_ITEM_ID}" adaptersExpression="{getAdaptersExpression()}"/>
       </ui:items>
       <ui:layout>

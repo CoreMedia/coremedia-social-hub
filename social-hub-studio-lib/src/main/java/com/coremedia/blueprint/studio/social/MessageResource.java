@@ -65,9 +65,8 @@ public class MessageResource extends AbstractSocialHubResource implements Entity
   }
 
   @DeleteMapping
-  public void delete() {
-    String adapterId = null; //TODO
-    String id = null; //TODO
+  public void delete(@PathVariable(ID) String id,
+                     @PathVariable(ADAPTER_ID) String adapterId) {
     Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
     adapter.get().deleteMessage(id);
   }

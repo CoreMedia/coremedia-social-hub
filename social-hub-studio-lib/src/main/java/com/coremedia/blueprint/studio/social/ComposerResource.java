@@ -14,20 +14,18 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -62,12 +60,9 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
   }
 
   @PostMapping(value = "/compose")
-  public boolean initComposing(@RequestParam("contentIds") String contentIds, HttpServletRequest request) {
-    //TODO
-    String[] segments = getSegments(request);
-    String id = segments[4];
-    String adapterId = segments[5];
-
+  public boolean initComposing(@PathVariable(ID) String id,
+                               @PathVariable(ADAPTER_ID) String adapterId,
+                               @RequestParam("contentIds") String contentIds) {
     String[] contentIdArray = contentIds.split(",");
     List<Content> contents = new ArrayList<>();
     for (String idString : contentIdArray) {
@@ -86,58 +81,48 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
   }
 
   @PostMapping
-  public Message sendMessage(HttpServletRequest request) {
-    //TODO
-    String[] segments = getSegments(request);
-    Map<String, String> params = new HashMap<>();
-    params.put(ID, segments[4]);
-    params.put(ADAPTER_ID, segments[5]);
-
-    String adapterId = segments[5];
-
-    ComposerModel composerModel = getEntity(params);
+  public Message sendMessage(@PathVariable(ID) String id,
+                             @PathVariable(ADAPTER_ID) String adapterId) {
+    ComposerModel composerModel = doGetEntity(adapterId, id);
     Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
     Optional<Message> message = adapter.get().createMessage(composerModel);
     LOG.info("Finished composing of {}", composerModel);
-    reset(request);
+    reset(id, adapterId);
     return message.get();
   }
 
   @DeleteMapping
-  public void reset(HttpServletRequest request) {
-    //TODO
-    String[] segments = getSegments(request);
-    String id = segments[4];
-    String adapterId = segments[5];
+  public void reset(@PathVariable(ID) String id,
+                    @PathVariable(ADAPTER_ID) String adapterId) {
     messageCache.remove(getKey(adapterId, id));
   }
 
-  @PutMapping
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response put(Map<String, Object> rawJson, HttpServletRequest request) {
-    //TODO
-    String[] segments = getSegments(request);
-    Map<String, String> params = new HashMap<>();
-    params.put(ID, segments[4]);
-    params.put(ADAPTER_ID, segments[5]);
-
-    ComposerModel entity = getEntity(params);
+  @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity put(@PathVariable(ID) String id,
+                            @PathVariable(ADAPTER_ID) String adapterId,
+                            @RequestBody(required = false) Map<String, Object> rawJson) {
+    ComposerModel entity = doGetEntity(adapterId, id);
     Map<String, Object> properties = (Map<String, Object>) rawJson.get(ComposerModelImpl.PROPERTIES);
     if (properties != null) {
       updateComposerModel(entity, properties);
     }
 
-    Response.Status responseCode = Response.Status.OK;
-    return Response.status(responseCode).entity(getEntity(null)).type(MediaType.APPLICATION_JSON_TYPE).build();
+    return ResponseEntity.ok(new ComposerModelRepresentation(entity));
   }
 
   @Override
   @Nullable
   public ComposerModel getEntity(@NonNull Map<String, String> pathVariables) {
-    //TODO
     String adapterId = pathVariables.get(ADAPTER_ID);
     String id = pathVariables.get(ID);
+    return doGetEntity(adapterId, id);
+  }
+
+  private String getKey(String adapterId, String id) {
+    return adapterId + "_" + id;
+  }
+
+  private ComposerModel doGetEntity(String adapterId, String id) {
     String key = getKey(adapterId, id);
     if (!messageCache.containsKey(key)) {
       Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
@@ -145,22 +130,6 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
       messageCache.put(key, composerModel);
     }
     return messageCache.get(key);
-  }
-
-  private String getKey(String adapterId, String id) {
-    return adapterId + "_" + id;
-  }
-
-  public void setDateConverter(DatePropertyConverter composerDateConverter) {
-    this.datePropertyConverter = composerDateConverter;
-  }
-
-  public void setComposerFactory(ComposerFactory socialComposerFactory) {
-    this.composerFactory = socialComposerFactory;
-  }
-
-  public void setContentRepository(ContentRepository contentRepository) {
-    this.contentRepository = contentRepository;
   }
 
   /**
@@ -211,4 +180,17 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
     }
     return null;
   }
+
+  public void setContentRepository(ContentRepository contentRepository) {
+    this.contentRepository = contentRepository;
+  }
+
+  public void setDateConverter(DatePropertyConverter composerDateConverter) {
+    this.datePropertyConverter = composerDateConverter;
+  }
+
+  public void setComposerFactory(ComposerFactory socialComposerFactory) {
+    this.composerFactory = socialComposerFactory;
+  }
+
 }

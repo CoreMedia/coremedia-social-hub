@@ -76,9 +76,8 @@
                 bindTo="{ValueExpressionFactory.createFromValue(config.message)}"/>
       </plugins>
     </Button>
-    <!--//TODO replace button skin -->
     <Button itemId="deleteButton"
-            ui="{ButtonSkin.FOOTER_SECONDARY.getSkin()}"
+            ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             scale="small"

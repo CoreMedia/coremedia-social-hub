@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -121,26 +122,32 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public List<? extends Message> getMessages(@NonNull MessageState state, Date startTime, Date endTime, int offset, int limit) {
-    YouTube youTube = getYouTube();
-    List<Message> result = new ArrayList<>();
-    List<Video> videoResults;
-    String playlistId = settings.getPlaylistId();
+    try {
+      YouTube youTube = getYouTube();
+      List<Message> result = new ArrayList<>();
+      List<Video> videoResults;
+      String playlistId = settings.getPlaylistId();
 
-    if (Strings.isNullOrEmpty(playlistId)) {
-      videoResults = cache.get(new VideoChannelSearchCacheKey(youTube, playlistId, " ", CACHE_TIMEOUT));
-    }
-    else {
-      videoResults = cache.get(new VideoPlaylistCacheKey(youTube, playlistId, CACHE_TIMEOUT));
-    }
-
-    for (Video video : videoResults) {
-      Date createdAt = YouTubeUtil.parseDate(video.getSnippet().getPublishedAt().toString());
-      if (isBetween(createdAt, startTime, endTime)) {
-        Message message = createMessage(video);
-        result.add(message);
+      if (Strings.isNullOrEmpty(playlistId)) {
+        videoResults = cache.get(new VideoChannelSearchCacheKey(youTube, playlistId, " ", CACHE_TIMEOUT));
       }
+      else {
+        videoResults = cache.get(new VideoPlaylistCacheKey(youTube, playlistId, CACHE_TIMEOUT));
+      }
+
+      for (Video video : videoResults) {
+        Date createdAt = YouTubeUtil.parseDate(video.getSnippet().getPublishedAt().toString());
+        if (isBetween(createdAt, startTime, endTime)) {
+          Message message = createMessage(video);
+          result.add(message);
+        }
+      }
+      return limitResult(result, offset, limit);
+    } catch (Exception e) {
+      LOG.error("Error reading YouTube adapter: {}", e.getMessage());
     }
-    return limitResult(result, offset, limit);
+
+    return Collections.emptyList();
   }
 
 
