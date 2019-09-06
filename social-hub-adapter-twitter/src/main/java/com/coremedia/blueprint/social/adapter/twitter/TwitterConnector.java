@@ -129,7 +129,7 @@ public class TwitterConnector extends AbstractConnector {
       List<Content> assets = (List<Content>) composerModel.getProperties().get("assets");
       if (assets != null) {
         for (Content c : assets) {
-          Optional<MediaSource> mediaSource = socialHubService.createMediaSource(c);
+          Optional<MediaSource> mediaSource = socialHubService.createMediaSource(c, settings);
           if (mediaSource.isPresent()) {
             MediaSource media = mediaSource.get();
             UploadedMedia upload = getTwitter().uploadMedia(media.getName(), media.getInputStream());

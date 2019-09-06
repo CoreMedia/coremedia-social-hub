@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social;
 
+import com.coremedia.blueprint.social.api.ConnectorSettings;
 import com.coremedia.blueprint.social.api.MediaSource;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialHubService;
@@ -12,6 +13,8 @@ import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
+import com.coremedia.cap.transform.TransformImageService;
+import com.coremedia.cap.transform.VariantBlob;
 import com.rosaloves.bitlyj.Bitly;
 import com.rosaloves.bitlyj.ShortenedUrl;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -58,6 +61,9 @@ public class SocialHubServiceImpl implements SocialHubService {
   @Autowired
   private SocialHubConfig config;
 
+  @Autowired
+  private TransformImageService transformImageService;
+
 
   @Override
   public List<SocialHubAdapter> getAdapters(@NonNull Site site) {
@@ -82,18 +88,31 @@ public class SocialHubServiceImpl implements SocialHubService {
   }
 
   @Override
-  public Optional<MediaSource> createMediaSource(@NonNull Content content) {
+  public Optional<MediaSource> createMediaSource(@NonNull Content content, @Nullable ConnectorSettings connectorSettings) {
     SettingsCacheKey cacheKey = new SettingsCacheKey(settingsFactory, config);
     Map<String, Object> settings = cache.get(cacheKey);
     Map<String, Object> mediaMapping = (Map<String, Object>) settings.getOrDefault(MEDIA_MAPPING, Collections.emptyMap());
+    String variant = connectorSettings.getImageVariant();
 
     Set<Map.Entry<String, Object>> entries = mediaMapping.entrySet();
     for (Map.Entry<String, Object> entry : entries) {
       String key = entry.getKey();
-      String value = (String) entry.getValue();
+      String propertyName = (String) entry.getValue();
 
       if(content.getType().isSubtypeOf(key)) {
-        Blob blob = content.getBlob(value);
+        Blob blob = content.getBlob(propertyName);
+
+        if(variant != null) {
+          List<VariantBlob> transformedBlobs = transformImageService.getVariants(content, propertyName);
+          for (VariantBlob transformedBlob : transformedBlobs) {
+            if(transformedBlob.getVariantName().equals(variant)) {
+              return forBlob(content, transformedBlob.getBlob());
+            }
+          }
+
+          LOG.warn("Social Service could not find image variant '{}' for {}. The original blob will be used instead.", variant, content.getPath());
+        }
+
         return forBlob(content, blob);
       }
     }

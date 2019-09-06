@@ -37,6 +37,12 @@ information that are required when media should be extracted from content for so
 </CMSettings> 
 ```
 
+#### Media Mapping
+
+The _mediaMapping_ struct configures the content with media items that can be pushed to a social network.
+By default, the CoreMedia Blueprint document type model is configured where _CMMedia_ with it's data property contains 
+a blob with asset data.
+
 
 ## Adapter Configurations
 

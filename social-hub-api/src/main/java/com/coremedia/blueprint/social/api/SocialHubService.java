@@ -60,5 +60,13 @@ public interface SocialHubService {
   @Nullable
   String buildLiveUrl(@NonNull Content content, boolean shorten);
 
-  Optional<MediaSource> createMediaSource(@NonNull Content content);
+  /**
+   * Returns the media item of the given content.
+   *
+   * @param content the content to read the data from
+   * @param connectorSettings the optional connector settings to used to read details
+   *
+   * @return a media source object which is the facade for the actual data access
+   */
+  Optional<MediaSource> createMediaSource(@NonNull Content content, @Nullable ConnectorSettings connectorSettings);
 }
