@@ -139,6 +139,11 @@ public class MessagesContainerBase extends Container {
 
   private function getDateLabel(message:Message):String {
     var publicationDate:Date = message.getPublicationDate();
+    //scheduled right now
+    if(!publicationDate) {
+      return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_scheduled_now');
+    }
+
     var value:String = getWeekday(publicationDate) + ", " + DateUtil.format(publicationDate, ResourceManager.getInstance().getString('com.coremedia.cms.editor.Editor', 'shortDateFormat'));
     if (TimeUtil.isToday(publicationDate)) {
       value = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_queue_today');

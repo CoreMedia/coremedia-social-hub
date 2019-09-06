@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social.config;
 
+import com.coremedia.cap.common.CapSession;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,17 @@ public class SettingsFactory {
   private ContentRepository contentRepository;
 
   public Map<String, Object> getSettings(String configPath) {
-    if (configPath != null) {
-      Content settings = contentRepository.getChild(configPath);
-      if (settings != null) {
-        return settings.getStruct("settings").toNestedMaps();
+    CapSession originalSession = contentRepository.getConnection().getConnectionSession().activate();
+    try {
+      if (configPath != null) {
+        Content settings = contentRepository.getChild(configPath);
+        if (settings != null) {
+          return settings.getStruct("settings").toNestedMaps();
+        }
       }
+    } finally {
+      //activate the original user session
+      originalSession.activate();
     }
 
     return Collections.emptyMap();

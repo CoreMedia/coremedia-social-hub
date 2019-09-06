@@ -5,6 +5,7 @@ import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialHubAdapterFactory;
 import com.coremedia.blueprint.social.api.SocialHubPropertyNames;
 import com.coremedia.blueprint.social.scheduler.Scheduler;
+import com.coremedia.cap.common.CapSession;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.wrapper.impl.TypedCapStructWrapperFactoryImpl;
@@ -40,15 +41,22 @@ public class AdapterFactoryService {
 
   public List<SocialHubAdapter> getAdapters(String configPath) {
     List<SocialHubAdapter> adapters = new ArrayList<>();
-    if (configPath != null) {
-      Content socialHubFolder = contentRepository.getChild(configPath);
-      if (socialHubFolder != null) {
-        Set<Content> childDocuments = socialHubFolder.getChildDocuments();
-        for (Content childDocument : childDocuments) {
-          createAdaptersForConfig(childDocument, adapters);
+    CapSession originalSession = contentRepository.getConnection().getConnectionSession().activate();
+    try {
+      if (configPath != null) {
+        Content socialHubFolder = contentRepository.getChild(configPath);
+        if (socialHubFolder != null) {
+          Set<Content> childDocuments = socialHubFolder.getChildDocuments();
+          for (Content childDocument : childDocuments) {
+            createAdaptersForConfig(childDocument, adapters);
+          }
         }
       }
+    } finally {
+      //activate the original user session
+      originalSession.activate();
     }
+
     return adapters;
   }
 
@@ -77,7 +85,7 @@ public class AdapterFactoryService {
           if (adapterFactory.getType().name().equalsIgnoreCase(adapterType)) {
             Object connectorSettings = createSettings(adapterFactory, connectorStruct, 0);
             Object adapterSettings = null;
-            if(config.containsKey(SocialHubPropertyNames.ADAPTER)) {
+            if (config.containsKey(SocialHubPropertyNames.ADAPTER)) {
               Struct adapterStruct = struct.getStruct(SocialHubPropertyNames.ADAPTER);
               adapterSettings = createSettings(adapterFactory, adapterStruct, 1);
             }

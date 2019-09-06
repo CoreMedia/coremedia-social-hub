@@ -43,6 +43,7 @@ The _mediaMapping_ struct configures the content with media items that can be pu
 By default, the CoreMedia Blueprint document type model is configured where _CMMedia_ with it's data property contains 
 a blob with asset data.
 
+Check also the details connector configuration for details on how to configure image variants for message composing.
 
 ## Adapter Configurations
 
@@ -98,6 +99,20 @@ Every connection struct contains the following properties:
 When the configurations are read during the Studio startup, the Social Hub will try to map the configurations
 to the corresponding _SocialHubAdapter_. It uses the implementation of _SocialHubAdapterFactory_ that is available for 
 every Social Hub adapter. The _SocialHubAdapterFactory#getType_ must match the _type_ property that is set in the setting.
+
+### Connector Configuration
+
+The connector configuration usually contains the credentials for accessing a social network or a social media tool.
+Interfaces that mapping this configuration must extend the interface _ConnectorConfiguration_ which contains additional 
+settings valid for all connector configurations.
+
+The _ConnectorConfiguration_ interface implements the following methods:
+
+- _getImageVariant()_ 
+  
+  Defines the name of the image variant that should be used when an image is pushed to the external system.
+  If the variant is not found or not configured, the original blob will be used.
+
 
 
 #### Connector Specific Properties
