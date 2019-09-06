@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>com.coremedia.blueprint.social</groupId>
-    <artifactId>social-hub</artifactId>
+    <artifactId>coremedia-social-hub</artifactId>
     <version>1-SNAPSHOT</version>
   </parent>
 
