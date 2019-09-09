@@ -71,23 +71,18 @@ public class SocialHubStudioLibConfiguration {
   @Bean
   @Scope(BeanDefinition.SCOPE_PROTOTYPE)
   public ComposerResource socialComposerResource(@NonNull SocialHubService socialHubService,
-                                                 @NonNull DatePropertyConverter composerDateConverter,
                                                  @NonNull ContentRepository contentRepository,
                                                  @NonNull ComposerFactory socialComposerFactory) {
-    ComposerResource composerResource = new ComposerResource();
-    composerResource.setSocialHubService(socialHubService);
-    composerResource.setDateConverter(composerDateConverter);
-    composerResource.setComposerFactory(socialComposerFactory);
-    composerResource.setContentRepository(contentRepository);
-    return composerResource;
-  }
-
-  @Bean
-  public DatePropertyConverter socialComposerDateConverter() {
     DatePropertyConverter converter = new DatePropertyConverter();
     converter.setDefaultTimeZone(defaultTimeZone);
     converter.setTimeZones(Arrays.asList(timeZones.split(",")));
-    return converter;
+
+    ComposerResource composerResource = new ComposerResource();
+    composerResource.setSocialHubService(socialHubService);
+    composerResource.setDateConverter(converter);
+    composerResource.setComposerFactory(socialComposerFactory);
+    composerResource.setContentRepository(contentRepository);
+    return composerResource;
   }
 
   @Bean
