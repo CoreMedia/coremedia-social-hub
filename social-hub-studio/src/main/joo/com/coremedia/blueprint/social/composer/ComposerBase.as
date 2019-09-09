@@ -55,11 +55,13 @@ public class ComposerBase extends Window {
    */
   public static function closeAll():void {
     var adapters:SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
-    for each(var adapter:SocialHubAdapter in adapters.getAdapters()) {
-      var cmp:ComposerBase = Ext.getCmp(COMPOSER_WINDOW_ID + adapter.getAdapterId()) as ComposerBase;
-      if (cmp && cmp.isVisible()) {
-        cmp.channelContainer.setComposerButtonState(false);
-        cmp.destroy();
+    if(adapters) {
+      for each(var adapter:SocialHubAdapter in adapters.getAdapters()) {
+        var cmp:ComposerBase = Ext.getCmp(COMPOSER_WINDOW_ID + adapter.getAdapterId()) as ComposerBase;
+        if (cmp && cmp.isVisible()) {
+          cmp.channelContainer.setComposerButtonState(false);
+          cmp.destroy();
+        }
       }
     }
   }
