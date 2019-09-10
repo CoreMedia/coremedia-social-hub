@@ -12,18 +12,18 @@
     ]]></fx:Script>
 
   <composer:items>
-    <TextField fieldLabel="{config.property.getDisplayName()}"
-               itemId="titleText"
-               labelSeparator=""
-               labelAlign="top"
-               emptyText="{config.property.getEmptyText()}">
-      <plugins>
+    <ui:StatefulTextField fieldLabel="{config.property.getDisplayName()}"
+                          itemId="{config.property.getName()}"
+                          labelSeparator=""
+                          labelAlign="top"
+                          emptyText="{config.property.getEmptyText()}">
+      <ui:plugins>
         <ui:BindPropertyPlugin bidirectional="true" bindTo="{config.bindTo}"/>
         <ui:BlockEnterPlugin/>
-      </plugins>
-    </TextField>
+      </ui:plugins>
+    </ui:StatefulTextField>
   </composer:items>
   <composer:layout>
-    <layout_VBox align="stretch" />
+    <layout_VBox align="stretch"/>
   </composer:layout>
 </composer:MessageTextEditorBase>

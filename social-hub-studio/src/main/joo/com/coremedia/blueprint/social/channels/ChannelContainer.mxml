@@ -83,8 +83,16 @@
         <ui:IconDisplayField ui="{IconDisplayFieldSkin.LIGHT.getSkin()}"
                              scale="medium"
                              iconCls="{ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', config.adapter.getType().toLowerCase())}"/>
-        <DisplayField ui="{DisplayFieldSkin.LIGHT.getSkin()}" value="{config.adapter.getDisplayName()}"/>
-        <Container flex="1"/>
+        <!--this fixes a top padding problem in chrome-->
+        <Container>
+          <items>
+            <DisplayField ui="{IconDisplayFieldSkin.LIGHT.getSkin()}" value="{config.adapter.getDisplayName()}"/>
+          </items>
+          <layout>
+            <layout_VBox align="stretch" pack="center" />
+          </layout>
+        </Container>
+        <TbSpacer flex="1"/>
         <ui:IconButton iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'reload')}"
                        ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_reload')}"
                        handler="{forceReload}"
