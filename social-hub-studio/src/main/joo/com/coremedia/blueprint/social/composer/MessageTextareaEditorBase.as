@@ -5,11 +5,14 @@ import com.coremedia.blueprint.social.beans.MessageProperty;
 import com.coremedia.blueprint.social.composer.externallink.ExternalLinkDialog;
 import com.coremedia.ui.ckeditor.RichTextArea;
 import com.coremedia.ui.data.ValueExpression;
+import com.coremedia.ui.mixins.IValidationStateMixin;
+import com.coremedia.ui.mixins.ValidationState;
 
 import ext.Ext;
+import ext.StringUtil;
 import ext.panel.Panel;
 
-public class MessageTextareaEditorBase extends Panel {
+public class MessageTextareaEditorBase extends Panel implements MessageFieldEditor {
 
   [Bindable]
   public var bindTo:ValueExpression;
@@ -22,6 +25,9 @@ public class MessageTextareaEditorBase extends Panel {
 
   public function MessageTextareaEditorBase(config:MessageTextareaEditorBase = null) {
     super(config);
+    if(property.isRequired()) {
+      bindTo.addChangeListener(valueChanged);
+    }
   }
 
   override protected function afterRender():void {
@@ -31,6 +37,17 @@ public class MessageTextareaEditorBase extends Panel {
       ckEditor.focus();
       ckEditor.focusManager.focus();
     });
+  }
+
+  private function valueChanged(ve:ValueExpression):void {
+    var editor:* = getRichtextEditor();
+    var statefulEditor:IValidationStateMixin = editor as IValidationStateMixin;
+    if (!ve.getValue() || StringUtil.trim(ve.getValue()).length === 0) {
+      statefulEditor.validationState = ValidationState.ERROR;
+    }
+    else {
+      statefulEditor.validationState = undefined;
+    }
   }
 
   protected function openExternalLinkDialog():void {
@@ -43,5 +60,16 @@ public class MessageTextareaEditorBase extends Panel {
   public function getRichtextEditor():RichTextArea {
     return queryById("richtextEditor") as RichTextArea;
   }
+
+  public function getErrorMessage():String {
+    var value:String = bindTo.getValue();
+    if (!value) {
+      var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_empty_text');
+      var message:String = StringUtil.format(msg, property.getDisplayName());
+      return message;
+    }
+    return null;
+  }
+
 }
 }

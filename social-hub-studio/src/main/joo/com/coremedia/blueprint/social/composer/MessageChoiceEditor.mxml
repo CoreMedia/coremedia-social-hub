@@ -16,6 +16,7 @@
                       fieldLabel="{config.property.getDisplayName()}"
                       emptyText="{config.property.getEmptyText()}"
                       labelAlign="top"
+                      itemId="{config.property.getName()}"
                       labelSeparator=""
                       encodeItems="true"
                       store="{getStore(config.property)}">

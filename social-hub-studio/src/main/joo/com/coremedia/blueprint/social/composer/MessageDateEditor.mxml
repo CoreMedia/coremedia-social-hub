@@ -18,7 +18,7 @@
     <editor:DateTimePropertyField bindTo="{ValueExpressionFactory.createFromValue((config.bindTo as PropertyPathExpression).getBean())}"
                                   labelSeparator=""
                                   labelAlign="top"
-                                  itemId="dateTimePropertyField"
+                                  itemId="{config.property.getName()}"
                                   fieldLabel="{config.property.getDisplayName()}"
                                   propertyName="{config.property.getName()}"/>
   </composer:items>

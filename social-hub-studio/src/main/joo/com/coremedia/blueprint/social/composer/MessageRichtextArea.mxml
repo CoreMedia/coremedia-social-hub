@@ -5,14 +5,9 @@
                                xmlns:ui="exml:com.coremedia.ui.config"
                                height="80">
   <fx:Script><![CDATA[
-    import com.coremedia.ui.data.ValueExpression;
-
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.messageRichtextArea";
 
     private var config:MessageRichtextArea;
-
-    [Bindable]
-    public var bindTo:ValueExpression;
 
     public native function MessageRichtextArea(config:MessageRichtextArea = null);
     ]]></fx:Script>

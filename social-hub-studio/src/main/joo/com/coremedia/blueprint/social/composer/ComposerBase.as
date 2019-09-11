@@ -1,14 +1,14 @@
 package com.coremedia.blueprint.social.composer {
-import com.coremedia.blueprint.social.beans.SocialHubAdapter;
-import com.coremedia.blueprint.social.beans.SocialHubAdapterImpl;
-import com.coremedia.blueprint.social.beans.SocialHubAdapters;
 import com.coremedia.blueprint.social.beans.ComposerModel;
 import com.coremedia.blueprint.social.beans.Message;
 import com.coremedia.blueprint.social.beans.MessageProperty;
+import com.coremedia.blueprint.social.beans.SocialHubAdapter;
+import com.coremedia.blueprint.social.beans.SocialHubAdapters;
 import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
 import com.coremedia.blueprint.social.channels.ChannelContainer;
 import com.coremedia.blueprint.social.socialHubService;
 import com.coremedia.ui.data.ValueExpression;
+import com.coremedia.ui.data.ValueExpressionFactory;
 
 import ext.Component;
 import ext.ComponentManager;
@@ -30,6 +30,9 @@ public class ComposerBase extends Window {
 
   [Bindable]
   public var bindTo:ValueExpression;
+
+  private var editors:Object;
+  private var errorMessagesExpression:ValueExpression;
 
   public function ComposerBase(config:ComposerBase = null) {
     config.id = COMPOSER_WINDOW_ID + config.adapter.getAdapterId();
@@ -55,7 +58,7 @@ public class ComposerBase extends Window {
    */
   public static function closeAll():void {
     var adapters:SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
-    if(adapters) {
+    if (adapters) {
       for each(var adapter:SocialHubAdapter in adapters.getAdapters()) {
         var cmp:ComposerBase = Ext.getCmp(COMPOSER_WINDOW_ID + adapter.getAdapterId()) as ComposerBase;
         if (cmp && cmp.isVisible()) {
@@ -74,6 +77,8 @@ public class ComposerBase extends Window {
     var properties:Array = adapter.getMessageProperties();
     var props:Array = properties.concat([]).reverse();
 
+    this.editors = {};
+
     for each(var property:MessageProperty in props) {
       var propertyType:String = property.getPropertyType();
       var config:Object = {};
@@ -86,6 +91,9 @@ public class ComposerBase extends Window {
 
       var editor:Component = createEditor(config);
       container.insert(0, editor);
+
+      //store editor instances for validation
+      editors[property.getName()] = editor;
     }
   }
 
@@ -107,7 +115,49 @@ public class ComposerBase extends Window {
     return scheduleDateExpression;
   }
 
-  public function sendMessage():void {
+  protected function finishComposing():void {
+    var msgs:Array = validateEditors();
+    getErrorMessagesExpression().setValue(msgs);
+    if (msgs.length === 0) {
+      sendMessage();
+    }
+  }
+
+  protected function getErrorMessagesExpression():ValueExpression {
+    if(!errorMessagesExpression) {
+      errorMessagesExpression = ValueExpressionFactory.createFromValue([]);
+    }
+    return errorMessagesExpression;
+  }
+
+  private function validateEditors():Array {
+    var result:Array = [];
+    for (var key in editors) {
+      var property:MessageProperty = getProperty(key);
+      if(!property.isRequired()) {
+        continue;
+      }
+
+      var editor:MessageFieldEditor = editors[key];
+      var msg:String = editor.getErrorMessage();
+      if(msg && StringUtil.trim(msg).length > 0) {
+        result.push(msg);
+      }
+    }
+    return result;
+  }
+
+  private function getProperty(name:String):MessageProperty {
+    var properties:Array = adapter.getMessageProperties();
+    for each(var property:MessageProperty in properties) {
+      if(property.getName() === name) {
+        return property;
+      }
+    }
+    return null;
+  }
+
+  private function sendMessage():void {
     channelContainer.setComposerButtonState(false);
     var composerModel:ComposerModel = bindTo.getValue();
     composerModel.send(function (message:Message):void {
@@ -137,7 +187,8 @@ public class ComposerBase extends Window {
     var value:Date = ve.getValue();
     if (value) {
       btn.setText(resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'schedule_button_text'));
-    } else {
+    }
+    else {
       btn.setText(resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'post_button_text'));
     }
   }

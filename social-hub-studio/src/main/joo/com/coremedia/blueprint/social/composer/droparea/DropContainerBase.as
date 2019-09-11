@@ -1,6 +1,7 @@
 package com.coremedia.blueprint.social.composer.droparea {
 import com.coremedia.blueprint.social.beans.MessageProperty;
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
+import com.coremedia.blueprint.social.composer.MessageFieldEditor;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentPropertyNames;
 import com.coremedia.cms.editor.sdk.components.html5.BrowsePlugin;
@@ -15,12 +16,13 @@ import com.coremedia.ui.util.EventUtil;
 
 import ext.Component;
 import ext.MessageBox;
+import ext.StringUtil;
 import ext.container.Container;
 import ext.dd.DropZone;
 
 import js.XMLHttpRequest;
 
-public class DropContainerBase extends Container {
+public class DropContainerBase extends Container implements MessageFieldEditor {
   [Bindable]
   public var bindTo:ValueExpression;
 
@@ -29,9 +31,6 @@ public class DropContainerBase extends Container {
 
   [Bindable]
   public var adapter:SocialHubAdapter;
-
-  [Bindable]
-  public var maxItems:Number = 0;
 
   private var itemsExpression:ValueExpression;
 
@@ -120,12 +119,13 @@ public class DropContainerBase extends Container {
     });
   }
 
-  protected function getAddButtonVisibilityExpression(maxItems:Number, bindTo:ValueExpression):ValueExpression {
+  protected function getAddButtonVisibilityExpression(prop:MessageProperty, bindTo:ValueExpression):ValueExpression {
     return ValueExpressionFactory.createFromFunction(function ():Boolean {
       if (bindTo.getValue() === undefined) {
         return undefined;
       }
       var length:Number = bindTo.getValue().length;
+      var maxItems:Number = prop.getMaxLength();
       return !maxItems || maxItems === 0 || maxItems > length;
     });
   }
@@ -215,7 +215,6 @@ public class DropContainerBase extends Container {
     return itemsExpression;
   }
 
-
   private function itemsChanged(ve:ValueExpression):void {
     var items:Array = ve.getValue();
     var result:Array = [];
@@ -223,6 +222,17 @@ public class DropContainerBase extends Container {
       result.push(item.getContent());
     }
     bindTo.setValue(result);
+  }
+
+  public function getErrorMessage():String {
+    var values:Array = bindTo.getValue();
+    if(!values || values.length === 0) {
+      var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_noMedia_text');
+      var message:String = StringUtil.format(msg, property.getDisplayName());
+      return message;
+    }
+
+    return null;
   }
 }
 }

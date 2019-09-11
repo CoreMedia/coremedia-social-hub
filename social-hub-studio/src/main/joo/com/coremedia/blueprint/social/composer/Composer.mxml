@@ -15,6 +15,7 @@
     import com.coremedia.ui.bem.SpacingBEMEntities;
     import com.coremedia.ui.skins.ButtonSkin;
     import com.coremedia.ui.skins.ContainerSkin;
+    import com.coremedia.ui.skins.DisplayFieldSkin;
 
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.composer";
     public static const EDITOR_PANEL:String = "editorPanel";
@@ -35,6 +36,23 @@
       </items>
       <layout>
         <layout_HBox align="stretch" pack="center"/>
+      </layout>
+    </Container>
+    <Container style="padding:8px;background-color:#c41313 !important;">
+      <plugins>
+        <ui:BindComponentsPlugin
+                valueExpression="{getErrorMessagesExpression()}"
+                configBeanParameterName="value"
+                clearBeforeUpdate="false">
+          <ui:template>
+            <DisplayField ui="{null}" style="color:#FFF;"/>
+          </ui:template>
+        </ui:BindComponentsPlugin>
+        <ui:BindVisibilityPlugin bindTo="{getErrorMessagesExpression()}"
+                                 transformer="{function(values:Array):Boolean {return values.length !== 0;}}" />
+      </plugins>
+      <layout>
+        <layout_VBox align="stretch" />
       </layout>
     </Container>
     <Container itemId="{EDITOR_PANEL}"
@@ -63,7 +81,7 @@
     <Button itemId="postBtn"
             ui="{ButtonSkin.FOOTER_PRIMARY.getSkin()}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'post_button_text')}"
-            handler="{sendMessage}"/>
+            handler="{finishComposing}"/>
     <Button itemId="cancelBtn"
             ui="{ButtonSkin.FOOTER_SECONDARY.getSkin()}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'cancel_button_text')}"

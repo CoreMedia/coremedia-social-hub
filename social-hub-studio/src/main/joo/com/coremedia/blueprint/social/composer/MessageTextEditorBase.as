@@ -9,7 +9,7 @@ import com.coremedia.ui.mixins.ValidationState;
 import ext.StringUtil;
 import ext.panel.Panel;
 
-public class MessageTextEditorBase extends Panel {
+public class MessageTextEditorBase extends Panel implements MessageFieldEditor {
 
   [Bindable]
   public var bindTo:ValueExpression;
@@ -36,6 +36,15 @@ public class MessageTextEditorBase extends Panel {
     else {
       statefulEditor.validationState = undefined;
     }
+  }
+
+  public function getErrorMessage():String {
+    if (!bindTo.getValue()) {
+      var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_empty_text');
+      var message:String = StringUtil.format(msg, property.getDisplayName());
+      return message;
+    }
+    return null;
   }
 
   override protected function onDestroy():void {
