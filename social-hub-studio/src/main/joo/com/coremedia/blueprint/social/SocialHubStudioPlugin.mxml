@@ -29,7 +29,7 @@
               <items>
                 <Button itemId="socialHubButton"
                         tooltip="{ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_tooltip')}"
-                        iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'content_hub')}"
+                        iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'social_hub')}"
                         text="{ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_text')}">
                   <baseAction>
                     <editor:OpenTabAction singleton="true">

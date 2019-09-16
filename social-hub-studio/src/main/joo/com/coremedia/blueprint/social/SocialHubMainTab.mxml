@@ -8,7 +8,7 @@
                              title="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_text')}"
                              closable="true"
                              id_="{ID}"
-                             iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'content_hub')}"
+                             iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'social_hub')}"
                              itemId="{ID}"
                              ui="{PanelSkin.EMBEDDED.getSkin()}">
   <fx:Metadata>
