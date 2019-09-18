@@ -13,7 +13,7 @@
   <component class="com.coremedia.blueprint.social.channels.ColorChooser"/>
   <component class="com.coremedia.blueprint.social.channels.ColorButton"/>
   <component class="com.coremedia.blueprint.social.messages.MessageFooter"/>
-  <component class="com.coremedia.blueprint.social.composer.MessageRichtextArea"/>
+  <component class="com.coremedia.blueprint.social.composer.richtext.MessageRichtextArea"/>
   <component class="com.coremedia.blueprint.social.composer.droparea.DropContainer"/>
   <component class="com.coremedia.blueprint.social.composer.droparea.DropItemThumbnail"/>
   <component class="com.coremedia.blueprint.social.composer.droparea.AddItemButton"/>
@@ -23,6 +23,5 @@
   <component class="com.coremedia.blueprint.social.composer.MessageChoiceEditor"/>
   <component class="com.coremedia.blueprint.social.composer.MessageTextareaEditor"/>
   <component class="com.coremedia.blueprint.social.composer.MessageTextEditor"/>
-  <component class="com.coremedia.blueprint.social.composer.ComposerFooter"/>
   <component class="com.coremedia.blueprint.social.scheduler.SchedulerContainer"/>
 </componentPackage>

@@ -1,4 +1,4 @@
-package com.coremedia.blueprint.social.composer {
+package com.coremedia.blueprint.social.composer.richtext {
 
 import com.coremedia.ui.ckeditor.RichTextArea;
 import com.coremedia.ui.data.ValueExpression;
