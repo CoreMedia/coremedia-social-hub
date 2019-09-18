@@ -38,23 +38,6 @@
         <layout_HBox align="stretch" pack="center"/>
       </layout>
     </Container>
-    <Container style="padding:8px;background-color:#c41313 !important;">
-      <plugins>
-        <ui:BindComponentsPlugin
-                valueExpression="{getErrorMessagesExpression()}"
-                configBeanParameterName="value"
-                clearBeforeUpdate="false">
-          <ui:template>
-            <DisplayField ui="{null}" style="color:#FFF;"/>
-          </ui:template>
-        </ui:BindComponentsPlugin>
-        <ui:BindVisibilityPlugin bindTo="{getErrorMessagesExpression()}"
-                                 transformer="{function(values:Array):Boolean {return values.length !== 0;}}" />
-      </plugins>
-      <layout>
-        <layout_VBox align="stretch" />
-      </layout>
-    </Container>
     <Container itemId="{EDITOR_PANEL}"
                ui="{ContainerSkin.GRID_200.getSkin()}"
                autoScroll="true"
@@ -75,7 +58,28 @@
         <layout_VBox align="stretch"/>
       </layout>
     </Container>
-
+    <Container style="padding:8px;background-color:#c41313 !important;">
+      <items>
+        <DisplayField ui="{null}"
+                      style="color:#FFF;font-weight:bold;"
+                      value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error')}"/>
+      </items>
+      <plugins>
+        <ui:BindComponentsPlugin
+                valueExpression="{getErrorMessagesExpression()}"
+                configBeanParameterName="value"
+                clearBeforeUpdate="false">
+          <ui:template>
+            <DisplayField ui="{null}" html="true" style="color:#FFF;"/>
+          </ui:template>
+        </ui:BindComponentsPlugin>
+        <ui:BindVisibilityPlugin bindTo="{getErrorMessagesExpression()}"
+                                 transformer="{function(values:Array):Boolean {return values.length !== 0;}}" />
+      </plugins>
+      <layout>
+        <layout_VBox align="stretch" />
+      </layout>
+    </Container>
   </composer:items>
   <composer:buttons>
     <Button itemId="postBtn"

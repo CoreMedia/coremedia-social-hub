@@ -224,10 +224,12 @@ public class ChannelContainerBase extends Panel {
   }
 
   public function setComposerButtonState(disabled:Boolean):void {
-    getColorButton().setDisabled(disabled);
-    getComposerButton().setDisabled(disabled);
-    getComposerButton().setPressed(disabled);
-    refreshColors(adapter.getColor());
+    if(this.rendered) {
+      getColorButton().setDisabled(disabled);
+      getComposerButton().setDisabled(disabled);
+      getComposerButton().setPressed(disabled);
+      refreshColors(adapter.getColor());
+    }
   }
 
   private function hoverButton(e:Event):void {

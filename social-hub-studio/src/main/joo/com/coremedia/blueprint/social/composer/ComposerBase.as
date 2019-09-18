@@ -117,7 +117,7 @@ public class ComposerBase extends Window {
 
   protected function finishComposing():void {
     var msgs:Array = validateEditors();
-    getErrorMessagesExpression().setValue(msgs);
+    getErrorMessagesExpression().setValue(msgs.reverse());
     if (msgs.length === 0) {
       sendMessage();
     }
