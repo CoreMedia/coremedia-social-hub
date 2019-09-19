@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMSettings folder="/Settings/Options/Settings/Social Hub/" name="Settings">
+  <locale></locale>
+  <master/>
+  <settings>
+    <Struct xmlns="http://www.coremedia.com/2008/struct">
+      <StringProperty Name="bitlyUserId"></StringProperty>
+      <StringProperty Name="bitlyApiKey"></StringProperty>
+      <StructProperty Name="mediaMapping">
+        <Struct>
+          <StringProperty Name="CMMedia">data</StringProperty>
+        </Struct>
+      </StructProperty>
+      <StringProperty Name="liveCaeUrl"></StringProperty>
+      <StringProperty Name="segmentProperty">segment</StringProperty>
+      <StringProperty Name="childrenProperty">children</StringProperty>
+      <StringProperty Name="pageDocumentType">CMChannel</StringProperty>
+    </Struct>
+  </settings>
+  <identifier></identifier>
+</CMSettings>

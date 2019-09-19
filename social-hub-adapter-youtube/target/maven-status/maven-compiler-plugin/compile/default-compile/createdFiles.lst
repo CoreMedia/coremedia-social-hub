@@ -1,0 +1,17 @@
+com\coremedia\blueprint\social\adapter\youtube\caching\VideoChannelSearchCacheKey.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeMessageContainerDescriptorFactory.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubePublicationResult.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeMessage.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeVideo$1.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeSocialHubAdapterFactory.class
+com\coremedia\blueprint\social\adapter\youtube\caching\VideoListCacheKey.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeConnector$1.class
+com\coremedia\blueprint\social\adapter\youtube\caching\VideoPlaylistCacheKey.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeMessage$1.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeSocialHubAdapter.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeVideo.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeAdapterSettings.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeConnector.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeConnectorSettings.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeMetaData.class
+com\coremedia\blueprint\social\adapter\youtube\YouTubeUtil.class

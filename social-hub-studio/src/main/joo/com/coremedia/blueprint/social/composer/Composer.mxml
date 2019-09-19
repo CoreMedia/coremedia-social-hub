@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composer:ComposerBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                       xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                       xmlns="exml:ext.config"
+                       xmlns:composer="com.coremedia.blueprint.social.composer.*"
+                       xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+                       xmlns:ui="exml:com.coremedia.ui.config"
+                       header="{false}"
+                       closable="true"
+                       width="460"
+                       resizable="false"
+                       minWidth="460">
+  <fx:Script><![CDATA[
+    import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
+    import com.coremedia.ui.bem.SpacingBEMEntities;
+    import com.coremedia.ui.skins.ButtonSkin;
+    import com.coremedia.ui.skins.ContainerSkin;
+    import com.coremedia.ui.skins.DisplayFieldSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.composer";
+    public static const EDITOR_PANEL:String = "editorPanel";
+    private var config:Composer;
+
+    public native function Composer(config:Composer = null);
+    ]]></fx:Script>
+
+  <composer:items>
+    <Container style="padding: 8px;background-color:{config.adapter.getColor()}">
+      <items>
+        <DisplayField value="{getComposerTitle(config.adapter)}" ui="{null}" style="color:#fff;font-weight:bold;"/>
+        <Container flex="1"/>
+        <!--//TODO hover state not styled, so we leave it empty-->
+        <!--<ui:IconButton iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'remove_small')}"-->
+        <!--scale="small"-->
+        <!--handler="{closeComposer}"/>-->
+      </items>
+      <layout>
+        <layout_HBox align="stretch" pack="center"/>
+      </layout>
+    </Container>
+    <Container itemId="{EDITOR_PANEL}"
+               ui="{ContainerSkin.GRID_200.getSkin()}"
+               autoScroll="true"
+               maxHeight="550"
+               scrollable="true">
+      <items>
+        <editor:DateTimePropertyField bindTo="{config.bindTo}"
+                                      labelSeparator=""
+                                      labelAlign="top"
+                                      fieldLabel=""
+                                      propertyName="{SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE}"/>
+        <!-- Editors are added here -->
+      </items>
+      <plugins>
+        <ui:VerticalSpacingPlugin modifier="{SpacingBEMEntities.VERTICAL_SPACING_MODIFIER_200}"/>
+      </plugins>
+      <layout>
+        <layout_VBox align="stretch"/>
+      </layout>
+    </Container>
+    <Container style="padding:8px;background-color:#c41313 !important;">
+      <items>
+        <DisplayField ui="{null}"
+                      style="color:#FFF;font-weight:bold;"
+                      value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error')}"/>
+      </items>
+      <plugins>
+        <ui:BindComponentsPlugin
+                valueExpression="{getErrorMessagesExpression()}"
+                configBeanParameterName="value"
+                clearBeforeUpdate="false">
+          <ui:template>
+            <DisplayField ui="{null}" html="true" style="color:#FFF;"/>
+          </ui:template>
+        </ui:BindComponentsPlugin>
+        <ui:BindVisibilityPlugin bindTo="{getErrorMessagesExpression()}"
+                                 transformer="{function(values:Array):Boolean {return values.length !== 0;}}" />
+      </plugins>
+      <layout>
+        <layout_VBox align="stretch" />
+      </layout>
+    </Container>
+  </composer:items>
+  <composer:buttons>
+    <Button itemId="postBtn"
+            ui="{ButtonSkin.FOOTER_PRIMARY.getSkin()}"
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'post_button_text')}"
+            handler="{finishComposing}"/>
+    <Button itemId="cancelBtn"
+            ui="{ButtonSkin.FOOTER_SECONDARY.getSkin()}"
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'cancel_button_text')}"
+            handler="{closeComposer}"/>
+  </composer:buttons>
+  <composer:layout>
+    <layout_VBox align="stretch"/>
+  </composer:layout>
+
+</composer:ComposerBase>

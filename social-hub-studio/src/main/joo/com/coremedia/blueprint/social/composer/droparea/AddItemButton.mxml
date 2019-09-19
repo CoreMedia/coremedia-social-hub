@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<droparea:AddItemButtonBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                            xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                            xmlns:ui="exml:com.coremedia.ui.config"
+                            xmlns="exml:ext.config"
+                            xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+                            xmlns:droparea="com.coremedia.blueprint.social.composer.droparea.*"
+                            ui="{ContainerSkin.GRID_100.getSkin()}"
+                            width="120"
+                            height="90"
+                            itemId="{ITEM_ID}"
+                            style="border-width: 3px;border-style: dashed;border-color: #ccc;margin-left: 6px; margin-right: 6px; margin-top: 6px; cursor:pointer;">
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.ContainerSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.addItemButton";
+    public static const ITEM_ID:String = "addItemButton";
+    public static const BUTTON_ITEM_ID:String = "browserFileIconButton";
+    private var config:AddItemButton;
+
+    public native function AddItemButton(config:AddItemButton = null);
+    ]]></fx:Script>
+
+  <droparea:items>
+    <ui:IconButton
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'upload_button_text')}"
+            handler="{config.uploadButtonHandler}"
+            style="margin-top: -3px;-webkit-text-fill-color: #ccc;"
+            itemId="{BUTTON_ITEM_ID}"
+            scale="small"
+            iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'add')}">
+      <ui:plugins>
+        <editor:BrowsePlugin enableFileDrop="true"
+                             multiple="true"
+                             dropEl="{this.el}"/>
+      </ui:plugins>
+    </ui:IconButton>
+  </droparea:items>
+
+  <droparea:layout>
+    <layout_Center/>
+  </droparea:layout>
+
+</droparea:AddItemButtonBase>

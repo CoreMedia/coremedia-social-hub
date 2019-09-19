@@ -1,0 +1,53 @@
+{
+  "name" : "com.coremedia.blueprint__social-hub-studio",
+  "version" : "1",
+  "type" : "code",
+  "local" : true,
+  "namespace" : "",
+  "framework" : "ext",
+  "format" : "1",
+  "toolkit" : "classic",
+  "creator" : "Blueprint",
+  "summary" : "Modules like CAE, Studio and component libraries",
+  "detailedDescription" : "",
+  "requires" : [ {
+    "name" : "com.coremedia.ui.toolkit__ui-components"
+  }, {
+    "name" : "com.coremedia.ui.sdk__editor-components"
+  }, {
+    "name" : "net.jangaroo__ext-as"
+  } ],
+  "css" : [ ],
+  "js" : [ ],
+  "sass" : {
+    "namespace" : "",
+    "etc" : [ "sass/etc/imports.scss" ],
+    "var" : [ "sass/var" ],
+    "src" : [ "sass/mixins", "sass/src" ]
+  },
+  "production" : {
+    "js" : [ {
+      "path" : "bundledResources/production/requiredClasses.js",
+      "bundle" : false,
+      "includeInBundle" : true
+    } ]
+  },
+  "testing" : { },
+  "development" : { },
+  "joo-classpath-development" : "${package.dir}/${package.name}.js",
+  "joo-overrides-development" : "${package.dir}/${package.name}-overrides.js,${package.dir}/${package.name}-overrides-${package.locale}.js",
+  "joo-classpath-production" : "${package.dir}/src,${package.dir}/locale/en",
+  "joo-overrides-production" : "${package.dir}/overrides,${package.dir}/locale/${package.locale}",
+  "joo-classpath-testing" : "${package.joo-classpath-development}",
+  "joo-overrides-testing" : "${package.joo-overrides-development}",
+  "classpath" : [ "${package.joo-classpath-${build.environment}}" ],
+  "overrides" : [ "${package.joo-overrides-${build.environment}}" ],
+  "output" : "${package.dir}/build",
+  "resources" : [ {
+    "path" : "${package.dir}/resources"
+  } ],
+  "studioPlugins" : [ {
+    "mainClass" : "com.coremedia.blueprint.social.SocialHubStudioPlugin",
+    "name" : "Social Plugin"
+  } ]
+}

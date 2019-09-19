@@ -1,0 +1,4 @@
+com\coremedia\blueprint\social\adapter\pinterest\PinterestAdapterSettings.class
+com\coremedia\blueprint\social\adapter\pinterest\PinterestMessage.class
+com\coremedia\blueprint\social\adapter\pinterest\PinterestSocialHubAdapter.class
+com\coremedia\blueprint\social\adapter\pinterest\PinterestMessageContainerDescriptorFactory.class

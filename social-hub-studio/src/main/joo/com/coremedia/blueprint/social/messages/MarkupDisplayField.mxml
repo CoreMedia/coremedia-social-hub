@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:MarkupDisplayFieldBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                              xmlns="exml:ext.config"
+                              xmlns:ui="exml:com.coremedia.ui.config"
+                              xmlns:local="com.coremedia.blueprint.social.messages.*"
+                              style="{CustomStyles.MESSAGE_DISPLAY_FIELD}">
+  <fx:Script><![CDATA[
+    import com.coremedia.blueprint.social.CustomStyles;
+    import com.coremedia.ui.bem.SpacingBEMEntities;
+    import com.coremedia.ui.data.ValueExpressionFactory;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.message.field.markup";
+
+    private var config:MarkupDisplayField;
+
+    public native function MarkupDisplayField(config:MarkupDisplayField = null);
+    ]]></fx:Script>
+
+  <local:items>
+    <DisplayField value="{localizeFieldName(config.messageContainerDescriptor.getPropertyName())}"
+                  style="{CustomStyles.READONLY_TITLE}" ui="{null}">
+      <plugins>
+        <ui:BindVisibilityPlugin
+                bindTo="{ValueExpressionFactory.createFromValue(config.messageContainerDescriptor.showLabel())}"/>
+      </plugins>
+    </DisplayField>
+    <DisplayField html="true" itemId="markup" style="{CustomStyles.READONLY_TEXT}" ui="{null}">
+      <plugins>
+        <ui:BindPropertyPlugin bindTo="{config.bindTo}"/>
+      </plugins>
+    </DisplayField>
+  </local:items>
+  <local:plugins>
+    <ui:VerticalSpacingPlugin modifier="{SpacingBEMEntities.VERTICAL_SPACING_MODIFIER_25}"/>
+  </local:plugins>
+  <local:layout>
+    <layout_VBox align="stretch"/>
+  </local:layout>
+
+</local:MarkupDisplayFieldBase>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<droparea:DropContainerBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                            xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                            xmlns="exml:ext.config" xmlns:ui="com.coremedia.ui.plugins.*"
+                            xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+                            xmlns:ui="exml:com.coremedia.ui.config"
+                            xmlns:droparea="com.coremedia.blueprint.social.composer.droparea.*"
+                            minHeight="160">
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.ButtonSkin;
+    import com.coremedia.ui.skins.ContainerSkin;
+    import com.coremedia.ui.skins.DisplayFieldSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.editor.assetlist";
+    private var config:DropContainer;
+
+    public native function DropContainer(config:DropContainer = null);
+    ]]></fx:Script>
+
+  <droparea:items>
+    <DisplayField value="{config.property.getDisplayName()}" ui="{DisplayFieldSkin.BOLD.getSkin()}"/>
+    <Container ui="{ContainerSkin.FRAME_GRID_200.getSkin()}">
+      <items>
+        <Container flex="1">
+          <items>
+            <Container height="30"/>
+            <Button text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'upload_button_text')}"
+                    handler="{uploadButtonHandler}"
+                    scale="small"
+                    ui="{ButtonSkin.INLINE.getSkin()}">
+              <plugins>
+                <editor:BrowsePlugin enableFileDrop="true"
+                                     multiple="true"
+                                     dropEl="{this.el}"/>
+              </plugins>
+            </Button>
+            <Container height="10"/>
+            <DisplayField ui="{DisplayFieldSkin.EMBEDDED.getSkin()}"
+                          value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'upload_area_text')}"/>
+            <DisplayField ui="{DisplayFieldSkin.EMBEDDED.getSkin()}"
+                          value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'upload_area_text_hint')}"/>
+          </items>
+          <plugins>
+            <ui:BindVisibilityPlugin bindTo="{getItemsExpression(config.bindTo)}"
+                                     transformer="{function(values:Array):Boolean { return !values || values.length === 0; }}"/>
+          </plugins>
+          <layout>
+            <layout_VBox align="center" pack="center"/>
+          </layout>
+        </Container>
+        <Container flex="1">
+          <items>
+            <Container flex="1">
+              <items>
+                <!-- Thumbnails will be put here-->
+                <droparea:AddItemButton uploadButtonHandler="{uploadButtonHandler}">
+                  <droparea:plugins>
+                    <ui:BindVisibilityPlugin
+                            bindTo="{getAddButtonVisibilityExpression(config.property, getItemsExpression(config.bindTo))}"/>
+                  </droparea:plugins>
+                </droparea:AddItemButton>
+              </items>
+              <plugins>
+                <ui:BindComponentsPlugin
+                        addFunction="{addThumbnails}"
+                        valueExpression="{getItemsExpression(config.bindTo)}"
+                        configBeanParameterName="dropItem"
+                        reuseComponents="true"
+                        getKey="{getDropItemKey}"
+                        clearBeforeUpdate="false">
+                  <ui:template>
+                    <droparea:DropItemThumbnail width="130" height="130"/>
+                  </ui:template>
+                </ui:BindComponentsPlugin>
+              </plugins>
+              <layout>
+                <layout_Column/>
+              </layout>
+            </Container>
+          </items>
+          <plugins>
+            <ui:BindVisibilityPlugin bindTo="{getItemsExpression(config.bindTo)}"
+                                     transformer="{function(values:Array):Boolean { return values &amp;&amp; values.length > 0; }}"/>
+          </plugins>
+          <layout>
+            <layout_HBox align="begin"/>
+          </layout>
+        </Container>
+      </items>
+      <layout>
+        <layout_VBox align="stretch"/>
+      </layout>
+    </Container>
+  </droparea:items>
+  <droparea:plugins>
+    <editor:FileDropPlugin dropHandler="{handleFileDrop}" customFileWrapperFactoryMethod="{createFileWrapper}"/>
+  </droparea:plugins>
+  <droparea:layout>
+    <layout_VBox align="stretch"/>
+  </droparea:layout>
+
+</droparea:DropContainerBase>

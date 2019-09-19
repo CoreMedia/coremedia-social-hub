@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<componentPackage>
+  <component class="com.coremedia.blueprint.social.SocialHubStudioPlugin"/>
+  <component class="com.coremedia.blueprint.social.SocialHubMainTab"/>
+  <component class="com.coremedia.blueprint.social.channels.ChannelsContainer"/>
+  <component class="com.coremedia.blueprint.social.channels.ChannelContainer"/>
+  <component class="com.coremedia.blueprint.social.messages.MessagesContainer"/>
+  <component class="com.coremedia.blueprint.social.messages.CounterLabel"/>
+  <component class="com.coremedia.blueprint.social.messages.DynamicMessageContainer"/>
+  <component class="com.coremedia.blueprint.social.messages.AssetsDisplayField"/>
+  <component class="com.coremedia.blueprint.social.messages.MarkupDisplayField"/>
+  <component class="com.coremedia.blueprint.social.messages.TextDisplayField"/>
+  <component class="com.coremedia.blueprint.social.channels.ColorChooser"/>
+  <component class="com.coremedia.blueprint.social.channels.ColorButton"/>
+  <component class="com.coremedia.blueprint.social.messages.MessageFooter"/>
+  <component class="com.coremedia.blueprint.social.composer.richtext.MessageRichtextArea"/>
+  <component class="com.coremedia.blueprint.social.composer.droparea.DropContainer"/>
+  <component class="com.coremedia.blueprint.social.composer.droparea.DropItemThumbnail"/>
+  <component class="com.coremedia.blueprint.social.composer.droparea.AddItemButton"/>
+  <component class="com.coremedia.blueprint.social.composer.externallink.ExternalLinkDialog"/>
+  <component class="com.coremedia.blueprint.social.composer.MessageDateEditor"/>
+  <component class="com.coremedia.blueprint.social.composer.MessageCharacterCounter"/>
+  <component class="com.coremedia.blueprint.social.composer.MessageChoiceEditor"/>
+  <component class="com.coremedia.blueprint.social.composer.MessageTextareaEditor"/>
+  <component class="com.coremedia.blueprint.social.composer.MessageTextEditor"/>
+  <component class="com.coremedia.blueprint.social.scheduler.SchedulerContainer"/>
+</componentPackage>

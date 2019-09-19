@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composer:MessageChoiceEditorBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                                  xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                                  xmlns:composer="com.coremedia.blueprint.social.composer.*"
+                                  xmlns="exml:ext.config"
+                                  xmlns:ui="exml:com.coremedia.ui.config">
+  <fx:Script><![CDATA[
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.editor.choice";
+    private var config:MessageChoiceEditor;
+
+    public native function MessageChoiceEditor(config:MessageChoiceEditor = null);
+    ]]></fx:Script>
+
+  <composer:items>
+    <ui:LocalComboBox editable="false"
+                      fieldLabel="{config.property.getDisplayName()}"
+                      emptyText="{config.property.getEmptyText()}"
+                      labelAlign="top"
+                      itemId="{config.property.getName()}"
+                      labelSeparator=""
+                      encodeItems="true"
+                      store="{getStore(config.property)}">
+      <ui:plugins>
+        <ui:BindPropertyPlugin bidirectional="true" bindTo="{config.bindTo}"/>
+      </ui:plugins>
+    </ui:LocalComboBox>
+  </composer:items>
+  <composer:layout>
+    <layout_VBox align="stretch"/>
+  </composer:layout>
+</composer:MessageChoiceEditorBase>

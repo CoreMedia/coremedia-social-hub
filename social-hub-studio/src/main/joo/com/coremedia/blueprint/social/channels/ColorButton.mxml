@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channels:ColorButtonBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                          xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                          xmlns="exml:ext.config"
+                          width="20"
+                          height="20"
+                          style="{'background-color:' + config.color + ';cursor:pointer;'}"
+                          ui="{ContainerSkin.FRAME.getSkin()}"
+                          xmlns:channels="com.coremedia.blueprint.social.channels.*">
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.ContainerSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.colorButton";
+    private var config:ColorButton;
+
+    public native function ColorButton(config:ColorButton = null);
+    ]]></fx:Script>
+
+  <channels:items>
+  </channels:items>
+
+</channels:ColorButtonBase>

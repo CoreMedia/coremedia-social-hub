@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:DynamicMessageContainerBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                                   xmlns="exml:ext.config"
+                                   xmlns:local="com.coremedia.blueprint.social.messages.*"
+                                   style="{getStyle(config.adapter, config.message)}">
+  <fx:Script><![CDATA[
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.dynamicMessageContainer";
+
+    private var config:DynamicMessageContainer;
+
+    public native function DynamicMessageContainer(config:DynamicMessageContainer = null);
+    ]]></fx:Script>
+
+  <local:items>
+    <local:MessageFooter message="{config.message}" adapter="{config.adapter}"/>
+    <Container ui="{resolveSkin(config.adapter, config.message)}" itemId="fieldWrapper">
+      <layout>
+        <layout_VBox align="stretch"/>
+      </layout>
+    </Container>
+  </local:items>
+  <local:layout>
+    <layout_VBox align="stretch"/>
+  </local:layout>
+
+</local:DynamicMessageContainerBase>
