@@ -4,9 +4,6 @@ import com.coremedia.blueprint.social.ComposerFactory;
 import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
 import com.coremedia.blueprint.social.api.MessageContainerDescriptorFactory;
 import com.coremedia.blueprint.social.api.SocialHubService;
-import com.coremedia.blueprint.studio.social.composing.CMChannelComposerModelInterceptor;
-import com.coremedia.blueprint.studio.social.composing.CMPictureComposerModelInterceptor;
-import com.coremedia.blueprint.studio.social.composing.CMTeasableComposerModelInterceptor;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.multisite.SitesService;
 import com.coremedia.rest.cap.content.convert.DatePropertyConverter;
@@ -96,21 +93,4 @@ public class SocialHubStudioLibConfiguration {
     socialHubServices.setSocialHubService(socialHubService);
     return socialHubServices;
   }
-
-
-  @Bean
-  public CMPictureComposerModelInterceptor cmPictureComposerModelInterceptor() {
-    return new CMPictureComposerModelInterceptor();
-  }
-
-  @Bean
-  public CMTeasableComposerModelInterceptor cmTeasableComposerModelInterceptor() {
-    return new CMTeasableComposerModelInterceptor();
-  }
-
-  @Bean
-  public CMChannelComposerModelInterceptor cmChannelComposerModelInterceptor(@NonNull SocialHubService socialHubService) {
-    return new CMChannelComposerModelInterceptor(socialHubService);
-  }
-
 }

@@ -62,22 +62,20 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
   @PostMapping(value = "/compose")
   public boolean initComposing(@PathVariable(ID) String id,
                                @PathVariable(ADAPTER_ID) String adapterId,
-                               @RequestParam("contentIds") String contentIds) {
-    String[] contentIdArray = contentIds.split(",");
-    List<Content> contents = new ArrayList<>();
-    for (String idString : contentIdArray) {
-      Content content = contentRepository.getContent(IdHelper.formatContentId(idString));
-      if (content != null && content.isInProduction()) {
-        contents.add(content);
-      }
-    }
+                               @RequestParam("contentId") Integer contentId) {
+    Content content = contentRepository.getContent(IdHelper.formatContentId(contentId));
 
     Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
-    ComposerModelImpl model = new ComposerModelImpl(id, adapterId, adapter.get().getType().name());
-    messageCache.put(getKey(adapterId, id), model);
+    if(adapter.isPresent()) {
+      SocialHubAdapter socialHubAdapter = adapter.get();
+      ComposerModelImpl model = new ComposerModelImpl(id, adapterId, socialHubAdapter.getType().name());
+      messageCache.put(getKey(adapterId, id), model);
 
-    composerFactory.compose(model, contents);
-    return true;
+      composerFactory.compose(socialHubAdapter, model, content);
+      return true;
+    }
+
+    return false;
   }
 
   @PostMapping

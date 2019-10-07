@@ -2,6 +2,9 @@ package com.coremedia.blueprint.social;
 
 import com.coremedia.blueprint.social.api.ComposerModel;
 import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
+import com.coremedia.blueprint.social.api.MessageProperty;
+import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.api.SocialNetworkType;
 import com.coremedia.cap.content.Content;
 
 import java.util.Collections;
@@ -18,14 +21,23 @@ public class ComposerFactory {
     this.interceptors = interceptors;
   }
 
-  public void compose(ComposerModel model, List<Content> contents) {
+  public void compose(SocialHubAdapter adapter, ComposerModel composerModel, Content content) {
     Collections.sort(interceptors, Comparator.comparingInt(ComposerModelInterceptor::getPriority));
 
-    for (Content content : contents) {
-      for (ComposerModelInterceptor interceptor : interceptors) {
-        if (content.getType().isSubtypeOf(interceptor.getContentType())) {
-          interceptor.intercept(model, content);
-        }
+    SocialNetworkType type = adapter.getType();
+    for (ComposerModelInterceptor interceptor : interceptors) {
+      if(!interceptor.getSocialNetworkType().equals(type)) {
+        continue;
+      }
+
+      if(!content.getType().isSubtypeOf(interceptor.getContentType())) {
+        continue;
+      }
+
+      List<MessageProperty> messageProperties = adapter.getMessageProperties();
+      for (MessageProperty messageProperty : messageProperties) {
+        Object value = interceptor.intercept(adapter, messageProperty, content);
+        composerModel.set(messageProperty.getName(), value, true);
       }
     }
   }

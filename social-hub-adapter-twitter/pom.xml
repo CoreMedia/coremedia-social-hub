@@ -21,6 +21,14 @@
       <groupId>com.coremedia.cms</groupId>
       <artifactId>cap-unified-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.coremedia.cms</groupId>
+      <artifactId>coremedia-xml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
     <!-- Thirdparty -->
     <dependency>
       <groupId>org.springframework</groupId>

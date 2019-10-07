@@ -1,13 +1,12 @@
 package com.coremedia.blueprint.social {
-import com.coremedia.blueprint.social.beans.SocialHubAdapters;
-import com.coremedia.blueprint.social.beans.SocialHubAdaptersImpl;
 import com.coremedia.blueprint.social.beans.ComposerModel;
 import com.coremedia.blueprint.social.beans.ComposerModelImpl;
 import com.coremedia.blueprint.social.beans.MediaItem;
+import com.coremedia.blueprint.social.beans.SocialHubAdapters;
+import com.coremedia.blueprint.social.beans.SocialHubAdaptersImpl;
 import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.common.SESSION;
 import com.coremedia.cap.content.Content;
-import com.coremedia.cap.content.ContentType;
 import com.coremedia.cms.editor.sdk.editorContext;
 import com.coremedia.cms.editor.sdk.sites.Site;
 import com.coremedia.cms.editor.sdk.sites.SitesService;
@@ -18,7 +17,6 @@ import com.coremedia.ui.data.beanFactory;
 import com.coremedia.ui.data.impl.RemoteServiceMethod;
 import com.coremedia.ui.data.impl.RemoteServiceMethodResponse;
 
-import mx.resources.ResourceBundle;
 import mx.resources.ResourceManager;
 
 public class SocialHubServiceImpl implements ISocialHubService {
@@ -44,18 +42,18 @@ public class SocialHubServiceImpl implements ISocialHubService {
   public function getMediaType(content:Content):String {
     var blobProperty:String = ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHubSettings', 'social_hub_content_blob_property');
     var blob:Blob = content.getProperties().get(blobProperty);
-    if(blob) {
-      if(!blob.isLoaded()) {
+    if (blob) {
+      if (!blob.isLoaded()) {
         blob.loadData();
         return undefined;
       }
 
       var contentType:String = blob.getContentType();
-      if(contentType.indexOf(MediaItem.TYPE_IMAGE) !== -1) {
+      if (contentType.indexOf(MediaItem.TYPE_IMAGE) !== -1) {
         return MediaItem.TYPE_IMAGE;
       }
 
-      if(contentType.indexOf(MediaItem.TYPE_VIDEO) !== -1) {
+      if (contentType.indexOf(MediaItem.TYPE_VIDEO) !== -1) {
         return MediaItem.TYPE_VIDEO;
       }
     }
@@ -77,15 +75,15 @@ public class SocialHubServiceImpl implements ISocialHubService {
   public function initComposerModel(adapterId:String, contents:Array, callback:Function):void {
     var uriPath:String = SESSION.getUser().getUriPath();
     var userId:String = uriPath.substr(uriPath.lastIndexOf('/') + 1, uriPath.length);
-    var contentIds:Array = [];
-    for each(var c:Content in contents) {
-      contentIds.push(IdHelper.parseContentId(c));
+    var id:Number = null;
+    if (contents.length > 0) {
+      id = IdHelper.parseContentId(contents[0]);
     }
-    var idParam:String = contentIds.join(",");
+
     var method:RemoteServiceMethod = new RemoteServiceMethod('socialhub/composermodel/' + userId + '/' + adapterId + '/compose', 'POST');
     method.request(
             {
-              'contentIds': idParam
+              'contentId': id
             },
             function (response:RemoteServiceMethodResponse):void {
               var result:String = response.response.responseText;

@@ -9,13 +9,16 @@ import com.coremedia.common.annotations.Experimental;
 @Experimental
 public interface ComposerModelInterceptor {
 
-  void intercept(ComposerModel model, Content content);
+  Object intercept(SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
 
   /**
    * The content type the interceptor should be applied to.
    * Subtypes are included here.
    */
   String getContentType();
+
+
+  SocialNetworkType getSocialNetworkType();
 
   /**
    * The lower the value, the higher the priority.
