@@ -9,6 +9,7 @@ target/
 overlays/
 .m2/
 .mvn/timing.properties
+*.jar
 
 # Eclipse:
 .classpath
@@ -32,6 +33,7 @@ overlays/
 # Git:
 *.orig
 *.rej
+
 
 # OS X:
 .DS_Store
