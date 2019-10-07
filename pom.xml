@@ -3,16 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-<<<<<<< HEAD
+
+  <groupId>com.coremedia.blueprint</groupId>
   <artifactId>coremedia-social-hub</artifactId>
   <packaging>pom</packaging>
-  <groupId>com.coremedia.blueprint</groupId>
   <version>1-SNAPSHOT</version>
-=======
-  <groupId>com.coremedia.blueprint</groupId>
-  <artifactId>coremedia-social-hub</artifactId>
-  <packaging>pom</packaging>
->>>>>>> 1907.1
 
   <modules>
     <module>social-hub-api</module>
