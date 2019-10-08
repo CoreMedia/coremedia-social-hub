@@ -31,5 +31,7 @@ public class MessageTextareaEditorBase extends ext.panel.Panel implements com.co
   public native function getRichtextEditor():com.coremedia.ui.ckeditor.RichTextArea;
 
   public native function getErrorMessage():String;
+
+  override protected native function onDestroy():void;
 }
 }
