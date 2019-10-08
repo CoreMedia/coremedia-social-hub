@@ -94,5 +94,10 @@ public class MessageTextareaEditorBase extends Panel implements MessageFieldEdit
     return null;
   }
 
+
+  override protected function onDestroy():void {
+    super.onDestroy();
+    bindTo.removeChangeListener(valueChanged);
+  }
 }
 }
