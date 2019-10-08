@@ -1,4 +1,7 @@
 package com.coremedia.blueprint.social.beans {
+import com.coremedia.blueprint.social.composer.ComposeMessageJob;
+import com.coremedia.cap.common.TrackedJob;
+import com.coremedia.cap.common.jobService;
 import com.coremedia.ui.data.beanFactory;
 import com.coremedia.ui.data.impl.BeanFactoryImpl;
 import com.coremedia.ui.data.impl.RemoteBeanImpl;
@@ -42,6 +45,10 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     return get(SocialHubPropertyNames.COMPOSER_ADAPTER_TYPE);
   }
 
+  public function getAdapterId():String {
+    return get(SocialHubPropertyNames.COMPOSER_ADAPTER_ID);
+  }
+
   public function getPublicationDate():Date {
     return getProperties().get(SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE);
   }
@@ -60,18 +67,31 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     return getProperties().get(SocialHubPropertyNames.COMPOSER_MESSAGE_TITLE);
   }
 
-  public function send(callback:Function = undefined):void {
+  public function send(savedCallback:Function, publicationCallback:Function):void {
     var method:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), 'POST');
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
-              if(callback) {
-                callback(null);
+              var bean:Object = BeanFactoryImpl.resolveBeans(JSON.decode(response.response.responseText));
+              savedCallback(bean);
+
+              if(bean is Message) {
+                var msg:MessageImpl = bean as MessageImpl;
+                msg.load(function(message:Message):void {
+                  var job:ComposeMessageJob = new ComposeMessageJob(getAdapterType(), getAdapterId(), message.getMessageId());
+                  var trackedJob:TrackedJob = jobService.executeJob(job,
+                          //on success
+                          function ():void {
+                            //default handler is ok, we don't need any post-processing
+                            publicationCallback();
+                          },
+                          //on error
+                          function (result:Object):void {
+                          });
+                });
               }
             },
             function (response:RemoteServiceMethodResponse):void {
-              if(callback) {
-                callback(response.getError());
-              }
+              savedCallback(response.getError());
             }
     );
   }

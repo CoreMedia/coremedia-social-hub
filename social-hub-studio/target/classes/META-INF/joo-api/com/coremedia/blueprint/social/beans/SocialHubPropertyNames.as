@@ -71,6 +71,8 @@ public class SocialHubPropertyNames {
 
   public static const COMPOSER_ADAPTER_TYPE:String = "adapterType";
 
+  public static const COMPOSER_ADAPTER_ID:String = "adapterId";
+
   public static const COMPOSER_MESSAGE_TEXT:String = "messageText";
 
   public static const COMPOSER_MESSAGE_TITLE:String = "title";

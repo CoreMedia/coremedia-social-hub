@@ -130,6 +130,10 @@ public native function get upload_button_text():String;
 public native function get upload_area_text():String;
 public native function get upload_area_text_hint():String;
 /**
+ * Job
+*/
+public native function get compose_job_title():String;
+/**
  * Custom labels
 */
 public native function get likeCount_twitter_text():String;

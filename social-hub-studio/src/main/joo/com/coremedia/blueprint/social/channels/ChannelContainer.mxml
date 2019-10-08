@@ -6,12 +6,13 @@
                             xmlns:ui="exml:com.coremedia.ui.config"
                             xmlns:messages="com.coremedia.blueprint.social.messages.*"
                             minWidth="500"
+                            id_="{config.adapter.getAdapterId()}"
+                            style="border-radius: 8px;"
                             ui="{PanelSkin.ACCORDION.getSkin()}">
   <fx:Script><![CDATA[
     import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
     import com.coremedia.ui.data.ValueExpressionFactory;
     import com.coremedia.ui.skins.ButtonSkin;
-    import com.coremedia.ui.skins.DisplayFieldSkin;
     import com.coremedia.ui.skins.IconDisplayFieldSkin;
     import com.coremedia.ui.skins.PanelSkin;
 

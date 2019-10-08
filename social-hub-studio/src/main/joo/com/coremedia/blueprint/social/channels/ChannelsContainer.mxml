@@ -4,9 +4,12 @@
                                 xmlns="exml:ext.config"
                                 xmlns:ui="exml:com.coremedia.ui.config"
                                 xmlns:channels="com.coremedia.blueprint.social.channels.*"
+                                style="padding-top: 4px;"
+                                id_="{ID}"
                                 autoScroll="true">
   <fx:Script><![CDATA[
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.channelsContainer";
+    public static const ID:String = "socialHubChannelsContainer";
     private var config:ChannelsContainer;
 
     public native function ChannelsContainer(config:ChannelsContainer = null);

@@ -16,6 +16,8 @@ public class ComposerModelImpl extends com.coremedia.ui.data.impl.RemoteBeanImpl
 
   public native function getAdapterType():String;
 
+  public native function getAdapterId():String;
+
   public native function getPublicationDate():Date;
 
   public native function getMessageText():String;

@@ -159,10 +159,15 @@ public class ComposerBase extends Window {
 
   private function sendMessage():void {
     channelContainer.setComposerButtonState(false);
+
+    var c:ChannelContainer = channelContainer;
     var composerModel:ComposerModel = bindTo.getValue();
     composerModel.send(function (message:Message):void {
-      channelContainer.reload();
       close();
+    }, function():void {
+      if(c.rendered) {
+        c.reload();
+      }
     });
   }
 

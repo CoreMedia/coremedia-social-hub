@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social {
 import com.coremedia.blueprint.social.beans.ComposerModel;
+import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.cap.content.Content;
 import com.coremedia.ui.data.ValueExpression;
 
@@ -11,5 +12,9 @@ public class SocialHubServiceImpl implements com.coremedia.blueprint.social.ISoc
   public native function getComposerModel(adapterId:String):com.coremedia.blueprint.social.beans.ComposerModel;
 
   public native function initComposerModel(adapterId:String, contents:Array, callback:Function):void;
+
+  public native function getAdapter(adapterId:String):com.coremedia.blueprint.social.beans.SocialHubAdapter;
+
+  public native function focusAndReload(socialHubAdapter:com.coremedia.blueprint.social.beans.SocialHubAdapter):void;
 }
 }

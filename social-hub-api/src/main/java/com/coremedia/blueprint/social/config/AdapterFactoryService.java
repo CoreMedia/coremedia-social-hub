@@ -78,6 +78,11 @@ public class AdapterFactoryService {
 
         String adapterType = struct.getString(SocialHubPropertyNames.TYPE);
         String id = struct.getString(SocialHubPropertyNames.ID);
+        if(isDuplicate(id, adapters)) {
+          continue;
+        }
+
+
         Struct connectorStruct = struct.getStruct(SocialHubPropertyNames.CONNECTOR);
         String displayName = struct.getString(SocialHubPropertyNames.DISPLAY_NAME);
 
@@ -106,6 +111,16 @@ public class AdapterFactoryService {
         LOG.error("Social Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage());
       }
     }
+  }
+
+  private boolean isDuplicate(String id, List<SocialHubAdapter> adapters) {
+    for (SocialHubAdapter adapter : adapters) {
+      if(adapter.getId().equals(id)) {
+        LOG.error("An adapter for id '{}' already exist, skipping configuration.", id);
+        return true;
+      }
+    }
+    return false;
   }
 
 

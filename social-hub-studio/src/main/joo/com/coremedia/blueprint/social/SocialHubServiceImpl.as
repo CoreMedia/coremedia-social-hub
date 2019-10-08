@@ -2,8 +2,10 @@ package com.coremedia.blueprint.social {
 import com.coremedia.blueprint.social.beans.ComposerModel;
 import com.coremedia.blueprint.social.beans.ComposerModelImpl;
 import com.coremedia.blueprint.social.beans.MediaItem;
+import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.SocialHubAdapters;
 import com.coremedia.blueprint.social.beans.SocialHubAdaptersImpl;
+import com.coremedia.blueprint.social.channels.ChannelContainer;
 import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.common.SESSION;
 import com.coremedia.cap.content.Content;
@@ -16,6 +18,11 @@ import com.coremedia.ui.data.ValueExpressionFactory;
 import com.coremedia.ui.data.beanFactory;
 import com.coremedia.ui.data.impl.RemoteServiceMethod;
 import com.coremedia.ui.data.impl.RemoteServiceMethodResponse;
+import com.coremedia.ui.util.createComponentSelector;
+
+import ext.Component;
+import ext.ComponentManager;
+import ext.Ext;
 
 import mx.resources.ResourceManager;
 
@@ -94,6 +101,39 @@ public class SocialHubServiceImpl implements ISocialHubService {
               callback(response.getError());
             }
     );
+  }
+
+  public function getAdapter(adapterId:String):SocialHubAdapter {
+    var adapters:SocialHubAdapters= getAdaptersExpression().getValue();
+    for each(var adapter:SocialHubAdapter in adapters.getAdapters()) {
+      if (adapter.getAdapterId() === adapterId) {
+        return adapter;
+      }
+    }
+    return null;
+  }
+
+
+  public function focusAndReload(socialHubAdapter:SocialHubAdapter):void {
+    var findByType:Array = editorContext.getWorkArea().query(createComponentSelector()._xtype(SocialHubMainTab.xtype, true).build());
+    if (findByType.length > 0) {
+      var cmp:Component = findByType[0];
+      editorContext.getWorkArea().setActiveTab(cmp);
+
+      var scrolling:* = Ext.getCmp('socialHubChannelsContainer').el.dom['children'][0].children[0];
+      var offset:* = Ext.getCmp(socialHubAdapter.getAdapterId()).el.dom.offsetLeft - 500;
+      scrolling.scrollLeft = offset;
+
+      var channelContainer:ChannelContainer = Ext.getCmp(socialHubAdapter.getAdapterId()) as ChannelContainer;
+      channelContainer.reload(true);
+    }
+    else {
+      var cfg:SocialHubMainTab = SocialHubMainTab({});
+      var tab:Component = ComponentManager.create(cfg);
+      editorContext.getWorkArea().add(tab);
+      editorContext.getWorkArea().setActiveTab(tab);
+
+    }
   }
 }
 }

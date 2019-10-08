@@ -16,7 +16,9 @@ public interface ComposerModel {
 
   function getAdapterType():String;
 
-  function send(callback:Function = undefined):void;
+  function getAdapterId():String;
+
+  function send(savedCallback:Function, publicationCallback:Function):void;
 
   function reset(callback:Function = undefined):void;
 }
