@@ -1,2 +1,0 @@
-Ext.define("com.coremedia.blueprint.social.SocialHubComposerProperties_properties_ja",{override:"com.coremedia.blueprint.social.SocialHubComposerProperties_properties"},function(){});Ext.define("com.coremedia.blueprint.social.SocialHubSettings_properties_ja",{override:"com.coremedia.blueprint.social.SocialHubSettings_properties"},function(){});Ext.define("com.coremedia.blueprint.social.SocialHub_properties_ja",{override:"com.coremedia.blueprint.social.SocialHub_properties"},function(){});
-//# sourceMappingURL=com.coremedia.blueprint__social-hub-studio-overrides-ja.js.map
