@@ -35,7 +35,7 @@ public class SocialHubAdapterResource extends AbstractSocialHubResource implemen
     SocialHubAdapterRepresentation representation = new SocialHubAdapterRepresentation(adapter);
 
     try {
-      List<? extends Message> sentMessages = adapter.getMessages(MessageState.SENT, null, null, 0, 50);
+      List<? extends Message> sentMessages = adapter.getMessages(MessageState.SENT, null, null, 0, 30);
       Collections.sort(sentMessages, (Comparator<Message>) (o1, o2) -> (int) (o1.getPublicationDate().getTime() - o2.getPublicationDate().getTime()));
       representation.setSentMessages(sentMessages);
     } catch (Exception e) {
@@ -43,7 +43,7 @@ public class SocialHubAdapterResource extends AbstractSocialHubResource implemen
     }
 
     try {
-      List<? extends Message> scheduledMessages = adapter.getMessages(MessageState.SCHEDULED, null, null, 0, 50);
+      List<? extends Message> scheduledMessages = adapter.getMessages(MessageState.SCHEDULED, null, null, 0, 30);
       Collections.sort(scheduledMessages, (Comparator<Message>) (o1, o2) -> (int) (o1.getPublicationDate().getTime() - o2.getPublicationDate().getTime()));
       representation.setScheduledMessages(scheduledMessages);
     } catch (Exception e) {
