@@ -13,6 +13,8 @@ public class SocialHubServiceImpl implements com.coremedia.blueprint.social.ISoc
 
   public native function initComposerModel(adapterId:String, contents:Array, callback:Function):void;
 
+  public native function showToast(msg:String):void;
+
   public native function getAdapter(adapterId:String):com.coremedia.blueprint.social.beans.SocialHubAdapter;
 
   public native function focusAndReload(socialHubAdapter:com.coremedia.blueprint.social.beans.SocialHubAdapter):void;

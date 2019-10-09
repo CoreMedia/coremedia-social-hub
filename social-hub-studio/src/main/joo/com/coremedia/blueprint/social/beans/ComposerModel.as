@@ -10,10 +10,6 @@ public interface ComposerModel {
 
   function getPublicationDate():Date;
 
-  function getMessageText():String;
-
-  function getTitle():String;
-
   function getAdapterType():String;
 
   function getAdapterId():String;

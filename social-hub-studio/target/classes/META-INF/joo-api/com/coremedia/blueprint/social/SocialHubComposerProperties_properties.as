@@ -13,5 +13,9 @@ public class SocialHubComposerProperties_properties {
   public static const INSTANCE:com.coremedia.blueprint.social.SocialHubComposerProperties_properties;
 
   public native function get ComposerModel_publicationDate_text():String;
+
+  public native function get ComposeErrorJobError_SENT_TIME_OUT():String;
+
+  public native function get ComposeErrorJobError_SENT_PERMANENTLY_FAILED():String;
 }
 }

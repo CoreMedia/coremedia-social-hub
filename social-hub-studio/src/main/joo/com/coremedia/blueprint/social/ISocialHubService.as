@@ -3,6 +3,7 @@ import com.coremedia.blueprint.social.beans.ComposerModel;
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.cap.content.Content;
 import com.coremedia.ui.data.ValueExpression;
+import com.coremedia.ui.mixins.ValidationState;
 
 public interface ISocialHubService {
 
@@ -17,5 +18,7 @@ public interface ISocialHubService {
   function getAdapter(adapterId:String):SocialHubAdapter;
 
   function focusAndReload(socialHubAdapter:SocialHubAdapter):void;
+
+  function showToast(title:String, msg:String, validationState:ValidationState = undefined):void;
 }
 }

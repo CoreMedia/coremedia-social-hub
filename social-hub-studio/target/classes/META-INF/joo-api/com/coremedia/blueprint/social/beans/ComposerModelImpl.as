@@ -24,7 +24,7 @@ public class ComposerModelImpl extends com.coremedia.ui.data.impl.RemoteBeanImpl
 
   public native function getTitle():String;
 
-  public native function send(callback:Function = undefined):void;
+  public native function send(savedCallback:Function, publicationCallback:Function):void;
 
   public native function reset(callback:Function = undefined):void;
 }

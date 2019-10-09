@@ -15,7 +15,6 @@
     import com.coremedia.ui.bem.SpacingBEMEntities;
     import com.coremedia.ui.skins.ButtonSkin;
     import com.coremedia.ui.skins.ContainerSkin;
-    import com.coremedia.ui.skins.DisplayFieldSkin;
 
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.composer";
     public static const EDITOR_PANEL:String = "editorPanel";

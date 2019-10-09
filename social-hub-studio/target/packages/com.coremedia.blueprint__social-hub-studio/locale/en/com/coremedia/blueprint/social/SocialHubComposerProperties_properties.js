@@ -3,7 +3,9 @@
  */
 Ext.define("com.coremedia.blueprint.social.SocialHubComposerProperties_properties", {
 
-  "ComposerModel_publicationDate_text": "Scheduled Date"
+  "ComposerModel_publicationDate_text": "Scheduled Date",
+  "ComposeErrorJobError_SENT_TIME_OUT": "Timout waiting for message \"{0}\".",
+  "ComposeErrorJobError_SENT_PERMANENTLY_FAILED": "Publishing of message \"{0}\" failed."
 }, function() {
 
   com.coremedia.blueprint.social.SocialHubComposerProperties_properties.INSTANCE = new com.coremedia.blueprint.social.SocialHubComposerProperties_properties();

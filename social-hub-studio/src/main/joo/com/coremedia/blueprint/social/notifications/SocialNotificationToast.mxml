@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:AnimatedNotification xmlns:fx="http://ns.adobe.com/mxml/2009"
+                         xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                         xmlns="exml:ext.config"
+                         xmlns:ui="exml:com.coremedia.ui.config"
+                         position="lt"
+                         yOffset="4"
+                         xOffset="37"
+                         target="actions-toolbar"
+                         isMouseAware="true"
+                         hideAnchor="true"
+                         minHeight="60"
+                         width="400"
+                         ui="{TipSkin.EMBEDDING.getSkin()}">
+  <fx:Metadata>
+    [ResourceBundle('com.coremedia.icons.CoreIcons')]
+  </fx:Metadata>
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.ContainerSkin;
+    import com.coremedia.ui.skins.TipSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.socialNotificationToast";
+
+    private var config:SocialNotificationToast;
+
+    [Bindable]
+    public var message:String;
+
+    public native function SocialNotificationToast(config:SocialNotificationToast = null);
+    ]]></fx:Script>
+
+  <ui:items>
+    <Container ui="{ContainerSkin.DEFAULT.getSkin()}" style="padding: 6px;">
+      <items>
+        <DisplayField ui="{null}" style="color: #FFF;" value="{config.message}"/>
+      </items>
+      <layout>
+        <layout_VBox align="stretch"/>
+      </layout>
+    </Container>
+  </ui:items>
+
+  <ui:layout>
+    <layout_Fit/>
+  </ui:layout>
+
+</ui:AnimatedNotification>

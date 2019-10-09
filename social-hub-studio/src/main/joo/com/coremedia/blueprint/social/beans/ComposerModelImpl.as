@@ -53,22 +53,9 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     return getProperties().get(SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE);
   }
 
-  public function getMessageText():String {
-    if (getProperties() === undefined) {
-      return undefined;
-    }
-    return getProperties().get(SocialHubPropertyNames.COMPOSER_MESSAGE_TEXT);
-  }
-
-  public function getTitle():String {
-    if (getProperties() === undefined) {
-      return undefined;
-    }
-    return getProperties().get(SocialHubPropertyNames.COMPOSER_MESSAGE_TITLE);
-  }
-
   public function send(savedCallback:Function, publicationCallback:Function):void {
     var method:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), 'POST');
+    var publicationDate:Date = this.getPublicationDate();
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
               var bean:Object = BeanFactoryImpl.resolveBeans(JSON.decode(response.response.responseText));
@@ -77,16 +64,9 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
               if(bean is Message) {
                 var msg:MessageImpl = bean as MessageImpl;
                 msg.load(function(message:Message):void {
-                  var job:ComposeMessageJob = new ComposeMessageJob(getAdapterType(), getAdapterId(), message.getMessageId());
-                  var trackedJob:TrackedJob = jobService.executeJob(job,
-                          //on success
-                          function ():void {
-                            //default handler is ok, we don't need any post-processing
-                            publicationCallback();
-                          },
-                          //on error
-                          function (result:Object):void {
-                          });
+                  if(!publicationDate) {
+                    triggerPublicationJob(msg, publicationCallback);
+                  }
                 });
               }
             },
@@ -94,6 +74,20 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
               savedCallback(response.getError());
             }
     );
+  }
+
+  private function triggerPublicationJob(message:MessageImpl, publicationCallback:Function):void {
+    var job:ComposeMessageJob = new ComposeMessageJob(getAdapterType(), getAdapterId(), message.getMessageId());
+    var trackedJob:TrackedJob = jobService.executeJob(job,
+            //on success
+            function ():void {
+              //default handler is ok, we don't need any post-processing
+              publicationCallback();
+            },
+            //on error
+            function (result:Object):void {
+              publicationCallback(result);
+            });
   }
 
   public function reset(callback:Function = undefined):void {

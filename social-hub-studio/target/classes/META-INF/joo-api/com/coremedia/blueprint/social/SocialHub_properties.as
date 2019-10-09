@@ -222,6 +222,12 @@ public class SocialHub_properties {
    */
   public native function get compose_job_title():String;
 
+  public native function get compose_job_notification_start():String;
+
+  public native function get compose_job_notification_finished():String;
+
+  public native function get compose_job_notification_error():String;
+
   /**
    * Custom labels
    */

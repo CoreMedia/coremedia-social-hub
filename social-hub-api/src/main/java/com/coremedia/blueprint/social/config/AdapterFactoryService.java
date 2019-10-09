@@ -108,7 +108,7 @@ public class AdapterFactoryService {
 
         throw new IllegalArgumentException("No Social Hub Adapter found for type '" + adapterType + "'");
       } catch (Exception e) {
-        LOG.error("Social Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage());
+        LOG.error("Social Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
       }
     }
   }

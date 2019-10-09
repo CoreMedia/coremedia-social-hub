@@ -25,7 +25,6 @@ public class ComposeMessageJob implements Job {
   private String messageId;
   private SocialHubService socialHubService;
 
-
   ComposeMessageJob(SocialHubService socialHubService) {
     this.socialHubService = socialHubService;
   }
@@ -37,7 +36,7 @@ public class ComposeMessageJob implements Job {
     Optional<Message> message = socialHubAdapter.getMessage(messageId);
 
     int time = 0;
-    while (!message.isPresent() || !message.get().getState().equals(MessageState.SENT)) {
+    while (!message.isPresent() || message.get().getState().equals(MessageState.SCHEDULED)) {
       try {
         if (time > TIME_OUT) {
           break;
@@ -51,11 +50,19 @@ public class ComposeMessageJob implements Job {
     }
 
     if (message.isPresent()) {
-      return messageId;
+      Message msg = message.get();
+      if (msg.getState().equals(MessageState.SENT)) {
+        return messageId;
+      }
+
+      jobContext.notifyProgress(1);
+      LOG.error("Sending of message {} failed permanently.", messageId);
+      throw new JobExecutionException(ComposeErrorJobError.SENT_PERMANENTLY_FAILED, new Object[]{socialHubAdapter.getType().name() + " [" + messageId + "]"});
     }
 
-    LOG.error("Failed to send social message, request for status polling timed out after {}ms", time);
-    throw new JobExecutionException(() -> "socialHubTimeout", new Object[]{adapterId, messageId});
+    jobContext.notifyProgress(1);
+    LOG.error("Timeout waiting for message {}", messageId);
+    throw new JobExecutionException(ComposeErrorJobError.SENT_TIME_OUT, new Object[]{socialHubAdapter.getType().name() + " [" + messageId + "]"});
   }
 
   public void setAdapterId(String adapterId) {

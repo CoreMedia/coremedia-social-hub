@@ -109,6 +109,7 @@
           </ui:plugins>
         </ui:IconButton>
         <ui:MenuIconButton itemId="{COLOR_CHOOSER_BUTTON_ITEM_ID}"
+                           style="border-top-right-radius: 6px;"
                            ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'change_color')}"
                            ui="{ButtonSkin.MAIN_NAVIGATION.getSkin()}"
                            arrowVisible="false"

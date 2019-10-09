@@ -16,5 +16,7 @@ public interface ISocialHubService {
   function getAdapter(adapterId:String):com.coremedia.blueprint.social.beans.SocialHubAdapter;
 
   function focusAndReload(socialHubAdapter:com.coremedia.blueprint.social.beans.SocialHubAdapter):void;
+
+  function showToast(msg:String):void;
 }
 }

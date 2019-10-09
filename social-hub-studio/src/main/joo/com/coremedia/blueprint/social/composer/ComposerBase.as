@@ -41,12 +41,8 @@ public class ComposerBase extends Window {
 
   public static function isOpened(adapter:SocialHubAdapter):Boolean {
     var cmp:ComposerBase = Ext.getCmp(COMPOSER_WINDOW_ID + adapter.getAdapterId()) as ComposerBase;
-    if (cmp && cmp.isVisible()) {
-      return true;
-    }
-    return false;
+    return (cmp && cmp.isVisible());
   }
-
 
   override public function close():void {
     closeComposer();
@@ -71,7 +67,7 @@ public class ComposerBase extends Window {
 
   override protected function afterRender():void {
     super.afterRender();
-    getScheduledDateExpression(adapter).addChangeListener(scheduleDateChanged);
+    getScheduledDateExpression().addChangeListener(scheduleDateChanged);
 
     var container:Container = queryById(Composer.EDITOR_PANEL) as Container;
     var properties:Array = adapter.getMessageProperties();
@@ -98,7 +94,6 @@ public class ComposerBase extends Window {
   }
 
   private function createEditor(config:Object):Component {
-    var cmp:Component = null;
     try {
       return ComponentManager.create(config);
     } catch (e:Error) {
@@ -108,7 +103,7 @@ public class ComposerBase extends Window {
   }
 
 
-  protected function getScheduledDateExpression(ch:SocialHubAdapter):ValueExpression {
+  protected function getScheduledDateExpression():ValueExpression {
     if (!scheduleDateExpression) {
       scheduleDateExpression = bindTo.extendBy(SocialHubPropertyNames.MESSAGE_PROPERTIES).extendBy(SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE);
     }
@@ -124,7 +119,7 @@ public class ComposerBase extends Window {
   }
 
   protected function getErrorMessagesExpression():ValueExpression {
-    if(!errorMessagesExpression) {
+    if (!errorMessagesExpression) {
       errorMessagesExpression = ValueExpressionFactory.createFromValue([]);
     }
     return errorMessagesExpression;
@@ -132,15 +127,15 @@ public class ComposerBase extends Window {
 
   private function validateEditors():Array {
     var result:Array = [];
-    for (var key in editors) {
+    for (var key:String in editors) {
       var property:MessageProperty = getProperty(key);
-      if(!property.isRequired()) {
+      if (!property.isRequired()) {
         continue;
       }
 
       var editor:MessageFieldEditor = editors[key];
       var msg:String = editor.getErrorMessage();
-      if(msg && StringUtil.trim(msg).length > 0) {
+      if (msg && StringUtil.trim(msg).length > 0) {
         result.push(msg);
       }
     }
@@ -150,7 +145,7 @@ public class ComposerBase extends Window {
   private function getProperty(name:String):MessageProperty {
     var properties:Array = adapter.getMessageProperties();
     for each(var property:MessageProperty in properties) {
-      if(property.getName() === name) {
+      if (property.getName() === name) {
         return property;
       }
     }
@@ -158,17 +153,41 @@ public class ComposerBase extends Window {
   }
 
   private function sendMessage():void {
-    channelContainer.setComposerButtonState(false);
+    var composerModel:ComposerModel = bindTo.getValue();
+
+    //check if this message is scheduled first
+    var publicationDate:Date = composerModel.getPublicationDate();
+
+    //publication date messages don't need a toast
+    if(!publicationDate) {
+      var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start_title');
+      var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start');
+      var network:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', adapter.getType().toLowerCase() + '_title');
+      var toast:String = StringUtil.format(msg, network);
+      socialHubService.showToast(title, toast);
+    }
 
     var c:ChannelContainer = channelContainer;
-    var composerModel:ComposerModel = bindTo.getValue();
     composerModel.send(function (message:Message):void {
       close();
-    }, function():void {
-      if(c.rendered) {
-        c.reload();
+      if (c.rendered) {
+        c.reload(true);
+      }
+    }, function (error:Object):void {
+      if (c.rendered) {
+        c.reload(true);
+      }
+
+      if (!publicationDate) {
+        var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished_title');
+        var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished');
+        var successToast:String = StringUtil.format(msg, network);
+        socialHubService.showToast(title, successToast);
       }
     });
+
+    //finally, enabled the composer button again
+    channelContainer.setComposerButtonState(false);
   }
 
   public function closeComposer():void {
@@ -179,7 +198,6 @@ public class ComposerBase extends Window {
   }
 
   protected function getComposerTitle(ch:SocialHubAdapter):String {
-    var cType:String = ch.getType().toLowerCase();
     var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'composer_title');
     return StringUtil.format(title, ch.getDisplayName());
   }
@@ -200,7 +218,7 @@ public class ComposerBase extends Window {
 
   override protected function onDestroy():void {
     channelContainer.onComposerClose();
-    getScheduledDateExpression(adapter).removeChangeListener(scheduleDateChanged);
+    getScheduledDateExpression().removeChangeListener(scheduleDateChanged);
     super.onDestroy();
   }
 }

@@ -6,6 +6,7 @@ import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.SocialHubAdapters;
 import com.coremedia.blueprint.social.beans.SocialHubAdaptersImpl;
 import com.coremedia.blueprint.social.channels.ChannelContainer;
+import com.coremedia.blueprint.social.notifications.SocialNotificationToast;
 import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.common.SESSION;
 import com.coremedia.cap.content.Content;
@@ -18,6 +19,7 @@ import com.coremedia.ui.data.ValueExpressionFactory;
 import com.coremedia.ui.data.beanFactory;
 import com.coremedia.ui.data.impl.RemoteServiceMethod;
 import com.coremedia.ui.data.impl.RemoteServiceMethodResponse;
+import com.coremedia.ui.mixins.ValidationState;
 import com.coremedia.ui.util.createComponentSelector;
 
 import ext.Component;
@@ -101,6 +103,17 @@ public class SocialHubServiceImpl implements ISocialHubService {
               callback(response.getError());
             }
     );
+  }
+
+  public function showToast(title:String, msg:String, validationState:ValidationState = undefined):void {
+    var config:SocialNotificationToast = SocialNotificationToast({});
+    config.message = msg;
+    config.title = title;
+    if(validationState) {
+      config.validationState = validationState;
+    }
+    var toast:SocialNotificationToast = new SocialNotificationToast(config);
+    toast.show();
   }
 
   public function getAdapter(adapterId:String):SocialHubAdapter {
