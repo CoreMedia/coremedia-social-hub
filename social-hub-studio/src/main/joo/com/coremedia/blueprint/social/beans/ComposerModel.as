@@ -14,7 +14,7 @@ public interface ComposerModel {
 
   function getAdapterId():String;
 
-  function send(savedCallback:Function, publicationCallback:Function):void;
+  function send(doWait:Boolean, savedCallback:Function, publicationCallback:Function):void;
 
   function reset(callback:Function = undefined):void;
 }

@@ -53,9 +53,8 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     return getProperties().get(SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE);
   }
 
-  public function send(savedCallback:Function, publicationCallback:Function):void {
+  public function send(doWait:Boolean, savedCallback:Function, publicationCallback:Function):void {
     var method:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), 'POST');
-    var publicationDate:Date = this.getPublicationDate();
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
               var bean:Object = BeanFactoryImpl.resolveBeans(JSON.decode(response.response.responseText));
@@ -64,7 +63,7 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
               if(bean is Message) {
                 var msg:MessageImpl = bean as MessageImpl;
                 msg.load(function(message:Message):void {
-                  if(!publicationDate) {
+                  if(doWait) {
                     triggerPublicationJob(msg, publicationCallback);
                   }
                 });

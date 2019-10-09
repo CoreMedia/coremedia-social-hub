@@ -9,6 +9,7 @@ import com.coremedia.blueprint.social.channels.ChannelContainer;
 import com.coremedia.blueprint.social.socialHubService;
 import com.coremedia.ui.data.ValueExpression;
 import com.coremedia.ui.data.ValueExpressionFactory;
+import com.coremedia.ui.mixins.ValidationState;
 
 import ext.Component;
 import ext.ComponentManager;
@@ -155,11 +156,12 @@ public class ComposerBase extends Window {
   private function sendMessage():void {
     var composerModel:ComposerModel = bindTo.getValue();
 
-    //check if this message is scheduled first
+    //check if we should wait for the elastic worker or not
     var publicationDate:Date = composerModel.getPublicationDate();
+    var waitForJob:Boolean = publicationDate === null || !adapter.isSchedulingSupported();
 
     //publication date messages don't need a toast
-    if(!publicationDate) {
+    if(waitForJob) {
       var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start_title');
       var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start');
       var network:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', adapter.getType().toLowerCase() + '_title');
@@ -168,7 +170,7 @@ public class ComposerBase extends Window {
     }
 
     var c:ChannelContainer = channelContainer;
-    composerModel.send(function (message:Message):void {
+    composerModel.send(waitForJob,function (message:Message):void {
       close();
       if (c.rendered) {
         c.reload(true);
@@ -178,11 +180,20 @@ public class ComposerBase extends Window {
         c.reload(true);
       }
 
-      if (!publicationDate) {
+      if (waitForJob) {
         var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished_title');
         var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished');
-        var successToast:String = StringUtil.format(msg, network);
-        socialHubService.showToast(title, successToast);
+        var toast:String = StringUtil.format(msg, network);
+
+        var state:ValidationState = ValidationState.SUCCESS;
+        if(error && error.getErrorCode()) {
+          var code:String = error.getErrorCode();
+          toast = resourceManager.getString('com.coremedia.cms.editor.sdk.jobs.JobErrorCodes', code);
+          toast = StringUtil.format(toast, network);
+          state = ValidationState.ERROR;
+        }
+
+        socialHubService.showToast(title, toast, state);
       }
     });
 

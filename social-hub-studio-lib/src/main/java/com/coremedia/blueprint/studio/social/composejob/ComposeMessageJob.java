@@ -43,6 +43,9 @@ public class ComposeMessageJob implements Job {
         }
         Thread.sleep(2000);
         time += 2000;
+
+        float progress = (time*100/TIME_OUT)*0.01f;
+        jobContext.notifyProgress((float) progress);
         message = socialHubAdapter.getMessage(messageId);
       } catch (InterruptedException e) {
         break;
