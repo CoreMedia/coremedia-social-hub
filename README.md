@@ -9,6 +9,7 @@
 The Social Hub allows to integrate various social networks into the CoreMedia Studio.
 It provides a separate tab that shows different social network feeds and messages that have been
 scheduled for publishing. 
+
 The Social Hub is implemented as a Blueprint extension.
 
 ### Documentation & Tutorial
