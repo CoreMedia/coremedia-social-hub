@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 public class ComposeMessageJob implements Job {
   private static final Logger LOG = LoggerFactory.getLogger(ComposeMessageJob.class);
-  private static final int TIME_OUT = 60 * 1000;
+  private static final int TIME_OUT = 40 * 1000;
 
   private String adapterId;
   private String messageId;
