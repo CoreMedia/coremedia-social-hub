@@ -2,6 +2,7 @@ package com.coremedia.blueprint.social.beans {
 import com.coremedia.blueprint.social.composer.ComposeMessageJob;
 import com.coremedia.cap.common.TrackedJob;
 import com.coremedia.cap.common.jobService;
+import com.coremedia.ui.data.RemoteBean;
 import com.coremedia.ui.data.beanFactory;
 import com.coremedia.ui.data.impl.BeanFactoryImpl;
 import com.coremedia.ui.data.impl.RemoteBeanImpl;
@@ -19,7 +20,7 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
   }
 
   override public function get(property:*):* {
-    if(property === "type") {
+    if (property === "type") {
       return beanFactory.createLocalBean({'name': 'ComposerModel'});
     }
     return super.get(property);
@@ -57,13 +58,13 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     var method:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), 'POST');
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
-              var bean:Object = BeanFactoryImpl.resolveBeans(JSON.decode(response.response.responseText));
+              var bean:RemoteBean = BeanFactoryImpl.resolveBeans(JSON.decode(response.response.responseText)) as RemoteBean;
               savedCallback(bean);
 
-              if(bean is Message) {
+              if (bean is Message) {
                 var msg:MessageImpl = bean as MessageImpl;
-                msg.load(function(message:Message):void {
-                  if(doWait) {
+                msg.load(function (message:Message):void {
+                  if (doWait) {
                     triggerPublicationJob(msg, publicationCallback);
                   }
                 });
@@ -81,11 +82,15 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
             //on success
             function ():void {
               //default handler is ok, we don't need any post-processing
-              publicationCallback();
+              message.invalidate(function():void {
+                publicationCallback();
+              });
             },
             //on error
             function (result:Object):void {
-              publicationCallback(result);
+              message.invalidate(function ():void {
+                publicationCallback(result);
+              });
             });
   }
 
@@ -94,13 +99,13 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
               var result:Boolean = response.response.responseText;
-              if(callback) {
+              if (callback) {
                 callback(result);
               }
 
             },
             function (response:RemoteServiceMethodResponse):void {
-              if(callback) {
+              if (callback) {
                 callback(response.getError());
               }
             }

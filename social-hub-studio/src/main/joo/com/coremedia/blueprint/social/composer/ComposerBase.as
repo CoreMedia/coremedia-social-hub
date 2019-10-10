@@ -190,7 +190,7 @@ public class ComposerBase extends Window {
     var c:ChannelContainer = channelContainer;
     composerModel.send(waitForJob, function (message:Message):void {
       close();
-      if (c.rendered) {
+      if (c.rendered && !waitForJob) {
         c.reload(true);
       }
     }, function (error:Object):void {
