@@ -6,6 +6,7 @@ import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.SocialHubAdapters;
 import com.coremedia.blueprint.social.beans.SocialHubAdaptersImpl;
 import com.coremedia.blueprint.social.channels.ChannelContainer;
+import com.coremedia.blueprint.social.channels.ChannelsContainer;
 import com.coremedia.blueprint.social.notifications.SocialNotificationToast;
 import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.common.SESSION;
@@ -109,7 +110,7 @@ public class SocialHubServiceImpl implements ISocialHubService {
     var config:SocialNotificationToast = SocialNotificationToast({});
     config.message = msg;
     config.title = title;
-    if(validationState) {
+    if (validationState) {
       config.validationState = validationState;
     }
     var toast:SocialNotificationToast = new SocialNotificationToast(config);
@@ -117,7 +118,7 @@ public class SocialHubServiceImpl implements ISocialHubService {
   }
 
   public function getAdapter(adapterId:String):SocialHubAdapter {
-    var adapters:SocialHubAdapters= getAdaptersExpression().getValue();
+    var adapters:SocialHubAdapters = getAdaptersExpression().getValue();
     for each(var adapter:SocialHubAdapter in adapters.getAdapters()) {
       if (adapter.getAdapterId() === adapterId) {
         return adapter;
@@ -126,6 +127,10 @@ public class SocialHubServiceImpl implements ISocialHubService {
     return null;
   }
 
+  public function focusAdapter(socialHubAdataper:SocialHubAdapter, callback:Function):void {
+    var channelContainer:ChannelsContainer = Ext.getCmp(ChannelsContainer.ID) as ChannelsContainer;
+    channelContainer.focusAdapter(socialHubAdataper, callback);
+  }
 
   public function focusAndReload(socialHubAdapter:SocialHubAdapter):void {
     var findByType:Array = editorContext.getWorkArea().query(createComponentSelector()._xtype(SocialHubMainTab.xtype, true).build());
@@ -133,19 +138,17 @@ public class SocialHubServiceImpl implements ISocialHubService {
       var cmp:Component = findByType[0];
       editorContext.getWorkArea().setActiveTab(cmp);
 
-      var scrolling:* = Ext.getCmp('socialHubChannelsContainer').el.dom['children'][0].children[0];
-      var offset:* = Ext.getCmp(socialHubAdapter.getAdapterId()).el.dom.offsetLeft - 500;
-      scrolling.scrollLeft = offset;
-
-      var channelContainer:ChannelContainer = Ext.getCmp(socialHubAdapter.getAdapterId()) as ChannelContainer;
-      channelContainer.reload(true);
+      var channelContainer:ChannelsContainer = Ext.getCmp(ChannelsContainer.ID) as ChannelsContainer;
+      focusAdapter(socialHubAdapter, function ():void {
+        var channelContainer:ChannelContainer = Ext.getCmp(socialHubAdapter.getAdapterId()) as ChannelContainer;
+        channelContainer.reload(true);
+      });
     }
     else {
       var cfg:SocialHubMainTab = SocialHubMainTab({});
       var tab:Component = ComponentManager.create(cfg);
       editorContext.getWorkArea().add(tab);
       editorContext.getWorkArea().setActiveTab(tab);
-
     }
   }
 }

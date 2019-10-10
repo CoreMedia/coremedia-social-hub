@@ -161,7 +161,7 @@ public class ComposerBase extends Window {
     var waitForJob:Boolean = publicationDate === null || !adapter.isSchedulingSupported();
 
     //publication date messages don't need a toast
-    if(waitForJob) {
+    if (waitForJob) {
       var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start_title');
       var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start');
       var network:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', adapter.getType().toLowerCase() + '_title');
@@ -170,7 +170,7 @@ public class ComposerBase extends Window {
     }
 
     var c:ChannelContainer = channelContainer;
-    composerModel.send(waitForJob,function (message:Message):void {
+    composerModel.send(waitForJob, function (message:Message):void {
       close();
       if (c.rendered) {
         c.reload(true);
@@ -186,7 +186,7 @@ public class ComposerBase extends Window {
         var toast:String = StringUtil.format(msg, network);
 
         var state:ValidationState = ValidationState.SUCCESS;
-        if(error && error.getErrorCode()) {
+        if (error && error.getErrorCode()) {
           var code:String = error.getErrorCode();
           toast = resourceManager.getString('com.coremedia.cms.editor.sdk.jobs.JobErrorCodes', code);
           toast = StringUtil.format(toast, network);

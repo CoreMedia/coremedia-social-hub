@@ -6,6 +6,7 @@
                                 xmlns:channels="com.coremedia.blueprint.social.channels.*"
                                 style="padding-top: 4px;"
                                 id_="{ID}"
+                                bodyStyle="scroll-behavior: smooth;"
                                 autoScroll="true">
   <fx:Script><![CDATA[
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.channelsContainer";
