@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:AnimatedNotification xmlns:fx="http://ns.adobe.com/mxml/2009"
-                         xmlns:exml="http://www.jangaroo.net/exml/0.8"
                          xmlns="exml:ext.config"
-                         xmlns:ui="exml:com.coremedia.ui.config"
+                         xmlns:ui="exml:com.coremedia.ui.config" xmlns:editor="com.coremedia.ui.plugins.*"
                          position="lt"
                          yOffset="4"
                          xOffset="37"
@@ -19,6 +18,8 @@
     [ResourceBundle('com.coremedia.icons.CoreIcons')]
   </fx:Metadata>
   <fx:Script><![CDATA[
+    import com.coremedia.ui.data.ValueExpressionFactory;
+    import com.coremedia.ui.mixins.ValidationState;
     import com.coremedia.ui.skins.ButtonSkin;
     import com.coremedia.ui.skins.ContainerSkin;
     import com.coremedia.ui.skins.DisplayFieldSkin;
@@ -38,15 +39,61 @@
 
     [Bindable]
     public var notificationTitle:String;
+
+    [Bindable]
+    public var notificationValidationState:ValidationState;
+
+    public native function SocialNotificationToast(config:SocialNotificationToast = null);
+
+    private static function getStatusColor(state:ValidationState):String {
+      if(state === ValidationState.ERROR) {
+        return "#c41313";
+      }
+      if(state === ValidationState.WARNING) {
+        return "#ed9b03";
+      }
+      if(state === ValidationState.SUCCESS) {
+        return "#4d8735";
+      }
+
+      return "#8a8686";
+    }
+
+    private static function getStatusIcon(state:ValidationState):String {
+      if(state === ValidationState.ERROR) {
+        return "error";
+      }
+      if(state === ValidationState.WARNING) {
+        return "warning";
+      }
+      if(state === ValidationState.SUCCESS) {
+        return "approve";
+      }
+
+      return null;
+    }
+
     ]]></fx:Script>
 
   <ui:items>
-    <Box width="6" style="background-color:#8a8686;"/>
-    <Container ui="{ContainerSkin.GRID_200.getSkin()}" width="360">
+    <Box width="6" style="background-color:{getStatusColor(config.notificationValidationState)};" />
+    <Container width="32">
       <items>
-        <Container>
+        <ui:IconDisplayField iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', getStatusIcon(config.notificationValidationState))}"
+                             style="padding-top:12px;padding-left:12px;"/>
+      </items>
+      <plugins>
+        <editor:BindVisibilityPlugin bindTo="{ValueExpressionFactory.createFromValue(config.notificationValidationState !== null)}" />
+      </plugins>
+      <layout>
+        <layout_VBox align="stretch" />
+      </layout>
+    </Container>
+    <Container ui="{ContainerSkin.GRID_200.getSkin()}" flex="1">
+      <items>
+        <Container flex="1">
           <items>
-            <Container style="padding-bottom: 8px;">
+            <Container height="20">
               <items>
                 <DisplayField ui="{DisplayFieldSkin.BOLD.getSkin()}" value="{config.notificationSource + ':'}"/>
                 <Container width="4"/>
@@ -56,7 +103,8 @@
                 <layout_HBox align="stretch"/>
               </layout>
             </Container>
-            <DisplayField html="true" style="color:#646060 !important;width:360px;" ui="{null}"
+            <DisplayField html="true" style="color:#646060 !important;padding-top:8px;" ui="{null}"
+                          flex="1"
                           value="{config.notificationMessage}"/>
           </items>
           <layout>
@@ -68,7 +116,7 @@
         <layout_HBox align="stretch"/>
       </layout>
     </Container>
-    <Container>
+    <Container width="32">
       <items>
         <ui:IconButton
                 iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'remove_small')}"
