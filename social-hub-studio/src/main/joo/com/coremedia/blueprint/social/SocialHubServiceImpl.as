@@ -129,7 +129,8 @@ public class SocialHubServiceImpl implements ISocialHubService {
 
   public function focusAdapter(socialHubAdataper:SocialHubAdapter, callback:Function):void {
     var channelContainer:ChannelsContainer = Ext.getCmp(ChannelsContainer.ID) as ChannelsContainer;
-    channelContainer.focusAdapter(socialHubAdataper, callback);
+    channelContainer.focusAdapter(socialHubAdataper);
+    callback();
   }
 
   public function focusAndReload(socialHubAdapter:SocialHubAdapter):void {

@@ -50,6 +50,18 @@ public class ComposerBase extends Window {
     super.close();
   }
 
+  public static function scrollIntoView():void {
+    var adapters:SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
+    if (adapters) {
+      for each(var adapter:SocialHubAdapter in adapters.getAdapters()) {
+        var cmp:ComposerBase = Ext.getCmp(COMPOSER_WINDOW_ID + adapter.getAdapterId()) as ComposerBase;
+        if (cmp && cmp.isVisible()) {
+          cmp.scrollIntoView();
+        }
+      }
+    }
+  }
+
   /**
    * Should be necessary, but hide and bringToFront don't work without errors from overrides
    */
@@ -92,6 +104,12 @@ public class ComposerBase extends Window {
       //store editor instances for validation
       editors[property.getName()] = editor;
     }
+  }
+
+  private function scrollIntoView():void {
+    var x:Number = channelContainer.getX() + (channelContainer.getWidth() / 2) - (450 / 2) - 100; //100px offset from left favourites toolbar
+    var y:Number = channelContainer.getPosition()[1] + 14;
+    this.setPosition(x, y);
   }
 
   private function createEditor(config:Object):Component {

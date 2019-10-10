@@ -160,25 +160,23 @@ public class ChannelContainerBase extends Panel {
       return;
     }
 
-    var that = this;
-    socialHubService.focusAdapter(adapter, function ():void {
-      var pos:Array = that.getPosition();
-      var composer:ComposerModelImpl = socialHubService.getComposerModel(adapter.getAdapterId()) as ComposerModelImpl;
-      var baseConfig:Object = {
-        x: that.getX() + (that.getWidth() / 2) - (450 / 2) - 100, //100px offset from left favourites toolbar
-        y: pos[1] + 14,
-        adapter: adapter,
-        channelContainer: that,
-        bindTo: ValueExpressionFactory.createFromValue(composer),
-        xtype: Composer.xtype,
-        animateTarget: getComposerButton().getEl(),
-        renderTo: findParentByType(SocialHubMainTab.xtype).getLayout().getTarget()
-      };
+    var that:ChannelContainerBase = this;
+    var pos:Array = that.getPosition();
+    var composer:ComposerModelImpl = socialHubService.getComposerModel(adapter.getAdapterId()) as ComposerModelImpl;
+    var baseConfig:Object = {
+      x: that.getX() + (that.getWidth() / 2) - (450 / 2) - 100, //100px offset from left favourites toolbar
+      y: pos[1] + 14,
+      adapter: adapter,
+      channelContainer: that,
+      bindTo: ValueExpressionFactory.createFromValue(composer),
+      xtype: Composer.xtype,
+      animateTarget: getComposerButton().getEl(),
+      renderTo: findParentByType(SocialHubMainTab.xtype).getLayout().getTarget()
+    };
 
-      var composerBase:ComposerBase = ComponentManager.create(baseConfig) as ComposerBase;
-      composer.invalidate(function ():void {
-        composerBase.show();
-      });
+    var composerBase:ComposerBase = ComponentManager.create(baseConfig) as ComposerBase;
+    composer.invalidate(function ():void {
+      composerBase.show();
     });
   }
 
