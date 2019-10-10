@@ -180,40 +180,41 @@ public class ComposerBase extends Window {
 
     //publication date messages don't need a toast
     if (waitForJob) {
-      var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start_title');
-      var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start');
       var network:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', adapter.getType().toLowerCase() + '_title');
+      var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start_title');
+      title = StringUtil.format(title, network);
+      var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start');
       var toast:String = StringUtil.format(msg, network);
       socialHubService.showToast(title, toast);
     }
 
-    var c:ChannelContainer = channelContainer;
-    composerModel.send(waitForJob, function (message:Message):void {
-      close();
-      if (c.rendered && !waitForJob) {
-        c.reload(true);
-      }
-    }, function (error:Object):void {
-      if (c.rendered) {
-        c.reload(true);
-      }
-
-      if (waitForJob) {
-        var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished_title');
-        var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished');
-        var toast:String = StringUtil.format(msg, network);
-
-        var state:ValidationState = ValidationState.SUCCESS;
-        if (error && error.getErrorCode()) {
-          var code:String = error.getErrorCode();
-          toast = resourceManager.getString('com.coremedia.cms.editor.sdk.jobs.JobErrorCodes', code);
-          toast = StringUtil.format(toast, network);
-          state = ValidationState.ERROR;
-        }
-
-        socialHubService.showToast(title, toast, state);
-      }
-    });
+//    var c:ChannelContainer = channelContainer;
+//    composerModel.send(waitForJob, function (message:Message):void {
+//      close();
+//      if (c.rendered && !waitForJob) {
+//        c.reload(true);
+//      }
+//    }, function (error:Object):void {
+//      if (c.rendered) {
+//        c.reload(true);
+//      }
+//
+//      if (waitForJob) {
+//        var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished_title');
+//        var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished');
+//        var toast:String = StringUtil.format(msg, network);
+//
+//        var state:ValidationState = ValidationState.SUCCESS;
+//        if (error && error.getErrorCode()) {
+//          var code:String = error.getErrorCode();
+//          toast = resourceManager.getString('com.coremedia.cms.editor.sdk.jobs.JobErrorCodes', code);
+//          toast = StringUtil.format(toast, network);
+//          state = ValidationState.ERROR;
+//        }
+//
+//        socialHubService.showToast(title, toast, state);
+//      }
+//    });
 
     //finally, enabled the composer button again
     channelContainer.setComposerButtonState(false);

@@ -108,11 +108,10 @@ public class SocialHubServiceImpl implements ISocialHubService {
 
   public function showToast(title:String, msg:String, validationState:ValidationState = undefined):void {
     var config:SocialNotificationToast = SocialNotificationToast({});
-    config.message = msg;
-    config.title = title;
-    if (validationState) {
-      config.validationState = validationState;
-    }
+    config.notificationSource = ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_text');
+    config.notificationTitle= title;
+    config.notificationMessage = msg;
+    config.validationState = null;
     var toast:SocialNotificationToast = new SocialNotificationToast(config);
     toast.show();
   }
