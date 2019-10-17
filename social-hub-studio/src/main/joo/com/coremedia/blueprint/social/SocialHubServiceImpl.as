@@ -14,7 +14,6 @@ import com.coremedia.cap.content.Content;
 import com.coremedia.cms.editor.sdk.editorContext;
 import com.coremedia.cms.editor.sdk.sites.Site;
 import com.coremedia.cms.editor.sdk.sites.SitesService;
-import com.coremedia.ui.components.AnimatedNotificationBase;
 import com.coremedia.ui.data.Blob;
 import com.coremedia.ui.data.ValueExpression;
 import com.coremedia.ui.data.ValueExpressionFactory;
@@ -107,12 +106,14 @@ public class SocialHubServiceImpl implements ISocialHubService {
     );
   }
 
-  public function showToast(title:String, msg:String, validationState:ValidationState = null):void {
+  public function showToast(title:String, msg:String, validationState:ValidationState = null, actionLabel:String = null, action:Function = null):void {
     var config:SocialNotificationToast = SocialNotificationToast({});
     config.notificationSource = ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'menu_title_text');
-    config.notificationTitle= title;
+    config.notificationTitle = title;
     config.notificationMessage = msg;
     config.validationState = null;
+    config.notificationAction = action;
+    config.notificationActionLabel = actionLabel;
     config.notificationValidationState = validationState;
     var toast:SocialNotificationToast = new SocialNotificationToast(config);
     toast.show();

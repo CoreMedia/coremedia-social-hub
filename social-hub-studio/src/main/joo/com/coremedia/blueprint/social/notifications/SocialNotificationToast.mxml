@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:AnimatedNotification xmlns:fx="http://ns.adobe.com/mxml/2009"
                          xmlns="exml:ext.config"
-                         xmlns:ui="exml:com.coremedia.ui.config" xmlns:editor="com.coremedia.ui.plugins.*"
+                         xmlns:ui="exml:com.coremedia.ui.config"
+                         xmlns:editor="com.coremedia.ui.plugins.*"
                          position="lt"
                          yOffset="4"
                          xOffset="37"
@@ -36,6 +37,12 @@
 
     [Bindable]
     public var notificationSource:String;
+
+    [Bindable]
+    public var notificationActionLabel:String;
+
+    [Bindable]
+    public var notificationAction:Function;
 
     [Bindable]
     public var notificationTitle:String;
@@ -73,6 +80,11 @@
       return null;
     }
 
+    private function callNotificationAction():void {
+      this.destroy();
+      notificationAction();
+    }
+
     ]]></fx:Script>
 
   <ui:items>
@@ -106,6 +118,23 @@
             <DisplayField html="true" style="color:#646060 !important;padding-top:8px;" ui="{null}"
                           flex="1"
                           value="{config.notificationMessage}"/>
+            <Container style="padding-top:12px;">
+              <items>
+                <Button itemId="actionButton"
+                        ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
+                        ariaLabel="{config.notificationActionLabel}"
+                        text="{config.notificationActionLabel || resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'notification_default_action_label')}"
+                        handler="{callNotificationAction}">
+                </Button>
+              </items>
+              <plugins>
+                <ui:BindVisibilityPlugin
+                        bindTo="{ValueExpressionFactory.createFromValue(config.notificationAction)}"/>
+              </plugins>
+              <layout>
+                <layout_HBox align="stretch" pack="end" />
+              </layout>
+            </Container>
           </items>
           <layout>
             <layout_VBox align="stretch"/>

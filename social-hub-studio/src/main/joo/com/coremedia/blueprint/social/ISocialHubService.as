@@ -19,7 +19,7 @@ public interface ISocialHubService {
 
   function focusAndReload(socialHubAdapter:SocialHubAdapter):void;
 
-  function showToast(title:String, msg:String, validationState:ValidationState = null):void;
+  function showToast(title:String, msg:String, validationState:ValidationState = null, actionLabel:String = null, action:Function = null):void;
 
   function focusAdapter(adapter:SocialHubAdapter, callback:Function):void;
 }

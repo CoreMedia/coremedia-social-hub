@@ -28,13 +28,13 @@ public class ChannelsContainerBase extends Panel {
     scrolling.scrollLeft = targetOffset;
   }
 
-  override protected function afterRender():void {
-    super.afterRender();
-    getScroller().onscroll = scrolling;
-  }
-
-  private function scrolling():void {
-    ComposerBase.scrollIntoView();
-  }
+//  override protected function afterRender():void {
+//    super.afterRender();
+//    getScroller().onscroll = scrolling;
+//  }
+//
+//  private function scrolling():void {
+//    ComposerBase.scrollIntoView();
+//  }
 }
 }

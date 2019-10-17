@@ -173,6 +173,7 @@ public class ComposerBase extends Window {
 
   private function sendMessage():void {
     var composerModel:ComposerModel = bindTo.getValue();
+    var a:SocialHubAdapter = this.adapter;
 
     //check if we should wait for the elastic worker or not
     var publicationDate:Date = composerModel.getPublicationDate();
@@ -195,10 +196,6 @@ public class ComposerBase extends Window {
         c.reload(true);
       }
     }, function (error:Object):void {
-      if (c.rendered) {
-        c.reload(true);
-      }
-
       if (waitForJob) {
         var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished_title');
         var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished');
@@ -212,7 +209,13 @@ public class ComposerBase extends Window {
           state = ValidationState.ERROR;
         }
 
-        socialHubService.showToast(title, toast, state);
+        socialHubService.showToast(title, toast, state, null, function():void {
+          socialHubService.focusAdapter(a, Ext.emptyFn);
+        });
+      }
+
+      if (c.rendered) {
+        c.reload(true);
       }
     });
 
