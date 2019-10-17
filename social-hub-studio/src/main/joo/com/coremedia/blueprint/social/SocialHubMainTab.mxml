@@ -9,7 +9,6 @@
                              closable="true"
                              id_="{ID}"
                              iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'social_hub')}"
-                             itemId="{ID}"
                              ui="{PanelSkin.EMBEDDED.getSkin()}">
   <fx:Metadata>
     [ResourceBundle('com.coremedia.blueprint.social.SocialHub')]
@@ -35,10 +34,10 @@
         <Panel itemId="{EMPTY_ITEM_ID}">
           <items>
             <DisplayField ui="{DisplayFieldSkin.EMBEDDED.getSkin()}"
-                          value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channels_empty')}" />
+                          value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channels_empty')}"/>
           </items>
           <layout>
-            <layout_VBox align="middle" pack="center" />
+            <layout_VBox align="middle" pack="center"/>
           </layout>
         </Panel>
         <channels:ChannelsContainer itemId="{CHANNELS_ITEM_ID}" adaptersExpression="{getAdaptersExpression()}"/>
