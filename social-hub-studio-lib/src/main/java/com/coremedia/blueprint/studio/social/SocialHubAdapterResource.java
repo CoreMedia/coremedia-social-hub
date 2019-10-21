@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,9 +36,14 @@ public class SocialHubAdapterResource extends AbstractSocialHubResource implemen
     SocialHubAdapterRepresentation representation = new SocialHubAdapterRepresentation(adapter);
 
     try {
+      List<? extends Message> failedMessages = adapter.getMessages(MessageState.SEND_FAILED_PERMANENTLY, null, null, 0, 30);
       List<? extends Message> sentMessages = adapter.getMessages(MessageState.SENT, null, null, 0, 30);
-      Collections.sort(sentMessages, (Comparator<Message>) (o1, o2) -> (int) (o1.getPublicationDate().getTime() - o2.getPublicationDate().getTime()));
-      representation.setSentMessages(sentMessages);
+
+      List<Message> result = new ArrayList<>();
+      result.addAll(failedMessages);
+      result.addAll(sentMessages);
+      Collections.sort(result, (Comparator<Message>) (o1, o2) -> (int) (o1.getPublicationDate().getTime() - o2.getPublicationDate().getTime()));
+      representation.setSentMessages(result);
     } catch (Exception e) {
       LOG.error("Failed to load sent messages for " + adapter + ": " + e.getMessage(), e);
     }

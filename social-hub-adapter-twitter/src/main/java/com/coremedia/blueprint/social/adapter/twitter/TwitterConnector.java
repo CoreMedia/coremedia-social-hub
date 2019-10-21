@@ -125,7 +125,6 @@ public class TwitterConnector extends AbstractConnector {
   public PublicationResult publishMessage(@NonNull ComposerModel composerModel) {
     try {
       List<Long> mediaIds = new ArrayList<>();
-
       List<Content> assets = (List<Content>) composerModel.getProperties().get("assets");
       if (assets != null) {
         for (Content c : assets) {

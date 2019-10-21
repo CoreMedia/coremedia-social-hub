@@ -2,6 +2,8 @@ package com.coremedia.blueprint.social.api;
 
 import com.coremedia.cap.content.Content;
 import com.coremedia.common.annotations.Experimental;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 /**
  * Used to copy content properties into the ComposerModel.
@@ -9,12 +11,14 @@ import com.coremedia.common.annotations.Experimental;
 @Experimental
 public interface ComposerModelInterceptor {
 
+  @Nullable
   Object intercept(SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
 
   /**
    * The content type the interceptor should be applied to.
    * Subtypes are included here.
    */
+  @NonNull
   String getContentType();
 
   /**
@@ -22,6 +26,7 @@ public interface ComposerModelInterceptor {
    *
    * @return null if the interceptor should be called for every network
    */
+  @Nullable
   SocialNetworkType getSocialNetworkType();
 
   /**

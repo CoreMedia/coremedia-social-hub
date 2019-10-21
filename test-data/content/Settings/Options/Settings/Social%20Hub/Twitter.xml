@@ -18,6 +18,9 @@
             <StringProperty Name="accessTokenSecret"></StringProperty>
           </Struct>
         </StructProperty>
+        <StructProperty Name="adapter">
+          <Struct></Struct>
+        </StructProperty>
       </Struct>
     </StructListProperty>
   </Struct></settings>
