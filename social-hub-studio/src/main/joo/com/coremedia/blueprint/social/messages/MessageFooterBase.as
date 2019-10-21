@@ -37,6 +37,9 @@ public class MessageFooterBase extends Container {
     if (msg.getMessageState() === SocialHubPropertyNames.STATE_SENT) {
       return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_publication_date');
     }
+    else if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
+      return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_failed');
+    }
     return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_scheduled_date');
   }
 
@@ -65,6 +68,18 @@ public class MessageFooterBase extends Container {
     var style:String = "border-bottom: solid 1px #dcdbdb;background-color:#E6E6E6;";
     if (msg.getMessageState() === SocialHubPropertyNames.STATE_SENT) {
       style = "border-bottom: solid 1px #dcdbdb;background-color:#F1F1F1;";
+    }
+    if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
+      style = "border-bottom: solid 1px #dcdbdb;background-color:#c41313;";
+    }
+    return style;
+  }
+
+  protected function getDateLabelStyle(msg:Message):String {
+    var style:String = "color:#000;font-weight:bold;";
+
+    if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
+      style = style + "color:#FFF;";
     }
     return style;
   }
