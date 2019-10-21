@@ -39,10 +39,17 @@ public class MessageTextEditorBase extends Panel implements MessageFieldEditor {
   }
 
   public function getErrorMessage():String {
-    if (!bindTo.getValue()) {
+    var value:String = bindTo.getValue();
+    if ((!value || value.length === 0) && property.isRequired()) {
       var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_empty_text');
       var message:String = StringUtil.format(msg, property.getDisplayName());
       return message;
+    }
+
+    if(value && value.length > property.getMaxLength() ) {
+      var lengthMsg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_length_text');
+      var lengthMessage:String = StringUtil.format(lengthMsg, property.getDisplayName(), property.getMaxLength());
+      return lengthMessage;
     }
     return null;
   }

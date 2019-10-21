@@ -3,6 +3,7 @@ package com.coremedia.blueprint.social.composer {
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.MessageProperty;
 import com.coremedia.blueprint.social.composer.externallink.ExternalLinkDialog;
+import com.coremedia.cms.editor.sdk.util.RichTextPlainTextTransformer;
 import com.coremedia.ui.ckeditor.RichTextArea;
 import com.coremedia.ui.data.ValueExpression;
 import com.coremedia.ui.data.ValueExpressionFactory;
@@ -86,11 +87,20 @@ public class MessageTextareaEditorBase extends Panel implements MessageFieldEdit
 
   public function getErrorMessage():String {
     var value:String = bindTo.getValue();
-    if (!value) {
+    if (!value && property.isRequired()) {
       var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_empty_text');
       var message:String = StringUtil.format(msg, property.getDisplayName());
       return message;
     }
+
+    var plain:String = RichTextPlainTextTransformer.convertToPlainText(value);
+    plain = StringUtil.trim(plain);
+    if(plain.length > property.getMaxLength() ) {
+      var lengthMsg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'messsage_property_error_length_text');
+      var lengthMessage:String = StringUtil.format(lengthMsg, property.getDisplayName(), property.getMaxLength());
+      return lengthMessage;
+    }
+
     return null;
   }
 
