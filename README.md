@@ -44,7 +44,7 @@ For the IDEA import:
 - Ignore folder ".remote-package"
 - Disable "Settings > Compiler > Clear output directory on rebuild" to ensure the Studio development roundtrip
 
-### TODOs
+### Open Issues
 
 Please check the issues section of the project:
 https://github.com/CoreMedia/coremedia-social-hub/issues
