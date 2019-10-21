@@ -36,7 +36,7 @@ public class TwitterMessageContainerDescriptorFactory implements MessageContaine
   public Optional<MessageContainerDescriptor> createSent(@NonNull TwitterSocialHubAdapter adapter,
                                                          @NonNull Message message,
                                                          @NonNull MessageProperty messageProperty) {
-    if (messageProperty.getName().equals("text")) {
+    if (messageProperty.getName().equals("text") && adapter.getAdapterSettings() != null) {
       String timeline = adapter.getAdapterSettings().getTimeline();
 
       MessageContainerDescriptor descriptor = new MessageContainerDescriptor("text", MessagePropertyType.MARKUP);

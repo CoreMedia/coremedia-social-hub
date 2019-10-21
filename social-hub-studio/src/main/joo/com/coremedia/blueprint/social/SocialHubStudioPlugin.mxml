@@ -56,6 +56,9 @@
 
     <!-- Used to localize the scheduled date property field -->
     <editor:CopyResourceBundleProperties
+            destination="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.cms.editor.sdk.jobs.JobErrorCodes')}"
+            source="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.blueprint.social.SocialHubComposerProperties')}"/>
+    <editor:CopyResourceBundleProperties
             destination="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.cms.editor.ContentTypes')}"
             source="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.blueprint.social.SocialHubComposerProperties')}"/>
   </social:configuration>

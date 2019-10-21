@@ -23,7 +23,7 @@
   <messages:items>
     <Container>
       <items>
-        <DisplayField ui="{DisplayFieldSkin.BOLD.getSkin()}" html="true" value="<b>{getDateLabel(config.message)}</b>"/>
+        <DisplayField ui="{null}" style="{getDateLabelStyle(config.message)}" html="true" value="<b>{getDateLabel(config.message)}</b>"/>
         <DisplayField>
           <plugins>
             <ui:BindPropertyPlugin transformer="{transformDate}"

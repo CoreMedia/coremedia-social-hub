@@ -26,7 +26,7 @@ public class Scheduler {
 
   private static Logger log = LoggerFactory.getLogger(Scheduler.class);
 
-  private static final int MAX_FAIL = 10;
+  private static final int MAX_FAIL = 3;
 
   private static final long SCHEDULE_SKIP_MILLIS = 15 * 1000L;
 

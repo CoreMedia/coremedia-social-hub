@@ -6,12 +6,13 @@
                             xmlns:ui="exml:com.coremedia.ui.config"
                             xmlns:messages="com.coremedia.blueprint.social.messages.*"
                             minWidth="500"
+                            id_="{config.adapter.getAdapterId()}"
+                            style="border-radius: 8px;"
                             ui="{PanelSkin.ACCORDION.getSkin()}">
   <fx:Script><![CDATA[
     import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
     import com.coremedia.ui.data.ValueExpressionFactory;
     import com.coremedia.ui.skins.ButtonSkin;
-    import com.coremedia.ui.skins.DisplayFieldSkin;
     import com.coremedia.ui.skins.IconDisplayFieldSkin;
     import com.coremedia.ui.skins.PanelSkin;
 
@@ -108,6 +109,7 @@
           </ui:plugins>
         </ui:IconButton>
         <ui:MenuIconButton itemId="{COLOR_CHOOSER_BUTTON_ITEM_ID}"
+                           style="border-top-right-radius: 6px;"
                            ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'change_color')}"
                            ui="{ButtonSkin.MAIN_NAVIGATION.getSkin()}"
                            arrowVisible="false"

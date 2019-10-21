@@ -23,26 +23,6 @@ public class MessageFooterBase extends Container {
     super(config);
   }
 
-  protected function getShareLabel(adapter:SocialHubAdapter):String {
-    return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'shares_' + adapter.getType().toLowerCase() + "_text");
-  }
-
-  protected function getShareIcon(adapter:SocialHubAdapter):String {
-    return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'shares_' + adapter.getType().toLowerCase() + "_icon");
-  }
-
-  protected function getLikesLabel(adapter:SocialHubAdapter):String {
-    return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'likes_' + adapter.getType().toLowerCase() + "_text");
-  }
-
-  protected function getDislikesLabel(adapter:SocialHubAdapter):String {
-    return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'dislikes_' + adapter.getType().toLowerCase() + "_text");
-  }
-
-  protected function getFavoritesIcon(adapter:SocialHubAdapter):String {
-    return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'likes_' + adapter.getType().toLowerCase() + "_icon");
-  }
-
   protected function openInTab():void {
     var url:String = message.getUrl();
     window.open(url, "_blank");
@@ -56,6 +36,9 @@ public class MessageFooterBase extends Container {
   protected function getDateLabel(msg:Message):String {
     if (msg.getMessageState() === SocialHubPropertyNames.STATE_SENT) {
       return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_publication_date');
+    }
+    else if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
+      return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_failed');
     }
     return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_scheduled_date');
   }
@@ -83,8 +66,20 @@ public class MessageFooterBase extends Container {
 
   protected function getStyle(msg:Message):String {
     var style:String = "border-bottom: solid 1px #dcdbdb;background-color:#E6E6E6;";
-    if(msg.getMessageState() === SocialHubPropertyNames.STATE_SENT) {
+    if (msg.getMessageState() === SocialHubPropertyNames.STATE_SENT) {
       style = "border-bottom: solid 1px #dcdbdb;background-color:#F1F1F1;";
+    }
+    if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
+      style = "border-bottom: solid 1px #dcdbdb;background-color:#c41313;";
+    }
+    return style;
+  }
+
+  protected function getDateLabelStyle(msg:Message):String {
+    var style:String = "color:#000;font-weight:bold;";
+
+    if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
+      style = style + "color:#FFF;";
     }
     return style;
   }

@@ -10,13 +10,11 @@ public interface ComposerModel {
 
   function getPublicationDate():Date;
 
-  function getMessageText():String;
-
-  function getTitle():String;
-
   function getAdapterType():String;
 
-  function send(callback:Function = undefined):void;
+  function getAdapterId():String;
+
+  function send(doWait:Boolean, savedCallback:Function, publicationCallback:Function):void;
 
   function reset(callback:Function = undefined):void;
 }
