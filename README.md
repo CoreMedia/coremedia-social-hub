@@ -12,6 +12,9 @@ scheduled for publishing.
 
 The Social Hub is implemented as a Blueprint extension.
 
+We usually only work on the latest CoreMedia version, so the latest version of the documentation and demo content 
+may be on the latest version branch.
+
 ### Documentation & Tutorial
 
 https://github.com/CoreMedia/coremedia-social-hub/tree/master/documentation
