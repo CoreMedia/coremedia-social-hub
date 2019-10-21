@@ -5,6 +5,7 @@ import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
 import com.coremedia.blueprint.social.api.MessageContainerDescriptorFactory;
 import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.blueprint.studio.social.composejob.ComposeMessageJobFactory;
+import com.coremedia.blueprint.studio.social.interceptor.DefaultComposerModelInterceptor;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.multisite.SitesService;
 import com.coremedia.rest.cap.content.convert.DatePropertyConverter;
@@ -38,6 +39,11 @@ public class SocialHubStudioLibConfiguration {
   @Value("${studio.defaultTimeZone:Europe/Berlin}")
   private String defaultTimeZone;
 
+
+  @Bean
+  public DefaultComposerModelInterceptor defaultComposerModelInterceptor() {
+    return new DefaultComposerModelInterceptor();
+  }
 
   @Bean
   public ComposeMessageJobFactory socialHubComposerMessageJobFactory(@NonNull SocialHubService socialHubService) {

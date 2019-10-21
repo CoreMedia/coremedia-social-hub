@@ -17,7 +17,11 @@ public interface ComposerModelInterceptor {
    */
   String getContentType();
 
-
+  /**
+   * The Social network the interceptor should be applied for.
+   *
+   * @return null if the interceptor should be called for every network
+   */
   SocialNetworkType getSocialNetworkType();
 
   /**

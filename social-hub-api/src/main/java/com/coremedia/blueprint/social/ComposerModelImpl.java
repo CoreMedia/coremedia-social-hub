@@ -79,8 +79,14 @@ public class ComposerModelImpl implements ComposerModel {
     if (existingValue instanceof String && ((String) existingValue).trim().equals("")) {
       existingValue = null;
     }
+    if(existingValue instanceof List && ((List)existingValue).isEmpty()) {
+      existingValue = null;
+    }
 
-    if (existingValue == null || override) {
+    if(existingValue != null && override) {
+      this.properties.put(property, value);
+    }
+    else if(existingValue == null) {
       this.properties.put(property, value);
     }
   }

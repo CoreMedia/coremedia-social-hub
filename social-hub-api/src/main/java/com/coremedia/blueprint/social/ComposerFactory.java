@@ -23,10 +23,12 @@ public class ComposerFactory {
 
   public void compose(SocialHubAdapter adapter, ComposerModel composerModel, Content content) {
     Collections.sort(interceptors, Comparator.comparingInt(ComposerModelInterceptor::getPriority));
+    Collections.reverse(interceptors);
 
     SocialNetworkType type = adapter.getType();
     for (ComposerModelInterceptor interceptor : interceptors) {
-      if(!interceptor.getSocialNetworkType().equals(type)) {
+      SocialNetworkType socialNetworkType = interceptor.getSocialNetworkType();
+      if(socialNetworkType != null && !socialNetworkType.equals(type)) {
         continue;
       }
 
@@ -37,7 +39,7 @@ public class ComposerFactory {
       List<MessageProperty> messageProperties = adapter.getMessageProperties();
       for (MessageProperty messageProperty : messageProperties) {
         Object value = interceptor.intercept(adapter, messageProperty, content);
-        composerModel.set(messageProperty.getName(), value, true);
+        composerModel.set(messageProperty.getName(), value, false);
       }
     }
   }
