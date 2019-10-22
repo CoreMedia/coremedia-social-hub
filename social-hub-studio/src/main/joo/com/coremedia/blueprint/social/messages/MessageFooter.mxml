@@ -50,23 +50,30 @@
                     bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
           </plugins>
         </DisplayField>
+
+        <Container>
+          <items>
+            <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                                   propertyName="{SocialHubPropertyNames.MESSAGE_SHARE_COUNT}"/>
+            <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                                   propertyName="{SocialHubPropertyNames.MESSAGE_LIKE_COUNT}"/>
+            <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                                   propertyName="{SocialHubPropertyNames.MESSAGE_DISLIKE_COUNT}"/>
+            <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                                   propertyName="{SocialHubPropertyNames.MESSAGE_VIEW_COUNT}"/>
+            <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
+                                   propertyName="{SocialHubPropertyNames.MESSAGE_COMMENT_COUNT}"/>
+          </items>
+          <layout>
+            <layout_HBox align="stretch" />
+          </layout>
+        </Container>
       </items>
       <layout>
         <layout_VBox align="stretch"/>
       </layout>
     </Container>
     <Container width="12"/>
-
-    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
-                           propertyName="{SocialHubPropertyNames.MESSAGE_SHARE_COUNT}"/>
-    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
-                           propertyName="{SocialHubPropertyNames.MESSAGE_LIKE_COUNT}"/>
-    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
-                           propertyName="{SocialHubPropertyNames.MESSAGE_DISLIKE_COUNT}"/>
-    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
-                           propertyName="{SocialHubPropertyNames.MESSAGE_VIEW_COUNT}"/>
-    <messages:CounterLabel adapter="{config.adapter}" message="{config.message}"
-                           propertyName="{SocialHubPropertyNames.MESSAGE_COMMENT_COUNT}"/>
 
     <Container flex="1"/>
 
