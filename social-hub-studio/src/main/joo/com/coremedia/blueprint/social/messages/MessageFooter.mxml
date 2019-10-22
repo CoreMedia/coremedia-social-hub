@@ -21,35 +21,63 @@
     ]]></fx:Script>
 
   <messages:items>
-    <Container width="300">
+    <Container>
       <items>
-        <DisplayField ui="{null}" style="{getDateLabelStyle(config.message)}" html="true" value="<b>{getDateLabel(config.message)}</b>"/>
-        <DisplayField ui="{DisplayFieldSkin.INVERTED.getSkin()}" value="{config.message.getErrorMessage()}">
-          <plugins>
-            <ui:BindVisibilityPlugin
-                    bindTo="{ValueExpressionFactory.createFromValue(config.message.getErrorMessage())}"/>
-          </plugins>
-        </DisplayField>
-        <DisplayField>
-          <plugins>
-            <ui:BindPropertyPlugin transformer="{transformDate}"
-                                   componentProperty="value"
-                                   bindTo="{ValueExpressionFactory.create(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE, config.message)}"/>
-            <ui:BindVisibilityPlugin
-                    transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SCHEDULED;}}"
-                    bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
-          </plugins>
-        </DisplayField>
-        <DisplayField>
-          <plugins>
-            <ui:BindPropertyPlugin transformer="{transformDate}"
-                                   componentProperty="value"
-                                   bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE)}"/>
-            <ui:BindVisibilityPlugin
-                    transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SENT;}}"
-                    bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
-          </plugins>
-        </DisplayField>
+        <Container>
+          <items>
+            <Container>
+              <items>
+                <DisplayField ui="{null}" style="{getDateLabelStyle(config.message)}" html="true"
+                              value="<b>{getDateLabel(config.message)}</b>"/>
+                <DisplayField width="300" ui="{DisplayFieldSkin.INVERTED.getSkin()}" value="{config.message.getErrorMessage()}">
+                  <plugins>
+                    <ui:BindVisibilityPlugin
+                            bindTo="{ValueExpressionFactory.createFromValue(config.message.getErrorMessage())}"/>
+                  </plugins>
+                </DisplayField>
+                <DisplayField>
+                  <plugins>
+                    <ui:BindPropertyPlugin transformer="{transformDate}"
+                                           componentProperty="value"
+                                           bindTo="{ValueExpressionFactory.create(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE, config.message)}"/>
+                    <ui:BindVisibilityPlugin
+                            transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SCHEDULED;}}"
+                            bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
+                  </plugins>
+                </DisplayField>
+                <DisplayField>
+                  <plugins>
+                    <ui:BindPropertyPlugin transformer="{transformDate}"
+                                           componentProperty="value"
+                                           bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE)}"/>
+                    <ui:BindVisibilityPlugin
+                            transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SENT;}}"
+                            bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
+                  </plugins>
+                </DisplayField>
+              </items>
+              <layout>
+                <layout_VBox align="stretch" />
+              </layout>
+            </Container>
+            <Container flex="1" />
+            <Button itemId="openInBrowserButton"
+                    ui="{ButtonSkin.SIMPLE.getSkin()}"
+                    ariaLabel="{resourceManager.getString('com.coremedia.cms.editor.Editor', 'PreviewPanelToolbar_openInBrowser_btn_tooltip')}"
+                    iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'open_in_browser')}"
+                    scale="small"
+                    handler="{openInTab}">
+              <plugins>
+                <ui:BindVisibilityPlugin
+                        transformer="{function(msg:Message):Boolean {return msg.getUrl() !== null &amp;&amp; msg.getUrl() !== undefined &amp;&amp; msg.getUrl() !== ''; }}"
+                        bindTo="{ValueExpressionFactory.createFromValue(config.message)}"/>
+              </plugins>
+            </Button>
+          </items>
+          <layout>
+            <layout_HBox align="stretch"/>
+          </layout>
+        </Container>
 
         <Container>
           <items>
@@ -65,7 +93,7 @@
                                    propertyName="{SocialHubPropertyNames.MESSAGE_COMMENT_COUNT}"/>
           </items>
           <layout>
-            <layout_HBox align="stretch" />
+            <layout_HBox align="stretch"/>
           </layout>
         </Container>
       </items>
@@ -77,18 +105,6 @@
 
     <Container flex="1"/>
 
-    <Button itemId="openInBrowserButton"
-            ui="{ButtonSkin.SIMPLE.getSkin()}"
-            ariaLabel="{resourceManager.getString('com.coremedia.cms.editor.Editor', 'PreviewPanelToolbar_openInBrowser_btn_tooltip')}"
-            iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'open_in_browser')}"
-            scale="small"
-            handler="{openInTab}">
-      <plugins>
-        <ui:BindVisibilityPlugin
-                transformer="{function(msg:Message):Boolean {return msg.getUrl() !== null &amp;&amp; msg.getUrl() !== undefined &amp;&amp; msg.getUrl() !== ''; }}"
-                bindTo="{ValueExpressionFactory.createFromValue(config.message)}"/>
-      </plugins>
-    </Button>
     <Button itemId="deleteButton"
             ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
