@@ -3,7 +3,10 @@ package com.coremedia.blueprint.social;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.MessagePropertyType;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 import java.util.List;
 
 /**
@@ -17,13 +20,26 @@ public class MessagePropertyImpl implements MessageProperty {
   private boolean required;
   private String name;
   private String displayName;
+  private MimeType mimeType;
 
-  public MessagePropertyImpl(MessagePropertyType type, String name, String displayName, int maxLength, boolean required) {
+  public MessagePropertyImpl(MessagePropertyType type, String name, String displayName, int maxLength, boolean required, String mimeType) {
     this.type = type;
     this.name = name;
     this.displayName = displayName;
     this.maxLength = maxLength;
     this.required = required;
+
+    if(mimeType != null) {
+      try {
+        this.mimeType = new MimeType(mimeType);
+      } catch (MimeTypeParseException e) {
+        //ignore
+      }
+    }
+  }
+
+  public MessagePropertyImpl(MessagePropertyType type, String name, String displayName, int maxLength, boolean required) {
+    this(type, name, displayName, maxLength, required, null);
   }
 
   public MessagePropertyImpl(MessagePropertyType type, String name, boolean required) {
@@ -92,5 +108,15 @@ public class MessagePropertyImpl implements MessageProperty {
 
   public String getDefaultOption() {
     return defaultOption;
+  }
+
+  @Nullable
+  @Override
+  public MimeType getMimeType() {
+    return mimeType;
+  }
+
+  public void setMimeType(MimeType mimeType) {
+    this.mimeType = mimeType;
   }
 }

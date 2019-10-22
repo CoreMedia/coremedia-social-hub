@@ -27,7 +27,7 @@ public class InstagramSocialHubAdapter extends AbstractSocialHubAdapter {
   public List<MessageProperty> getMessageProperties() {
     List<MessageProperty> result = new ArrayList<>();
     result.add(new MessagePropertyImpl(MessagePropertyType.MARKUP, "caption", 2000));
-    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "images", 1));
+    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "images", null,1, true, "image/*"));
     return result;
   }
 

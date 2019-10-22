@@ -34,7 +34,7 @@ public class PinterestSocialHubAdapter extends AbstractSocialHubAdapter {
     List<MessageProperty> result = new ArrayList<>();
     result.add(new MessagePropertyImpl(MessagePropertyType.MARKUP, "note", 2000));
 //    result.add(new MessagePropertyImpl(MessagePropertyType.CHOICE, "boards", Arrays.asList("public", "private"), "public"));
-    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "images", 1));
+    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "images", null,1, true, "image/*"));
     return result;
   }
 

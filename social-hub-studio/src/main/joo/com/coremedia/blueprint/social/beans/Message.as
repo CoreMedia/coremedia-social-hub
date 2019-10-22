@@ -16,7 +16,7 @@ public interface Message {
 
   function getUrl():String;
 
-  function deleteFromScheduler(callback:Function):void;
+  function deleteMessage(callback:Function):void;
 
   function getMessageContainerDescriptors():Array;
 }

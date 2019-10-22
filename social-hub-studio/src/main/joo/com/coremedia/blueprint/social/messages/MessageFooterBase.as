@@ -54,12 +54,12 @@ public class MessageFooterBase extends Container {
             function (btn:*):void {
               if (btn === 'ok') {
                 var adapter:SocialHubAdapterImpl = message.getAdapter() as SocialHubAdapterImpl;
-                message.deleteFromScheduler(function ():void {
+                message.deleteMessage(function ():void {
                   adapter.invalidate();
-                });
 
-                var parent:MessagesContainer = findParentByType(MessagesContainer.xtype) as MessagesContainer;
-                parent.reload();
+                  var parent:MessagesContainer = findParentByType(MessagesContainer.xtype) as MessagesContainer;
+                  parent.reload();
+                });
               }
             });
   }

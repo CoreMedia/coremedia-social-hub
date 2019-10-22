@@ -59,7 +59,7 @@ public class MessageImpl extends RemoteBeanImpl implements Message {
     return descriptors;
   }
 
-  public function deleteFromScheduler(callback:Function):void {
+  public function deleteMessage(callback:Function):void {
     var deleteMethod:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), "DELETE");
     deleteMethod.request({},
             function (response:RemoteServiceMethodResponse):void {

@@ -23,7 +23,7 @@ public class YouTubeSocialHubAdapter extends AbstractSocialHubAdapter {
   public List<MessageProperty> getMessageProperties() {
     List<MessageProperty> result = new ArrayList<>();
     result.add(new MessagePropertyImpl(MessagePropertyType.TEXT, "title", 70));
-    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "video", 1));
+    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "video", null,1, true, "video/*"));
     result.add(new MessagePropertyImpl(MessagePropertyType.CHOICE, "privacy", Arrays.asList("public", "private"), "public"));
     result.add(new MessagePropertyImpl(MessagePropertyType.MARKUP, "description", 5000));
     return result;

@@ -78,6 +78,7 @@
     </Button>
     <Button itemId="deleteButton"
             ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
+            style="background-color: #FFF !important;"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             scale="small"
@@ -88,10 +89,24 @@
                 bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
       </plugins>
     </Button>
+    <Button itemId="deleteButton"
+            ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
+            style="background-color: #FFF !important;"
+            ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_error_post_title')}"
+            text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_error_post_title')}"
+            scale="small"
+            handler="{deleteFromScheduler}">
+      <plugins>
+        <ui:BindVisibilityPlugin
+                transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY;}}"
+                bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
+      </plugins>
+    </Button>
   </messages:items>
   <messages:plugins>
     <ui:BindVisibilityPlugin
-            bindTo="{ValueExpressionFactory.create(SocialHubPropertyNames.MESSAGE_PUBLICATION_DATE, config.message)}"/>
+            transformer="{function(msg:Message):Boolean {return message.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY || message.getPublicationDate() !== null;}}"
+            bindTo="{ValueExpressionFactory.createFromValue(config.message)}"/>
   </messages:plugins>
   <messages:layout>
     <layout_HBox align="bottom"/>

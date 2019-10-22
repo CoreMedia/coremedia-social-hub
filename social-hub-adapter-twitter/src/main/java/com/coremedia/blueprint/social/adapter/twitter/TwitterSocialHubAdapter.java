@@ -33,7 +33,7 @@ public class TwitterSocialHubAdapter extends AbstractSocialHubAdapter {
   public List<MessageProperty> getMessageProperties() {
     List<MessageProperty> result = new ArrayList<>();
     result.add(new MessagePropertyImpl(MessagePropertyType.MARKUP, "text", 280));
-    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "assets", 4, false));
+    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "assets", null,4, false, "image/*"));
     return result;
   }
 

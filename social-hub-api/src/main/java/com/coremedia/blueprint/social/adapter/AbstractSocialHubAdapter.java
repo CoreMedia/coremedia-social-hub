@@ -145,7 +145,12 @@ public abstract class AbstractSocialHubAdapter implements SocialHubAdapter {
       throw new UnsupportedOperationException("'deleteMessage' operation not supported for read-only adapters.");
     }
     if (isDirectPublication()) {
-      return getConnector().deleteMessage(id);
+      try {
+        return getConnector().deleteMessage(id);
+      } catch (Exception e) {
+        LOG.error("Deletion for {} not supported, deleting only from scheduler instead", this);
+        return getScheduler().deleteMessage(id);
+      }
     }
     else {
       return getScheduler().deleteMessage(id);
