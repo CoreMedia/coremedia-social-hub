@@ -82,20 +82,20 @@
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             scale="small"
-            handler="{deleteFromScheduler}">
+            handler="{deleteMessage}">
       <plugins>
         <ui:BindVisibilityPlugin
                 transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.STATE_SCHEDULED;}}"
                 bindTo="{ValueExpressionFactory.createFromValue(config.message).extendBy(SocialHubPropertyNames.MESSAGE_STATE)}"/>
       </plugins>
     </Button>
-    <Button itemId="deleteButton"
+    <Button itemId="deleteFromErrorButton"
             ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
             style="background-color: #FFF !important;"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_error_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_error_post_title')}"
             scale="small"
-            handler="{deleteFromScheduler}">
+            handler="{deleteMessage}">
       <plugins>
         <ui:BindVisibilityPlugin
                 transformer="{function(state:String):Boolean {return state === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY;}}"

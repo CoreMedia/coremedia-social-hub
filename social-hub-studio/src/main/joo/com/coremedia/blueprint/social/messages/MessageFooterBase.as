@@ -47,7 +47,7 @@ public class MessageFooterBase extends Container {
    * Removes this message from the scheduler so that is
    * disappears from the list of queued messages.
    */
-  protected function deleteFromScheduler():void {
+  protected function deleteMessage():void {
     var title:String = ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title');
     var msg:String = ResourceManager.getInstance().getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_msg');
     MessageBoxUtil.showConfirmation(title, msg, ResourceManager.getInstance().getString('com.coremedia.cms.editor.sdk.actions.Actions', 'Action_delete_buttonText'),
