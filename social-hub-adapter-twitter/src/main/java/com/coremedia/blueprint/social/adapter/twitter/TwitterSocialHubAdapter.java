@@ -49,7 +49,11 @@ public class TwitterSocialHubAdapter extends AbstractSocialHubAdapter {
   public Optional<Message> getMessage(@NonNull String id) {
     Optional<Message> message = getScheduler().getMessage(MessageState.SCHEDULED, id);
     if (!message.isPresent()) {
-      return Optional.of(getDummyMessage());
+      message = getScheduler().getMessage(MessageState.SEND_FAILED_PERMANENTLY, id);
+    }
+
+    if (!message.isPresent()) {
+      message = Optional.of(getDummyMessage());
     }
 
     return message;

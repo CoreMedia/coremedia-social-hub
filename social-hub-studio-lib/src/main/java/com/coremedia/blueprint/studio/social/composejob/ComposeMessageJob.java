@@ -55,7 +55,7 @@ public class ComposeMessageJob implements Job {
 
     if (message.isPresent()) {
       Message msg = message.get();
-      if (msg.getState().equals(MessageState.SENT)) {
+      if (MessageState.SENT.equals(msg.getState())) {
         return messageId;
       }
 
