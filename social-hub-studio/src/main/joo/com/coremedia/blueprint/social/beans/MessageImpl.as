@@ -45,6 +45,10 @@ public class MessageImpl extends RemoteBeanImpl implements Message {
     return get(SocialHubPropertyNames.MESSAGE_URL);
   }
 
+  public function getErrorMessage():String {
+    return get(SocialHubPropertyNames.MESSAGE_ERROR);
+  }
+
   public function getMessageContainerDescriptors():Array {
     var dscrs:Array = get(SocialHubPropertyNames.MESSAGE_CONTAINER_DESCRIPTORS);
     if(!descriptors) {

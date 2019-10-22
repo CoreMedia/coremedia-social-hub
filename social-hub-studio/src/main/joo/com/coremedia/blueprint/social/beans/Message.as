@@ -16,6 +16,8 @@ public interface Message {
 
   function getUrl():String;
 
+  function getErrorMessage():String;
+
   function deleteMessage(callback:Function):void;
 
   function getMessageContainerDescriptors():Array;

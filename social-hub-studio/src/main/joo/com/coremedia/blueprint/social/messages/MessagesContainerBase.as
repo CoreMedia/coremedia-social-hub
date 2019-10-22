@@ -59,6 +59,7 @@ public class MessagesContainerBase extends Container {
   }
 
   public function clear():void {
+    this.lastDateString = null;
     target.removeAll();
   }
 

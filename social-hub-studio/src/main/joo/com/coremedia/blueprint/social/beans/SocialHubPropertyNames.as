@@ -31,6 +31,7 @@ public class SocialHubPropertyNames {
   public static const MESSAGE_VIEW_COUNT:String = "viewCount";
   public static const MESSAGE_STATE:String = "state";
   public static const MESSAGE_URL:String = "url";
+  public static const MESSAGE_ERROR:String = "errorMessage";
   public static const MESSAGE_PUBLICATION_DATE:String = "publicationDate";
   public static const MESSAGE_SCHEDULED_SEND_TIME:String = "scheduledSendTime";
 

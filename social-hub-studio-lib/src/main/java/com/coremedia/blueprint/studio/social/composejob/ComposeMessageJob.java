@@ -19,7 +19,8 @@ import java.util.Optional;
  */
 public class ComposeMessageJob implements Job {
   private static final Logger LOG = LoggerFactory.getLogger(ComposeMessageJob.class);
-  private static final int TIME_OUT = 20 * 1000; //2x publisher interval
+  private static final int EXPECTED_TIME_OUT = 20 * 1000; //2x publisher interval
+  private static final int TOTAL_TIME_OUT = 10 * 60 * 1000; //this only ensures that the job terminates sometime
 
   private String adapterId;
   private String messageId;
@@ -38,13 +39,13 @@ public class ComposeMessageJob implements Job {
     int time = 0;
     while (!message.isPresent() || message.get().getState().equals(MessageState.SCHEDULED)) {
       try {
-        if (time > TIME_OUT) {
+        if (time > TOTAL_TIME_OUT) {
           break;
         }
         Thread.sleep(2000);
         time += 2000;
 
-        float progress = (time*100/TIME_OUT)*0.01f;
+        float progress = (time*100/EXPECTED_TIME_OUT)*0.01f;
         jobContext.notifyProgress(progress);
         message = socialHubAdapter.getMessage(messageId);
       } catch (InterruptedException e) {

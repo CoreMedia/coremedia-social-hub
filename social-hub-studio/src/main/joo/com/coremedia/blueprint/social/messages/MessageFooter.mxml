@@ -21,9 +21,15 @@
     ]]></fx:Script>
 
   <messages:items>
-    <Container>
+    <Container width="300">
       <items>
         <DisplayField ui="{null}" style="{getDateLabelStyle(config.message)}" html="true" value="<b>{getDateLabel(config.message)}</b>"/>
+        <DisplayField ui="{DisplayFieldSkin.INVERTED.getSkin()}" value="{config.message.getErrorMessage()}">
+          <plugins>
+            <ui:BindVisibilityPlugin
+                    bindTo="{ValueExpressionFactory.createFromValue(config.message.getErrorMessage())}"/>
+          </plugins>
+        </DisplayField>
         <DisplayField>
           <plugins>
             <ui:BindPropertyPlugin transformer="{transformDate}"
@@ -78,7 +84,6 @@
     </Button>
     <Button itemId="deleteButton"
             ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
-            style="background-color: #FFF !important;"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_post_title')}"
             scale="small"

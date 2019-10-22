@@ -3,6 +3,7 @@ package com.coremedia.blueprint.studio.social;
 import com.coremedia.blueprint.social.api.Message;
 import com.coremedia.blueprint.social.api.MessageContainerDescriptor;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.scheduler.AbstractScheduledMessage;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ public class MessageRepresentation {
   private String id;
   private String state;
   private String url;
+  private String errorMessage;
   private Date publicationDate;
   private Map<String,Object> properties;
   private SocialHubAdapter adapter;
@@ -43,6 +45,10 @@ public class MessageRepresentation {
       this.commentCount = message.getMetaData().getCommentCount();
       this.viewCount = message.getMetaData().getViewCount();
       this.shareCount = message.getMetaData().getSharedCount();
+    }
+
+    if(message instanceof AbstractScheduledMessage) {
+      this.errorMessage = ((AbstractScheduledMessage)message).getErrorMessage();
     }
   }
 
@@ -96,5 +102,9 @@ public class MessageRepresentation {
 
   public List<MessageContainerDescriptor> getMessageContainerDescriptors() {
     return messageContainerDescriptors;
+  }
+
+  public String getErrorMessage() {
+    return errorMessage;
   }
 }

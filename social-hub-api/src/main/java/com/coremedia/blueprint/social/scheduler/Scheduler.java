@@ -190,6 +190,7 @@ public class Scheduler {
               // fail permanently
               message.setFailCount(MAX_FAIL);
               message.setState(MessageState.SEND_FAILED_PERMANENTLY);
+              message.setErrorMessage(result.getDescription());
               message.saveAtomically();
               log.warn("Publication failed permanently for message {}", message.toDebugString());
             }

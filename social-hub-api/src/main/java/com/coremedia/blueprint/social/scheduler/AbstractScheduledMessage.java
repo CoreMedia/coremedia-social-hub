@@ -11,6 +11,7 @@ import java.util.Date;
 public abstract class AbstractScheduledMessage extends AbstractMessage implements ScheduledMessage, ComposerModel, Model {
 
   private Date scheduledSendTime;
+  private String errorMessage;
 
   @Override
   public Date getScheduledSendTime() {
@@ -21,6 +22,13 @@ public abstract class AbstractScheduledMessage extends AbstractMessage implement
     this.scheduledSendTime = scheduledSendTime;
   }
 
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
+  public void setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+  }
 
   public String toDebugString() {
     return MoreObjects.toStringHelper(this)
