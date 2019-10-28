@@ -23,7 +23,6 @@ import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
-import com.google.api.services.youtube.model.VideoRecordingDetails;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.base.Strings;
@@ -198,9 +197,6 @@ public class YouTubeConnector extends AbstractConnector {
             break;
         }
         video.setStatus(status);
-
-        VideoRecordingDetails recordingDetails = new VideoRecordingDetails();
-        video.setRecordingDetails(recordingDetails);
 
         Blob blob = contentVideo.getBlob("data");
         String mimeType = blob.getContentType().toString();
