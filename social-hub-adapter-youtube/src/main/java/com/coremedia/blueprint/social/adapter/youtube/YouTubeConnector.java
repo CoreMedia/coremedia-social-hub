@@ -52,10 +52,10 @@ public class YouTubeConnector extends AbstractConnector {
   public static final String REQUEST_PART_STATISTICS = "statistics";
   public static final String REQUEST_PART_STATUS = "status";
   public static final String REQUEST_PART_CONTENT_DETAILS = "contentDetails";
-  public static final String REQUEST_PART_RECORDING_DETAILS = "recordingDetails";
+//  public static final String REQUEST_PART_RECORDING_DETAILS = "recordingDetails";
 
-  private static final String INSERT_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS + "," + REQUEST_PART_RECORDING_DETAILS;
-  private static final String UPDATE_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS + "," + REQUEST_PART_RECORDING_DETAILS;
+  private static final String INSERT_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS;
+  private static final String UPDATE_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS;
 
   private static final String INSERT_PLAYLIST_PARTS = REQUEST_PART_SNIPPET;
   private static final int CACHE_TIMEOUT = 60 * 24;
@@ -111,11 +111,10 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public Optional<Message> getMessage(@NonNull String id) {
-    LOG.info("Social Hub: getMessage for YouTube");
     YouTube youTube = getYouTube();
     VideoListResponse videoListResponse = cache.get(new VideoListCacheKey(youTube, id, CACHE_TIMEOUT));
     List<Video> videos = videoListResponse.getItems();
-    if (videos != null && videos.size() > 0) {
+    if (videos != null && !videos.isEmpty()) {
       Message message = createMessage(videos.get(0));
       return Optional.of(message);
     }
@@ -124,11 +123,10 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public List<? extends Message> getMessages(@NonNull MessageState state, Date startTime, Date endTime, int offset, int limit) {
-    LOG.info("Social Hub: getMessages for YouTube");
     try {
       YouTube youTube = getYouTube();
       List<Message> result = new ArrayList<>();
-      List<Video> videoResults;
+      List<String> videoResults;
       String playlistId = settings.getPlaylistId();
 
       if (Strings.isNullOrEmpty(playlistId)) {
@@ -138,11 +136,15 @@ public class YouTubeConnector extends AbstractConnector {
         videoResults = cache.get(new VideoPlaylistCacheKey(youTube, playlistId, CACHE_TIMEOUT));
       }
 
-      for (Video video : videoResults) {
-        Date createdAt = YouTubeUtil.parseDate(video.getSnippet().getPublishedAt().toString());
-        if (isBetween(createdAt, startTime, endTime)) {
-          Message message = createMessage(video);
-          result.add(message);
+      for (String videoId : videoResults) {
+        VideoListResponse videoListResponse = cache.get(new VideoListCacheKey(youTube, videoId, CACHE_TIMEOUT));
+        if(!videoListResponse.isEmpty()) {
+          Video video = videoListResponse.getItems().get(0);
+          Date createdAt = YouTubeUtil.parseDate(video.getSnippet().getPublishedAt().toString());
+          if (isBetween(createdAt, startTime, endTime)) {
+            Message message = createMessage(video);
+            result.add(message);
+          }
         }
       }
       return limitResult(result, offset, limit);
