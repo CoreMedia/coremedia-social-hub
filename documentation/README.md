@@ -13,14 +13,21 @@ It provides a separate tab that shows different social network feeds and message
 scheduled for publishing. 
 The Social Hub is implemented as a Blueprint extension.
 
+## CoreMedia Labs Prototypes
+
+This is a CoreMedia Labs prototype which means it __does not provide a stable API__.
+The current implementation won't match the one which will be released for a future CoreMedia workspace.
+Therefore, we also don't provide a proper documentation for it.
+If you are interested in a custom integration, feel free to contact us!
+
 
 ## Terms and Description
 
 
 | Term | Description |
 | ---- | ----------- |
-| adapter | A SocialHubAdapter is a specific implementation for a social network, e.g. the YouTubeSocialHubAdapter or TwitterSocialHubAdapter adapter. |
-| connector | The Connector implements the communication with the social network or a social media tool. |
+| adapter | The adapter implementation is responsible for the message composing of a social network, e.g. the _YouTubeSocialHubAdapter_ implements the composing of YouTube messages. |
+| connector | The connector implementation is responsible for the publication of the composed messages. It can be a native integration of a social network or a social media tool. |
 
 
 ## Versioning
@@ -45,13 +52,13 @@ The philosophy behind the Social Hub is to __prepare__ content for social media 
 items to social media tools which take care of the actual publication.
  
  
-## Adapters and Connectors
+## Features
 
-The following table shows the currently supported adapters and connectors for the various social networks.
+The following table shows the currently supported features for the various social networks.
 
-| Social Network | Connector | Adapter  |
-| -------------- |:---------:|:--------:|
-| Twitter        |    x      |    x     |
-| YouTube        |    x      |    x     |
-| Instagram      |    -      |    x     |
-| Pinterest      |    -      |    x     |
+| Social Network | Publication | Composing |
+| -------------- |:-----------:|:---------:|
+| Twitter        |      x      |     x     |
+| YouTube        |      x      |     x     |
+| Instagram      |      -      |     x     |
+| Pinterest      |      -      |     x     |
