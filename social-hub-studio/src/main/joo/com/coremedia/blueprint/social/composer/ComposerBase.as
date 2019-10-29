@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social.composer {
 import com.coremedia.blueprint.social.beans.ComposerModel;
+import com.coremedia.blueprint.social.beans.ComposerModelImpl;
 import com.coremedia.blueprint.social.beans.Message;
 import com.coremedia.blueprint.social.beans.MessageProperty;
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
@@ -180,8 +181,8 @@ public class ComposerBase extends Window {
     var waitForJob:Boolean = publicationDate === null || !adapter.isSchedulingSupported();
 
     //publication date messages don't need a toast
+    var network:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', adapter.getType().toLowerCase() + '_title');
     if (waitForJob) {
-      var network:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', adapter.getType().toLowerCase() + '_title');
       var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start_title');
       title = StringUtil.format(title, network);
       var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_start');
@@ -190,6 +191,7 @@ public class ComposerBase extends Window {
     }
 
     var c:ChannelContainer = channelContainer;
+    var apt:SocialHubAdapter = adapter;
     composerModel.send(waitForJob, function (message:Message):void {
       close();
       if (c.rendered && !waitForJob) {
@@ -197,21 +199,7 @@ public class ComposerBase extends Window {
       }
     }, function (error:Object):void {
       if (waitForJob) {
-        var title:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished_title');
-        var msg:String = resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'compose_job_notification_finished');
-        var toast:String = StringUtil.format(msg, network);
-
-        var state:ValidationState = ValidationState.SUCCESS;
-        if (error && error.getErrorCode()) {
-          var code:String = error.getErrorCode();
-          toast = resourceManager.getString('com.coremedia.cms.editor.sdk.jobs.JobErrorCodes', code);
-          toast = StringUtil.format(toast, network);
-          state = ValidationState.ERROR;
-        }
-
-        socialHubService.showToast(title, toast, state, null, function():void {
-          socialHubService.focusAdapter(a, Ext.emptyFn);
-        });
+        ComposerModelImpl.showResultToast(apt, error);
       }
 
       if (c.rendered) {

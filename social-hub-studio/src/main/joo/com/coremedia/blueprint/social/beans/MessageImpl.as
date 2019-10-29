@@ -70,5 +70,13 @@ public class MessageImpl extends RemoteBeanImpl implements Message {
               callback.call(null);
             });
   }
+
+  public function retryMessage(callback:Function):void {
+    var deleteMethod:RemoteServiceMethod = new RemoteServiceMethod(getUriPath() + "/retry", "GET");
+    deleteMethod.request({},
+            function (response:RemoteServiceMethodResponse):void {
+              callback.call(null);
+            });
+  }
 }
 }
