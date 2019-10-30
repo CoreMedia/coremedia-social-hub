@@ -12,6 +12,7 @@ public class TwitterPublicationResult implements PublicationResult {
   private boolean isRetryable;
   private int secondsToWait;
   private Optional<Message> message;
+  private String description;
 
 
   TwitterPublicationResult(Message message) {
@@ -23,6 +24,7 @@ public class TwitterPublicationResult implements PublicationResult {
     this.isRetryable = exception.isCausedByNetworkIssue() || exception.exceededRateLimitation();
     this.secondsToWait = exception.getRetryAfter();
     this.message = Optional.empty();
+    this.description = exception.getMessage();
   }
 
 
@@ -44,5 +46,10 @@ public class TwitterPublicationResult implements PublicationResult {
   @Override
   public Optional<Message> getMessage() {
     return message;
+  }
+
+  @Override
+  public String getDescription() {
+    return description;
   }
 }

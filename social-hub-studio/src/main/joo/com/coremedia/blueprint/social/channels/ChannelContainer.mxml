@@ -33,39 +33,34 @@
     <ui:SwitchingContainer flex="1" activeItemValueExpression="{getActiveItemExpression()}">
       <ui:items>
         <Panel itemId="{LOADER_ITEM_ID}"/>
-        <Panel scrollable="true" itemId="{MESSAGE_WRAPPER_ITEM_ID}" flex="1" ui="{PanelSkin.GRID_200.getSkin()}"
+        <Panel scrollable="true"
+               itemId="{MESSAGE_WRAPPER_ITEM_ID}" flex="1" ui="{PanelSkin.GRID_200.getSkin()}"
+               listeners="{{'afterlayout': fixLayout}}"
                style="border-left: solid 1px #dcdbdb; top: -1px;">
           <items>
-            <Container width="450" maxWidth="450">
-              <items>
-                <messages:MessagesContainer adapter="{config.adapter}"
-                                            itemId="{MESSAGE_SCHEDULED_ITEM_ID}"
-                                            width="100%"
-                                            maxWidth="600"
-                                            messageType="{SocialHubPropertyNames.ADAPTER_SCHEDULED_MESSAGES}"
-                                            title="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_queue_title')}">
-                  <messages:plugins>
-                    <ui:BindVisibilityPlugin
-                            bindTo="{ValueExpressionFactory.createFromValue(config.adapter.isSchedulingSupported())}"/>
-                  </messages:plugins>
-                </messages:MessagesContainer>
-                <Container height="12">
-                  <plugins>
-                    <ui:BindVisibilityPlugin
-                            bindTo="{ValueExpressionFactory.createFromValue(config.adapter.isSchedulingSupported())}"/>
-                  </plugins>
-                </Container>
-                <messages:MessagesContainer adapter="{config.adapter}"
-                                            width="100%"
-                                            maxWidth="600"
-                                            itemId="{MESSAGE_HISTORY_ITEM_ID}"
-                                            messageType="{SocialHubPropertyNames.ADAPTER_SENT_MESSAGES}"
-                                            title="{resolveHistoryTitle(config.adapter)}"/>
-              </items>
-              <layout>
-                <layout_VBox align="center"/>
-              </layout>
+            <messages:MessagesContainer adapter="{config.adapter}"
+                                        itemId="{MESSAGE_SCHEDULED_ITEM_ID}"
+                                        width="100%"
+                                        maxWidth="600"
+                                        messageType="{SocialHubPropertyNames.ADAPTER_SCHEDULED_MESSAGES}"
+                                        title="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_queue_title')}">
+              <messages:plugins>
+                <ui:BindVisibilityPlugin
+                        bindTo="{ValueExpressionFactory.createFromValue(config.adapter.isSchedulingSupported())}"/>
+              </messages:plugins>
+            </messages:MessagesContainer>
+            <Container height="12">
+              <plugins>
+                <ui:BindVisibilityPlugin
+                        bindTo="{ValueExpressionFactory.createFromValue(config.adapter.isSchedulingSupported())}"/>
+              </plugins>
             </Container>
+            <messages:MessagesContainer adapter="{config.adapter}"
+                                        width="100%"
+                                        maxWidth="600"
+                                        itemId="{MESSAGE_HISTORY_ITEM_ID}"
+                                        messageType="{SocialHubPropertyNames.ADAPTER_SENT_MESSAGES}"
+                                        title="{resolveHistoryTitle(config.adapter)}"/>
           </items>
           <layout>
             <layout_VBox align="center"/>
@@ -90,7 +85,7 @@
             <DisplayField ui="{IconDisplayFieldSkin.LIGHT.getSkin()}" value="{config.adapter.getDisplayName()}"/>
           </items>
           <layout>
-            <layout_VBox align="stretch" pack="center" />
+            <layout_VBox align="stretch" pack="center"/>
           </layout>
         </Container>
         <TbSpacer flex="1"/>

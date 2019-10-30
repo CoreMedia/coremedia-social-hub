@@ -16,7 +16,7 @@ import java.util.List;
 public class DefaultComposerModelInterceptor implements ComposerModelInterceptor {
   @Override
   public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
-    if(messageProperty.getType().equals(MessagePropertyType.ASSETLIST)) {
+    if(messageProperty.getType().equals(MessagePropertyType.ASSETLIST) && messageProperty.getMimeType() != null && messageProperty.getMimeType().getPrimaryType().equals("image")) {
       List<Content> pictures = content.getLinks("pictures");
       if(pictures.isEmpty() && content.getType().isSubtypeOf("CMPicture")) {
         return Arrays.asList(content);

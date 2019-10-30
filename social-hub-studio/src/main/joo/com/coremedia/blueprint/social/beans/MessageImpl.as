@@ -45,6 +45,10 @@ public class MessageImpl extends RemoteBeanImpl implements Message {
     return get(SocialHubPropertyNames.MESSAGE_URL);
   }
 
+  public function getErrorMessage():String {
+    return get(SocialHubPropertyNames.MESSAGE_ERROR);
+  }
+
   public function getMessageContainerDescriptors():Array {
     var dscrs:Array = get(SocialHubPropertyNames.MESSAGE_CONTAINER_DESCRIPTORS);
     if(!descriptors) {
@@ -59,8 +63,16 @@ public class MessageImpl extends RemoteBeanImpl implements Message {
     return descriptors;
   }
 
-  public function deleteFromScheduler(callback:Function):void {
+  public function deleteMessage(callback:Function):void {
     var deleteMethod:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), "DELETE");
+    deleteMethod.request({},
+            function (response:RemoteServiceMethodResponse):void {
+              callback.call(null);
+            });
+  }
+
+  public function retryMessage(callback:Function):void {
+    var deleteMethod:RemoteServiceMethod = new RemoteServiceMethod(getUriPath() + "/retry", "GET");
     deleteMethod.request({},
             function (response:RemoteServiceMethodResponse):void {
               callback.call(null);

@@ -23,7 +23,6 @@ import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
-import com.google.api.services.youtube.model.VideoRecordingDetails;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.common.base.Strings;
@@ -52,10 +51,10 @@ public class YouTubeConnector extends AbstractConnector {
   public static final String REQUEST_PART_STATISTICS = "statistics";
   public static final String REQUEST_PART_STATUS = "status";
   public static final String REQUEST_PART_CONTENT_DETAILS = "contentDetails";
-  public static final String REQUEST_PART_RECORDING_DETAILS = "recordingDetails";
+//  public static final String REQUEST_PART_RECORDING_DETAILS = "recordingDetails";
 
-  private static final String INSERT_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS + "," + REQUEST_PART_RECORDING_DETAILS;
-  private static final String UPDATE_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS + "," + REQUEST_PART_RECORDING_DETAILS;
+  private static final String INSERT_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS;
+  private static final String UPDATE_VIDEO_PARTS = REQUEST_PART_SNIPPET + "," + REQUEST_PART_STATUS;
 
   private static final String INSERT_PLAYLIST_PARTS = REQUEST_PART_SNIPPET;
   private static final int CACHE_TIMEOUT = 60 * 24;
@@ -103,6 +102,7 @@ public class YouTubeConnector extends AbstractConnector {
         LOG.error("Failed to initialize youtube: {}", e.getMessage(), e);
         throw new RuntimeException(e);
       }
+      LOG.info("Successfully initialized YouTube connector for Social Hub");
     }
     return youTube;
   }
@@ -113,7 +113,7 @@ public class YouTubeConnector extends AbstractConnector {
     YouTube youTube = getYouTube();
     VideoListResponse videoListResponse = cache.get(new VideoListCacheKey(youTube, id, CACHE_TIMEOUT));
     List<Video> videos = videoListResponse.getItems();
-    if (videos != null && videos.size() > 0) {
+    if (videos != null && !videos.isEmpty()) {
       Message message = createMessage(videos.get(0));
       return Optional.of(message);
     }
@@ -125,7 +125,7 @@ public class YouTubeConnector extends AbstractConnector {
     try {
       YouTube youTube = getYouTube();
       List<Message> result = new ArrayList<>();
-      List<Video> videoResults;
+      List<String> videoResults;
       String playlistId = settings.getPlaylistId();
 
       if (Strings.isNullOrEmpty(playlistId)) {
@@ -135,11 +135,15 @@ public class YouTubeConnector extends AbstractConnector {
         videoResults = cache.get(new VideoPlaylistCacheKey(youTube, playlistId, CACHE_TIMEOUT));
       }
 
-      for (Video video : videoResults) {
-        Date createdAt = YouTubeUtil.parseDate(video.getSnippet().getPublishedAt().toString());
-        if (isBetween(createdAt, startTime, endTime)) {
-          Message message = createMessage(video);
-          result.add(message);
+      for (String videoId : videoResults) {
+        VideoListResponse videoListResponse = cache.get(new VideoListCacheKey(youTube, videoId, CACHE_TIMEOUT));
+        if(!videoListResponse.isEmpty()) {
+          Video video = videoListResponse.getItems().get(0);
+          Date createdAt = YouTubeUtil.parseDate(video.getSnippet().getPublishedAt().toString());
+          if (isBetween(createdAt, startTime, endTime)) {
+            Message message = createMessage(video);
+            result.add(message);
+          }
         }
       }
       return limitResult(result, offset, limit);
@@ -153,6 +157,7 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public PublicationResult publishMessage(@NonNull ComposerModel composerModel) {
+    LOG.info("Social Hub: publishing message for YouTube");
     YouTube youTube = getYouTube();
     String channelId = settings.getChannelId();
     String playlistId = settings.getPlaylistId();
@@ -193,9 +198,6 @@ public class YouTubeConnector extends AbstractConnector {
         }
         video.setStatus(status);
 
-        VideoRecordingDetails recordingDetails = new VideoRecordingDetails();
-        video.setRecordingDetails(recordingDetails);
-
         Blob blob = contentVideo.getBlob("data");
         String mimeType = blob.getContentType().toString();
         InputStreamContent mediaContent = new InputStreamContent(mimeType, blob.getInputStream());
@@ -232,6 +234,7 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public Optional<Message> deleteMessage(@NonNull String id) {
+    LOG.info("Social Hub: deleting message from YouTube");
     YouTube youTube = getYouTube();
     try {
       Optional<Message> message = getMessage(id);

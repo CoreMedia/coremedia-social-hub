@@ -9,7 +9,6 @@
     import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
     import com.coremedia.ui.data.ValueExpressionFactory;
     import com.coremedia.ui.skins.ContainerSkin;
-    import com.coremedia.ui.skins.DisplayFieldSkin;
 
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.messagesContainer";
     public static const MESSAGES_CONTAINER_ITEM_ID:String = "messagesContainer";

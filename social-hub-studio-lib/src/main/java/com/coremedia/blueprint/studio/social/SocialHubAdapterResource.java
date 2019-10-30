@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,21 @@ public class SocialHubAdapterResource extends AbstractSocialHubResource implemen
       List<Message> result = new ArrayList<>();
       result.addAll(failedMessages);
       result.addAll(sentMessages);
-      Collections.sort(result, (Comparator<Message>) (o1, o2) -> (int) (o1.getPublicationDate().getTime() - o2.getPublicationDate().getTime()));
+
+      Collections.sort(result, (o1, o2) -> {
+        Date date1 = o1.getPublicationDate();
+        Date date2 = o2.getPublicationDate();
+
+        if(date1 == null) {
+          date1 = new Date();
+        }
+        if(date2 == null) {
+          date2 = new Date();
+        }
+
+        return (int) (date1.getTime() - date2.getTime());
+      });
+
       representation.setSentMessages(result);
     } catch (Exception e) {
       LOG.error("Failed to load sent messages for " + adapter + ": " + e.getMessage(), e);

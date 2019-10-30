@@ -176,6 +176,8 @@ __Connector Configuration__
 
 If the native YouTube connector should be used, the corresponding YouTube
 credentials have to be provided as part of the connector configuration.
+Not that one YouTube configuration represents one playlist. If you want to push into different playlists,
+different configurations are required.
 
 See: https://developers.google.com/youtube/v3/quickstart/go
 

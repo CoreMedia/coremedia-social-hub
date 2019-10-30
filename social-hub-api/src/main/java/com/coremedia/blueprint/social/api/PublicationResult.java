@@ -19,5 +19,7 @@ public interface PublicationResult {
 
   int secondsToWait();
 
+  String getDescription();
+
   Optional<Message> getMessage();
 }

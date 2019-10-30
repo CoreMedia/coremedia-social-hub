@@ -33,7 +33,7 @@ public class TwitterSocialHubAdapter extends AbstractSocialHubAdapter {
   public List<MessageProperty> getMessageProperties() {
     List<MessageProperty> result = new ArrayList<>();
     result.add(new MessagePropertyImpl(MessagePropertyType.MARKUP, "text", 280));
-    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "assets", 4, false));
+    result.add(new MessagePropertyImpl(MessagePropertyType.ASSETLIST, "assets", null,4, false, "image/*"));
     return result;
   }
 
@@ -49,7 +49,11 @@ public class TwitterSocialHubAdapter extends AbstractSocialHubAdapter {
   public Optional<Message> getMessage(@NonNull String id) {
     Optional<Message> message = getScheduler().getMessage(MessageState.SCHEDULED, id);
     if (!message.isPresent()) {
-      return Optional.of(getDummyMessage());
+      message = getScheduler().getMessage(MessageState.SEND_FAILED_PERMANENTLY, id);
+    }
+
+    if (!message.isPresent()) {
+      message = Optional.of(getDummyMessage());
     }
 
     return message;

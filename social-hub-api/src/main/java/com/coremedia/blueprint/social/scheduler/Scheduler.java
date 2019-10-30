@@ -68,7 +68,7 @@ public class Scheduler {
     try {
       AbstractScheduledMessage message = getModelService().get(id, COLLECTION_NAME, AbstractScheduledMessage.class);
 
-      if (message != null && message.getState().equals(MessageState.SCHEDULED)) {
+      if (message != null && (message.getState().equals(MessageState.SCHEDULED) || message.getState().equals(MessageState.SEND_FAILED_PERMANENTLY))) {
         getModelService().remove(message);
         return Optional.of(message);
       }
@@ -190,6 +190,7 @@ public class Scheduler {
               // fail permanently
               message.setFailCount(MAX_FAIL);
               message.setState(MessageState.SEND_FAILED_PERMANENTLY);
+              message.setErrorMessage(result.getDescription());
               message.saveAtomically();
               log.warn("Publication failed permanently for message {}", message.toDebugString());
             }

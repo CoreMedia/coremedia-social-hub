@@ -6,8 +6,8 @@ import com.coremedia.cache.CacheKey;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
-import com.google.api.services.youtube.model.Video;
-import com.google.api.services.youtube.model.VideoListResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit;
 /**
  *
  */
-public class VideoPlaylistCacheKey extends CacheKey<List<Video>> {
+public class VideoPlaylistCacheKey extends CacheKey<List<String>> {
+  private static final Logger LOG = LoggerFactory.getLogger(VideoPlaylistCacheKey.class);
 
   private final YouTube youTube;
   private final String playlistId;
@@ -31,26 +32,17 @@ public class VideoPlaylistCacheKey extends CacheKey<List<Video>> {
   }
 
   @Override
-  public List<Video> evaluate(Cache cache) throws IOException {
+  public List<String> evaluate(Cache cache) throws IOException {
+    LOG.info("Social Hub: playlist search for YouTube");
     Cache.cacheFor(pollingIntervalMinutes, TimeUnit.MINUTES);
-    List<Video> videoResults = new ArrayList<>();
+    List<String> videoResults = new ArrayList<>();
 
     PlaylistItemListResponse playlistItemsResponse = youTube.playlistItems().list(YouTubeConnector.REQUEST_PART_SNIPPET).setPlaylistId(playlistId).setMaxResults(50l).execute();
     List<PlaylistItem> playlistItems = playlistItemsResponse.getItems();
     if (playlistItems != null) {
-      // find all video details
       for (PlaylistItem playlistItem : playlistItems) {
         String videoId = playlistItem.getSnippet().getResourceId().getVideoId();
-
-        VideoListResponse videoListResponse = youTube
-                .videos()
-                .list(YouTubeConnector.REQUEST_PART_SNIPPET + "," + YouTubeConnector.REQUEST_PART_RECORDING_DETAILS + "," + YouTubeConnector.REQUEST_PART_CONTENT_DETAILS)
-                .setMaxResults(50l)
-                .setId(videoId).execute();
-        List<Video> videos = videoListResponse.getItems();
-        if (videos != null && videos.size() > 0) {
-          videoResults.add(videos.get(0));
-        }
+        videoResults.add(videoId);
       }
     }
 

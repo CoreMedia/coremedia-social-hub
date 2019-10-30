@@ -6,6 +6,7 @@ import com.coremedia.blueprint.social.api.MessageContainerDescriptorFactory;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.MessageState;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.scheduler.AbstractScheduledMessage;
 import com.coremedia.rest.linking.EntityResource;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -62,6 +63,19 @@ public class MessageResource extends AbstractSocialHubResource implements Entity
       return new MessageRepresentation(adapter, descriptors, message);
     }
     return null;
+  }
+
+  @GetMapping("retry")
+  public void retry(@PathVariable(ID) String id,
+                    @PathVariable(ADAPTER_ID) String adapterId) {
+    Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
+    Optional<Message> message = adapter.get().getMessage(id);
+    if(message.isPresent()) {
+      SocialHubAdapter apt = adapter.get();
+      AbstractScheduledMessage msg = (AbstractScheduledMessage) message.get();
+      msg.setState(MessageState.SCHEDULED);
+      msg.save();
+    }
   }
 
   @DeleteMapping

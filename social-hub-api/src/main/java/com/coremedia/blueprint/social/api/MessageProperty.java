@@ -4,6 +4,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import com.coremedia.common.annotations.Experimental;
 
+import javax.activation.MimeType;
+
 /**
  * Defines one property of a Message
  */
@@ -44,4 +46,11 @@ public interface MessageProperty {
    * @return
    */
   boolean isRequired();
+
+  /**
+   * Used for assets
+   * @return
+   */
+  @Nullable
+  MimeType getMimeType();
 }

@@ -44,6 +44,10 @@ public class DropContainerBase extends Container implements MessageFieldEditor {
 
     bindTo.loadValue(function (items:Array):void {
       var result:Array = [];
+      if(!items) {
+        items = [];
+      }
+
       for each(var c:Content in items) {
         var item:DropItem = DropItem.create(c);
         result.push(item);
