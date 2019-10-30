@@ -141,7 +141,7 @@ public class MessagesContainerBase extends Container {
   private function getDateLabel(message:Message):String {
     var publicationDate:Date = message.getPublicationDate();
     //scheduled right now
-    if(!publicationDate) {
+    if (!publicationDate) {
       return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'message_footer_scheduled_now');
     }
 

@@ -33,7 +33,9 @@
     <ui:SwitchingContainer flex="1" activeItemValueExpression="{getActiveItemExpression()}">
       <ui:items>
         <Panel itemId="{LOADER_ITEM_ID}"/>
-        <Panel scrollable="true" itemId="{MESSAGE_WRAPPER_ITEM_ID}" flex="1" ui="{PanelSkin.GRID_200.getSkin()}"
+        <Panel scrollable="true"
+               itemId="{MESSAGE_WRAPPER_ITEM_ID}" flex="1" ui="{PanelSkin.GRID_200.getSkin()}"
+               listeners="{{'afterlayout': fixLayout}}"
                style="border-left: solid 1px #dcdbdb; top: -1px;">
           <items>
             <messages:MessagesContainer adapter="{config.adapter}"

@@ -61,6 +61,19 @@ public class ChannelContainerBase extends Panel {
     }
   }
 
+  protected function fixLayout():void {
+    //TODO some odd FireFox vertical scrolling problem, didn't find a better way to solve it but to remove the width.
+    try{
+      var wrapper:Panel = queryById('messagesWrapper') as Panel;
+      var style:String = wrapper['el'].getFirstChild().getFirstChild().getFirstChild().dom.getAttribute("style");
+      var newStyle:String = style.split(";")[0];
+      wrapper['el'].getFirstChild().getFirstChild().getFirstChild().dom.setAttribute("style", newStyle);
+    }
+    catch(e:Error) {
+      //ignore
+    }
+  }
+
   protected function forceReload():void {
     this.reload(true);
   }

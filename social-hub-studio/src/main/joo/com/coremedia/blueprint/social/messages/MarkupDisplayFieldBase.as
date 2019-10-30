@@ -1,6 +1,4 @@
 package com.coremedia.blueprint.social.messages {
-import com.coremedia.blueprint.social.beans.MessageContainerDescriptor;
-import com.coremedia.ui.data.ValueExpression;
 import com.coremedia.ui.util.EventUtil;
 
 import ext.container.Container;
