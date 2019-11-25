@@ -29,7 +29,7 @@
               <items>
                 <DisplayField ui="{null}" style="{getDateLabelStyle(config.message)}" html="true"
                               value="<b>{getDateLabel(config.message)}</b>"/>
-                <DisplayField width="280" value="{config.message.getErrorMessage()}">
+                <DisplayField ui="{null}" width="280" value="{config.message.getErrorMessage()}" style="color: #FFF !important;">
                   <plugins>
                     <ui:BindVisibilityPlugin
                             bindTo="{ValueExpressionFactory.createFromValue(config.message.getErrorMessage())}"/>
@@ -119,6 +119,7 @@
     </Button>
     <Button itemId="deleteFromErrorButton"
             ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
+            style="background-color: #FFF !important;"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_error_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_error_post_title')}"
             scale="small"
@@ -131,6 +132,7 @@
     </Button>
     <Container width="4" />
     <Button itemId="retryFromErrorButton"
+            style="background-color: #FFF !important;"
             ui="{ButtonSkin.MATERIAL_SECONDARY.getSkin()}"
             ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'retry_error_post_title')}"
             text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'retry_error_post_title')}"
