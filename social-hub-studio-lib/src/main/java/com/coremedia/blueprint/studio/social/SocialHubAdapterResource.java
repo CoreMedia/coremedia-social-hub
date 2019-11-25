@@ -44,7 +44,7 @@ public class SocialHubAdapterResource extends AbstractSocialHubResource implemen
       result.addAll(failedMessages);
       result.addAll(sentMessages);
 
-      Collections.sort(result, (o1, o2) -> {
+      Collections.sort(result, (o2, o1) -> {
         Date date1 = o1.getPublicationDate();
         Date date2 = o2.getPublicationDate();
 
