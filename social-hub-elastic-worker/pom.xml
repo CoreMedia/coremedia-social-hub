@@ -16,13 +16,13 @@
   </properties>
 
   <dependencies>
-    <!-- Social Hub API -->
+    <!-- Social Media Hub API -->
     <dependency>
       <groupId>com.coremedia.blueprint</groupId>
       <artifactId>social-hub-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- Social Hub Adapters -->
+    <!-- Social Media Hub Adapters -->
     <dependency>
       <groupId>com.coremedia.blueprint</groupId>
       <artifactId>social-hub-adapter-twitter</artifactId>

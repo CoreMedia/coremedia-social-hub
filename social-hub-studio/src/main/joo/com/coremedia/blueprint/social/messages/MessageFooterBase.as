@@ -110,7 +110,7 @@ public class MessageFooterBase extends Container {
       style = "border-bottom: solid 1px #dcdbdb;background-color:#F1F1F1;";
     }
     if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
-      style = "border-bottom: solid 2px #c41313;background-color:#F1F1F1;";
+      style = "border-bottom: solid 1px #dcdbdb;background-color:#c41313;";
     }
     return style;
   }
@@ -119,7 +119,7 @@ public class MessageFooterBase extends Container {
     var style:String = "color:#000;font-weight:bold;";
 
     if (msg.getMessageState() === SocialHubPropertyNames.SEND_FAILED_PERMANENTLY) {
-      style = style + "color:#c41313;";
+      style = style + "color:#FFF;";
     }
     return style;
   }

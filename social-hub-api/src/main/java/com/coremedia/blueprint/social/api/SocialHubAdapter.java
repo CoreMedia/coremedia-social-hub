@@ -21,6 +21,11 @@ public interface SocialHubAdapter {
   boolean isReadOnly();
 
   /**
+   * Returns the display position
+   */
+  int getPosition();
+
+  /**
    * If an adapter is configured for 'direct publication', the responsibility for scheduling
    * is delegated to the social network/social media tool. So a newly composed message will be directly
    * pushed through to the configured connector.

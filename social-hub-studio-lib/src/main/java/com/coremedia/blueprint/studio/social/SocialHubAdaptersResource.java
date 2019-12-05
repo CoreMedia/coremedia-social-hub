@@ -39,7 +39,7 @@ public class SocialHubAdaptersResource extends AbstractSocialHubResource impleme
     String siteId = pathVariables.get(SITE_ID);
     Site site = sitesService.getSite(siteId);
     List<SocialHubAdapter> adapters = new ArrayList<>(getSocialHubService().getAdapters(site));
-    Collections.sort(adapters, Comparator.comparing(SocialHubAdapter::getDisplayName));
+    Collections.sort(adapters, Comparator.comparing(SocialHubAdapter::getPosition));
     return new SocialHubAdapterModels(adapters, siteId);
   }
 

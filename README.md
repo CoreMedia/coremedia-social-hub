@@ -4,13 +4,13 @@
 ![CoreMedia Labs Logo](https://documentation.coremedia.com/badges/banner_coremedia_labs_wide.png "CoreMedia Labs Logo Title Text")
 
 
-# CoreMedia Social Hub
+# CoreMedia Social Media Hub
 
-The Social Hub allows to integrate various social networks into the CoreMedia Studio.
+The Social Media Hub allows to integrate various social networks into the CoreMedia Studio.
 It provides a separate tab that shows different social network feeds and messages that have been
 scheduled for publishing. 
 
-The Social Hub is implemented as a Blueprint extension.
+The Social Media Hub is implemented as a Blueprint extension.
 
 We usually only work on the latest CoreMedia version, so the latest version of the documentation and demo content 
 may be on the latest version branch.
@@ -21,7 +21,7 @@ https://github.com/CoreMedia/coremedia-social-hub/tree/master/documentation
 
 ### Demo Content
 
-To enable the Social Hub, some settings have to be created on a global or site specific level.
+To enable the Social Media Hub, some settings have to be created on a global or site specific level.
 A global example configuration can be found here:
 
 https://github.com/CoreMedia/coremedia-social-hub/tree/master/test-data

@@ -102,7 +102,7 @@ public class YouTubeConnector extends AbstractConnector {
         LOG.error("Failed to initialize youtube: {}", e.getMessage(), e);
         throw new RuntimeException(e);
       }
-      LOG.info("Successfully initialized YouTube connector for Social Hub");
+      LOG.info("Successfully initialized YouTube connector for Social Media Hub");
     }
     return youTube;
   }
@@ -157,7 +157,7 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public PublicationResult publishMessage(@NonNull ComposerModel composerModel) {
-    LOG.info("Social Hub: publishing message for YouTube");
+    LOG.info("Social Media Hub: publishing message for YouTube");
     YouTube youTube = getYouTube();
     String channelId = settings.getChannelId();
     String playlistId = settings.getPlaylistId();
@@ -234,7 +234,7 @@ public class YouTubeConnector extends AbstractConnector {
 
   @Override
   public Optional<Message> deleteMessage(@NonNull String id) {
-    LOG.info("Social Hub: deleting message from YouTube");
+    LOG.info("Social Media Hub: deleting message from YouTube");
     YouTube youTube = getYouTube();
     try {
       Optional<Message> message = getMessage(id);

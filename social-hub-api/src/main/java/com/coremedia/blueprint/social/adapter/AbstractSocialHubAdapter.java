@@ -22,6 +22,7 @@ public abstract class AbstractSocialHubAdapter implements SocialHubAdapter {
   private static final Logger LOG = LoggerFactory.getLogger(AbstractSocialHubAdapter.class);
 
   private String id;
+  private int position;
   private SocialNetworkType type;
   private boolean schedulingSupported = true;
   private boolean directPublication = false;
@@ -191,5 +192,13 @@ public abstract class AbstractSocialHubAdapter implements SocialHubAdapter {
             .add("displayName", getDisplayName())
             .add("connector", getConnector())
             .toString();
+  }
+
+  public int getPosition() {
+    return position;
+  }
+
+  public void setPosition(int position) {
+    this.position = position;
   }
 }

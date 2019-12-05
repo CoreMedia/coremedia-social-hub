@@ -30,7 +30,7 @@ public class VideoListCacheKey extends CacheKey<VideoListResponse> {
 
   @Override
   public VideoListResponse evaluate(Cache cache) throws IOException {
-    LOG.info("Social Hub: getMessage '{}' for YouTube", videoId);
+    LOG.info("Social Media Hub: getMessage '{}' for YouTube", videoId);
     Cache.cacheFor(pollingIntervalMinutes, TimeUnit.MINUTES);
     return youTube.videos()
             .list(YouTubeConnector.REQUEST_PART_SNIPPET + ","

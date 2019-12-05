@@ -8,8 +8,13 @@
                               style="{CustomStyles.MESSAGE_DISPLAY_FIELD}">
   <fx:Script><![CDATA[
     import com.coremedia.blueprint.social.CustomStyles;
+    import com.coremedia.cms.editor.sdk.premular.fields.LinkListGridPanelBase;
+    import com.coremedia.cms.editor.sdk.util.ContentLocalizationUtil;
+    import com.coremedia.cms.editor.sdk.util.ImageLinkListRenderer;
     import com.coremedia.ui.bem.SpacingBEMEntities;
     import com.coremedia.ui.data.ValueExpressionFactory;
+
+    import mx.resources.ResourceManager;
 
     public static const xtype:String = "com.coremedia.blueprint.social.studio.config.message.field.assetlist";
     public static const MEDIA_CONTAINER_ITEM_ID:String = "postMediaContainer";
@@ -34,6 +39,30 @@
                               selectedValuesExpression="{ValueExpressionFactory.createFromValue([])}"
                               hideDropArea="true"
                               readOnlyValueExpression="{ValueExpressionFactory.createFromValue(true)}">
+      <editor:fields>
+        <ui:DataField name="thumbnailImage"
+                      mapping=""
+                      convert_="{ImageLinkListRenderer.convertThumbnail}"
+                      ifUnreadable=""/>
+        <ui:DataField name="type"
+                      mapping="type.name"
+                      ifError=""
+                      ifUnreadable=""
+                      convert_="{ContentLocalizationUtil.localizeDocumentTypeName}"/>
+        <ui:DataField name="typeCls"
+                      mapping="type"
+                      ifError=""
+                      ifUnreadable="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'no_rights')}"
+                      convert_="{ContentLocalizationUtil.getIconStyleClassForContentType}"/>
+        <ui:DataField name="name"
+                      ifUnreadable="{ContentLocalizationUtil.formatNotReadableNameFromBeanRecord}"
+                      ifError=""
+                      sortType="{function(s:String):String{return s.toLowerCase();}}"/>
+        <ui:DataField name="editor"
+                      ifUnreadable=""
+                      ifError=""
+                      mapping="editor.name"/>
+      </editor:fields>
       <editor:linkListWrapper>
         <editor:MemoryLinkListWrapper linksVE="{config.bindTo}"/>
       </editor:linkListWrapper>

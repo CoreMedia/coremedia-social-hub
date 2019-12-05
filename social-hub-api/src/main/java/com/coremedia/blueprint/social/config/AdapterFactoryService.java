@@ -82,6 +82,14 @@ public class AdapterFactoryService {
           continue;
         }
 
+        int position = 0;
+        Map<String, Object> properties = struct.toNestedMaps();
+        if(properties.containsKey(SocialHubPropertyNames.POSITION)) {
+          Object pos = properties.get(SocialHubPropertyNames.POSITION);
+          if(pos != null) {
+            position = Integer.parseInt(String.valueOf(pos));
+          }
+        }
 
         Struct connectorStruct = struct.getStruct(SocialHubPropertyNames.CONNECTOR);
         String displayName = struct.getString(SocialHubPropertyNames.DISPLAY_NAME);
@@ -97,6 +105,7 @@ public class AdapterFactoryService {
 
             AbstractSocialHubAdapter adapter = (AbstractSocialHubAdapter) adapterFactory.createAdapter(connectorSettings, adapterSettings);
             adapter.setId(id);
+            adapter.setPosition(position);
             adapter.setType(adapterType);
             adapter.setDisplayName(displayName);
             adapter.setScheduler(scheduler);
@@ -106,9 +115,9 @@ public class AdapterFactoryService {
           }
         }
 
-        throw new IllegalArgumentException("No Social Hub Adapter found for type '" + adapterType + "'");
+        throw new IllegalArgumentException("No Social Media Hub Adapter found for type '" + adapterType + "'");
       } catch (Exception e) {
-        LOG.error("Social Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
+        LOG.error("Social Media Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
       }
     }
   }
