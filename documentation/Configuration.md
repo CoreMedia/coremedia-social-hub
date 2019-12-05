@@ -1,6 +1,6 @@
-# Social Hub Configuration
+# Social Media Hub Configuration
 
-The configuration of the Social Hub consists of different settings documents that can be
+The configuration of the Social Media Hub consists of different settings documents that can be
 put in a global or site-specific folders.
 
 - Global: _/Settings/Options/Settings/Social Hub/_
@@ -9,7 +9,7 @@ put in a global or site-specific folders.
 
 ## General Settings
 
-The _Settings_ document declares overall settings for the Social Hub and must be located in the global settings folder.
+The _Settings_ document declares overall settings for the Social Media Hub and must be located in the global settings folder.
 It defines the credentials for a __bitly__ account that is used for link shortening and additional CAE and document type model
 information that are required when media should be extracted from content for social media posts.
 
@@ -47,13 +47,13 @@ Check also the details connector configuration for details on how to configure i
 
 ## Adapter Configurations
 
-A Social Hub adapter configuration can be put into the global or a site specific configuration folder.
+A Social Media Hub adapter configuration can be put into the global or a site specific configuration folder.
 One or more adapter configurations can be put into one or more settings documents with any name.
 The following sections describes the structure of an adapter configuration and the samples for the existing adapters.
 
 #### General Adapter Settings
 
-Every Social Hub adapter configuration has the following structure:
+Every Social Media Hub adapter configuration has the following structure:
 
 ```xml
 <CMSettings folder="/Settings/Options/Settings/Social Hub/" name="My Social Hub Adapter">
@@ -96,9 +96,9 @@ Every connection struct contains the following properties:
 | connector   | additional properties used to configure the connector of the adapter |
 | adapter     | additional properties used to configure the adapter |
 
-When the configurations are read during the Studio startup, the Social Hub will try to map the configurations
+When the configurations are read during the Studio startup, the Social Media Hub will try to map the configurations
 to the corresponding _SocialHubAdapter_. It uses the implementation of _SocialHubAdapterFactory_ that is available for 
-every Social Hub adapter. The _SocialHubAdapterFactory#getType_ must match the _type_ property that is set in the setting.
+every Social Media Hub adapter. The _SocialHubAdapterFactory#getType_ must match the _type_ property that is set in the setting.
 
 ### Connector Configuration
 
@@ -117,7 +117,7 @@ The _ConnectorConfiguration_ interface implements the following methods:
 
 #### Connector Specific Properties
 
-The following section describes configuration properties for specific Social Hub adapters.
+The following section describes configuration properties for specific Social Media Hub adapters.
 
 
 
@@ -206,7 +206,7 @@ _not required_
 
 __Connector Configuration__
 
-Since the Social Hub is not shipped with a native connector for this network, the actual connector configuration depends
+Since the Social Media Hub is not shipped with a native connector for this network, the actual connector configuration depends
 on the integration with a social media tool.
 
 
@@ -232,5 +232,5 @@ Pinterest website.
 
 __Connector Configuration__
 
-Since the Social Hub is not shipped with a native connector for this network, the actual connector configuration depends
+Since the Social Media Hub is not shipped with a native connector for this network, the actual connector configuration depends
 on the integration with a social media tool.

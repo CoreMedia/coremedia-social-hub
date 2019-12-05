@@ -8,13 +8,13 @@ import java.util.Map;
 /**
  * Represents a media object of the social network.
  * Instances of the interface are used when sent messages are retrieved from the social network itself
- * or from the social media tool the social hub posts through.
+ * or from the social media tool the social media hub posts through.
  *
  * E.g. you can read the messages you have sent to Twitter via the Twitter API and render them one by one
  * instead of using the liveline widget. So the URL field here would represent a Twitter image.
  * But most social notworks APIs do not support these kind of information.
  *
- * That's why, by default, the Social Hub uses the sent messages from the database where the actual content is available.
+ * That's why, by default, the Social Media Hub uses the sent messages from the database where the actual content is available.
  */
 @Experimental
 public interface Media {

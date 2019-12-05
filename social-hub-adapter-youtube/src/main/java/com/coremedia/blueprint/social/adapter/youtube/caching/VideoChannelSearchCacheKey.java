@@ -35,7 +35,7 @@ public class VideoChannelSearchCacheKey extends CacheKey<List<String>> {
 
   @Override
   public List<String> evaluate(Cache cache) throws IOException {
-    LOG.info("Social Hub: channel search for YouTube");
+    LOG.info("Social Media Hub: channel search for YouTube");
     Cache.cacheFor(pollingIntervalMinutes, TimeUnit.MINUTES);
     // special handling for video on root level
     List<String> videoResults = new ArrayList<>();

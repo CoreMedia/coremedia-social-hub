@@ -115,9 +115,9 @@ public class AdapterFactoryService {
           }
         }
 
-        throw new IllegalArgumentException("No Social Hub Adapter found for type '" + adapterType + "'");
+        throw new IllegalArgumentException("No Social Media Hub Adapter found for type '" + adapterType + "'");
       } catch (Exception e) {
-        LOG.error("Social Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
+        LOG.error("Social Media Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
       }
     }
   }
