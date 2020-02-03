@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:MessageLinkListBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                           xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                           xmlns:local="com.coremedia.blueprint.social.composer.*"
+                           xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+                           xmlns:ui="exml:com.coremedia.ui.config"
+                           xmlns="exml:ext.config"
+                           dropAreaHandler="{openCollectionView}"
+                           selectedValuesExpression="{getSelectedVE()}"
+                           replaceOnDrop="true"
+                           linkListWrapper="{getLinkListWrapper(config)}">
+  <fx:Script><![CDATA[
+    import com.coremedia.cms.editor.sdk.actions.LinkListCopyAction;
+    import com.coremedia.cms.editor.sdk.actions.LinkListPasteAction;
+    import com.coremedia.ui.skins.ToolbarSkin;
+
+    public static const xtype:String = "com.coremedia.blueprint.social.studio.config.messageLinkList";
+    private var config:MessageLinkList;
+
+    public native function MessageLinkList(config:MessageLinkList = null);
+    ]]></fx:Script>
+
+  <local:plugins exml:mode="append">
+    <ui:ContextMenuPlugin>
+      <ui:contextMenu>
+        <editor:PropertyFieldContextMenu selectedItemsVE="{getSelectedVE()}"/>
+      </ui:contextMenu>
+    </ui:ContextMenuPlugin>
+  </local:plugins>
+  <local:tbar>
+    <Toolbar ui="{ToolbarSkin.FIELD}">
+      <items>
+        <ui:IconButton itemId="clearParentList"
+                       handler="{clearList}"
+                       disabled="true"
+                       iconCls="{resourceManager.getString('com.coremedia.cms.editor.sdk.actions.Actions', 'Action_deleteSelectedLinks_icon')}"
+                       text="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_link_btn_tooltip_text')}"
+                       tooltip="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'delete_link_btn_tooltip_text')}"/>
+        <ui:IconButton itemId="editTarget">
+          <ui:baseAction>
+            <editor:OpenInTabAction contentValueExpression="{getListExpression(config.valueExpression)}"/>
+          </ui:baseAction>
+        </ui:IconButton>
+        <TbSeparator/>
+        <ui:IconButton itemId="copy">
+          <ui:baseAction>
+            <ActionRef actionId="{LinkListCopyAction.ACTION_ID}"/>
+          </ui:baseAction>
+        </ui:IconButton>
+        <ui:IconButton itemId="paste">
+          <ui:baseAction>
+            <ActionRef actionId="{LinkListPasteAction.ACTION_ID}"/>
+          </ui:baseAction>
+        </ui:IconButton>
+      </items>
+    </Toolbar>
+  </local:tbar>
+</local:MessageLinkListBase>

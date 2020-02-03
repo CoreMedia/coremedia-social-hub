@@ -23,6 +23,7 @@
   <component class="com.coremedia.blueprint.social.composer.MessageChoiceEditor"/>
   <component class="com.coremedia.blueprint.social.composer.MessageTextareaEditor"/>
   <component class="com.coremedia.blueprint.social.composer.MessageTextEditor"/>
+  <component class="com.coremedia.blueprint.social.composer.MessageLinkList"/>
   <component class="com.coremedia.blueprint.social.notifications.SocialNotificationToast"/>
   <component class="com.coremedia.blueprint.social.scheduler.SchedulerContainer"/>
 </componentPackage>
