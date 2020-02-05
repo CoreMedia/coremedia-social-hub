@@ -18,6 +18,7 @@ import ext.Component;
 import ext.ComponentManager;
 import ext.Ext;
 import ext.button.Button;
+import ext.container.Container;
 import ext.event.Event;
 import ext.layout.container.ContainerLayout;
 import ext.panel.Panel;
@@ -25,6 +26,10 @@ import ext.toolbar.Toolbar;
 
 public class ChannelContainerBase extends Panel {
   public static const LOADER_ITEM_ID:String = "loader";
+  public static const DROP_LINK_ITEM_ID:String = "dropLink";
+  public static const DROP_CONTENT_ITEM_ID:String = "dropContent";
+  public static const DROP_CONTENT_AND_LINK_ITEM_ID:String = "dropContentAndLink";
+  public static const DROP_NOT_ALLOWED_ITEM_ID:String = "dropNotAllowed";
   public static const MESSAGE_WRAPPER_ITEM_ID:String = "messagesWrapper";
 
   [Bindable]
@@ -45,7 +50,9 @@ public class ChannelContainerBase extends Panel {
     addButtonStyleListeners();
 
     reload(false);
-    dropTarget = new AdapterDropAreaTarget(this, this as ChannelContainer, null, null, null, handleContentDrop);
+
+    var container:Container = queryById('statusSwitcher') as Container;
+    dropTarget = new AdapterDropAreaTarget(container, this as ChannelContainer, null, null, null, handleContentDrop);
   }
 
   override protected function afterLayout(layout:ContainerLayout):void {
@@ -177,7 +184,7 @@ public class ChannelContainerBase extends Panel {
     var pos:Array = that.getPosition();
     var composer:ComposerModelImpl = socialHubService.getComposerModel(adapter.getAdapterId()) as ComposerModelImpl;
     var baseConfig:Object = {
-      x: that.getX() + (that.getWidth() / 2) - (450 / 2) - 100, //100px offset from left favourites toolbar
+      x: that.getX() + (that.getWidth() / 2) - (450 / 2), //100px offset from left favourites toolbar?
       y: pos[1] + 14,
       adapter: adapter,
       channelContainer: that,

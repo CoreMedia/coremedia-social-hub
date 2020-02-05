@@ -108,7 +108,7 @@ public class ComposerBase extends Window {
   }
 
   private function scrollIntoView():void {
-    var x:Number = channelContainer.getX() + (channelContainer.getWidth() / 2) - (450 / 2) - 100; //100px offset from left favourites toolbar
+    var x:Number = channelContainer.getX() + (channelContainer.getWidth() / 2) - (450 / 2); //100px offset from left favourites toolbar?
     var y:Number = channelContainer.getPosition()[1] + 14;
     this.setPosition(x, y);
   }
