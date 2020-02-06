@@ -11,7 +11,7 @@ public interface ISocialHubService {
 
   function getComposerModel(adapterId:String):ComposerModel;
 
-  function initComposerModel(adapterId:String, contents:Array, callback:Function):void;
+  function initComposerModel(adapterId:String, contents:Array, composerMethod:String, callback:Function):void;
 
   function getMediaType(content:Content):String;
 

@@ -5,9 +5,12 @@ import com.coremedia.cap.content.Content;
 import com.coremedia.cms.editor.sdk.dragdrop.DragInfo;
 
 import ext.Component;
+import ext.Ext;
 import ext.dd.DragSource;
 import ext.dd.DropTarget;
 import ext.event.Event;
+
+import js.Element;
 
 import mx.resources.ResourceManager;
 
@@ -108,7 +111,9 @@ public class AdapterDropAreaTarget extends DropTarget {
   override public function notifyDrop(source:DragSource, e:Event, data:Object):Boolean {
     var dragInfo:DragInfo = DragInfo.makeDragInfo(data);
     var mayDrop:Boolean = allowDrop(dragInfo, data.view);
-    handleDrop && handleDrop(mayDrop, dragInfo.getContents(), data.view);
+
+    var composingType:String = findDropType(e.target);
+    handleDrop && handleDrop(mayDrop, dragInfo.getContents(), composingType, data.view);
     return mayDrop;
   }
 
@@ -118,6 +123,22 @@ public class AdapterDropAreaTarget extends DropTarget {
     var mayDrop:Boolean = allowDrop(dragInfo, data.view);
     handleOut && handleOut(mayDrop);
     super.notifyOut(source, e, data);
+  }
+
+  private function findDropType(e:Element):String {
+    var id:String =e.id;
+    var c:Component= Ext.getCmp(id);
+    while(c === undefined || c.getItemId().indexOf('composerType') === -1) {
+      e = e.parentNode;
+      id = e.id;
+      c = Ext.getCmp(id);
+    }
+
+    if(c) {
+      return c.getItemId();
+    }
+
+    return null;
   }
 }
 }

@@ -21,7 +21,7 @@ public class ComposerFactory {
     this.interceptors = interceptors;
   }
 
-  public void compose(SocialHubAdapter adapter, ComposerModel composerModel, Content content) {
+  public void compose(SocialHubAdapter adapter, ComposerModel composerModel, Content content, String composerMethod) {
     Collections.sort(interceptors, Comparator.comparingInt(ComposerModelInterceptor::getPriority));
     Collections.reverse(interceptors);
 

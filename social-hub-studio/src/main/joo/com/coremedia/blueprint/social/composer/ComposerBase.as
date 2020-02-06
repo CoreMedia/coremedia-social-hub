@@ -24,6 +24,9 @@ public class ComposerBase extends Window {
   public static const COMPOSER_WINDOW_ID:String = "composerWindow";
   private var scheduleDateExpression:ValueExpression;
 
+  public static const COMPOSER_TYPE_LINK:String = "composerTypeLink";
+  public static const COMPOSER_TYPE_CONTENT:String = "composerTypeContent";
+
   [Bindable]
   public var adapter:SocialHubAdapter;
 

@@ -26,8 +26,8 @@ import ext.toolbar.Toolbar;
 
 public class ChannelContainerBase extends Panel {
   public static const LOADER_ITEM_ID:String = "loader";
-  public static const DROP_LINK_ITEM_ID:String = "dropLink";
-  public static const DROP_CONTENT_ITEM_ID:String = "dropContent";
+  public static const DROP_LINK_ITEM_ID:String = ComposerBase.COMPOSER_TYPE_LINK;
+  public static const DROP_CONTENT_ITEM_ID:String = ComposerBase.COMPOSER_TYPE_CONTENT;
   public static const DROP_CONTENT_AND_LINK_ITEM_ID:String = "dropContentAndLink";
   public static const DROP_NOT_ALLOWED_ITEM_ID:String = "dropNotAllowed";
   public static const MESSAGE_WRAPPER_ITEM_ID:String = "messagesWrapper";
@@ -60,9 +60,9 @@ public class ChannelContainerBase extends Panel {
     refreshColors(adapter.getColor());
   }
 
-  private function handleContentDrop(mayDrop:Boolean, contents:Array):void {
+  private function handleContentDrop(mayDrop:Boolean, contents:Array, composingType:String):void {
     if (mayDrop) {
-      socialHubService.initComposerModel(adapter.getAdapterId(), contents, function ():void {
+      socialHubService.initComposerModel(adapter.getAdapterId(), contents, composingType,function ():void {
         composeMessage();
       });
     }

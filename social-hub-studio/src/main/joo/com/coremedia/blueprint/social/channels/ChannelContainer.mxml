@@ -7,7 +7,7 @@
                             xmlns:messages="com.coremedia.blueprint.social.messages.*"
                             minWidth="500"
                             id_="{config.adapter.getAdapterId()}"
-                            style="border-radius: 8px;"
+                            style="border-radius: 6px;"
                             ui="{PanelSkin.ACCORDION.getSkin()}">
   <fx:Script><![CDATA[
     import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
@@ -67,7 +67,7 @@
         </Panel>
         <Panel itemId="{DROP_CONTENT_AND_LINK_ITEM_ID}" style="border: dashed 3px #919191;">
           <items>
-            <Container flex="1">
+            <Container flex="1" itemId="{DROP_LINK_ITEM_ID}">
               <items>
                 <Container height="100"/>
                 <ui:IconDisplayField scale="large"
@@ -83,7 +83,7 @@
                 <layout_VBox align="middle" />
               </layout>
             </Container>
-            <Container flex="1" style="border-top: dashed 3px #919191;">
+            <Container itemId="{DROP_CONTENT_ITEM_ID}" flex="1" style="border-top: dashed 3px #919191;">
               <items>
                 <Container height="100"/>
                 <ui:IconDisplayField scale="large"
@@ -193,7 +193,7 @@
           </ui:plugins>
         </ui:IconButton>
         <ui:MenuIconButton itemId="{COLOR_CHOOSER_BUTTON_ITEM_ID}"
-                           style="border-top-right-radius: 6px;"
+                           style="border-top-right-radius: 3px;"
                            ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'change_color')}"
                            ui="{ButtonSkin.INVERTED_OUTLINE.getSkin()}"
                            arrowVisible="false"
