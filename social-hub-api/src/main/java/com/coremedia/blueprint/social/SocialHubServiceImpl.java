@@ -40,9 +40,6 @@ public class SocialHubServiceImpl implements SocialHubService {
   private static final Logger LOG = LoggerFactory.getLogger(SocialHubServiceImpl.class);
   private static final String BLOB_DEFAULT_PROPERTY = "data";
   private static final String MEDIA_MAPPING = "mediaMapping";
-  private static final String PAGE_DOCUMENT_TYOE = "pageDocumentType";
-  private static final String SEGMENT_PROPERTY = "segmentProperty";
-  private static final String CHILDREN_PROPERTY = "childrenProperty";
   private static final String LIVE_CAE_URL = "liveCaeUrl";
 
   @Autowired

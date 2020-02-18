@@ -1,14 +1,15 @@
 package com.coremedia.blueprint.social.adapter.youtube;
 
 import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
-import com.coremedia.blueprint.social.api.ComposerType;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.blueprint.social.api.SocialNetworkType;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 import com.coremedia.xml.Markup;
 import com.coremedia.xml.MarkupUtil;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,11 @@ import java.util.Arrays;
  */
 @Component
 public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor {
+  private SocialHubService socialHubService;
+
+  public YouTubeComposerModelInterceptor(SocialHubService socialHubService) {
+    this.socialHubService = socialHubService;
+  }
 
   @Override
   public SocialNetworkType getSocialNetworkType() {
@@ -26,7 +32,7 @@ public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor
   }
 
   @Override
-  public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content, ComposerType composerType) {
+  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if(messageProperty.getName().equals("title")) {
       return content.getString("title");
     }
@@ -54,6 +60,17 @@ public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor
         }
       }
       return text;
+    }
+
+    return null;
+  }
+
+
+  @Nullable
+  @Override
+  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+    if (messageProperty.getName().equals("description")) {
+      return socialHubService.buildLiveUrl(content.getId(), false);
     }
 
     return null;

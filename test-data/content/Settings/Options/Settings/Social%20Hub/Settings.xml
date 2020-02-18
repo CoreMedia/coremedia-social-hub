@@ -12,9 +12,6 @@
         </Struct>
       </StructProperty>
       <StringProperty Name="liveCaeUrl"></StringProperty>
-      <StringProperty Name="segmentProperty">segment</StringProperty>
-      <StringProperty Name="childrenProperty">children</StringProperty>
-      <StringProperty Name="pageDocumentType">CMChannel</StringProperty>
     </Struct>
   </settings>
   <identifier></identifier>

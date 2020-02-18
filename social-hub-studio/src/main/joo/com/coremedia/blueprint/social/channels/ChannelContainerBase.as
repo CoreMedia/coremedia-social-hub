@@ -293,6 +293,5 @@ public class ChannelContainerBase extends Panel {
 
     return resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_history_title');
   }
-
 }
 }

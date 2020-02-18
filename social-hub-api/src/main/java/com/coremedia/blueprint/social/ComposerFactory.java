@@ -39,8 +39,14 @@ public class ComposerFactory {
 
       List<MessageProperty> messageProperties = adapter.getMessageProperties();
       for (MessageProperty messageProperty : messageProperties) {
-        Object value = interceptor.intercept(adapter, messageProperty, content, composerType);
-        composerModel.set(messageProperty.getName(), value, false);
+        if(composerType.equals(ComposerType.COMPOSE_TYPE_CONTENT)) {
+          Object value = interceptor.composeContent(adapter, messageProperty, content);
+          composerModel.set(messageProperty.getName(), value, false);
+        }
+        else {
+          Object value = interceptor.composeLink(adapter, messageProperty, content);
+          composerModel.set(messageProperty.getName(), value, false);
+        }
       }
     }
   }

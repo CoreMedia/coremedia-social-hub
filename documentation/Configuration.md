@@ -26,11 +26,7 @@ information that are required when media should be extracted from content for so
           <StringProperty Name="CMMedia">data</StringProperty>
         </Struct>
       </StructProperty>
-      <!--//TODO not yet supported, check github isses for details -->
       <StringProperty Name="liveCaeUrl">YOUR_LIVE_CAE</StringProperty>
-      <StringProperty Name="segmentProperty">segment</StringProperty>
-      <StringProperty Name="childrenProperty">children</StringProperty>
-      <StringProperty Name="pageDocumentType">CMChannel</StringProperty>
     </Struct>
   </settings>
   <identifier></identifier>

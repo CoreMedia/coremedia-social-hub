@@ -1,7 +1,6 @@
 package com.coremedia.blueprint.social.adapter.twitter;
 
 import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
-import com.coremedia.blueprint.social.api.ComposerType;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialHubService;
@@ -9,6 +8,7 @@ import com.coremedia.blueprint.social.api.SocialNetworkType;
 import com.coremedia.cap.content.Content;
 import com.coremedia.xml.Markup;
 import com.coremedia.xml.MarkupUtil;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -30,26 +30,7 @@ public class TwitterComposerModelInterceptor implements ComposerModelInterceptor
   }
 
   @Override
-  public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content, ComposerType composerType) {
-    switch (composerType) {
-      case COMPOSE_TYPE_LINK:
-        return composeLink(messageProperty, content);
-      case COMPOSE_TYPE_CONTENT:
-        return composeContent(messageProperty, content);
-      default:
-        return null;
-    }
-  }
-
-  private Object composeLink(MessageProperty messageProperty, Content content) {
-    if (messageProperty.getName().equals("text")) {
-      return socialHubService.buildLiveUrl(content.getId(), false);
-    }
-
-    return null;
-  }
-
-  private Object composeContent(MessageProperty messageProperty, Content content) {
+  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if (messageProperty.getName().equals("assets")) {
       return content.getLinks("pictures");
     }
@@ -68,6 +49,16 @@ public class TwitterComposerModelInterceptor implements ComposerModelInterceptor
         }
       }
       return text;
+    }
+
+    return null;
+  }
+
+  @Nullable
+  @Override
+  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+    if (messageProperty.getName().equals("text")) {
+      return socialHubService.buildLiveUrl(content.getId(), false);
     }
 
     return null;
