@@ -49,16 +49,15 @@ public interface SocialHubService {
   String shortLink(@NonNull String longUrl);
 
   /**
-   * //TODO not supported by the UI yet
    * Returns the live url for the given content, used to link
    * content in social media posts
    *
-   * @param content the content to publish the URl for
+   * @param contentId the content id to publish the URl for
    * @param shorten true to additionally shorten the live link
    * @return null if the live CAE or the link shorting is not configured
    */
   @Nullable
-  String buildLiveUrl(@NonNull Content content, boolean shorten);
+  String buildLiveUrl(@NonNull String contentId, boolean shorten);
 
   /**
    * Returns the media item of the given content.

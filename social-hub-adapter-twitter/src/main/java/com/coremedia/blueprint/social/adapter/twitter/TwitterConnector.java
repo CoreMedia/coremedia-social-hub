@@ -32,12 +32,11 @@ public class TwitterConnector extends AbstractConnector {
   private Twitter twitter;
   private TwitterSocialHubAdapter adapter;
   private TwitterConnectorSettings settings;
-  private SocialHubService socialHubService;
 
   public TwitterConnector(@NonNull TwitterConnectorSettings settings,
                           @NonNull SocialHubService socialHubService) {
+    super(socialHubService);
     this.settings = settings;
-    this.socialHubService = socialHubService;
   }
 
   public TwitterSocialHubAdapter getAdapter() {
@@ -138,7 +137,8 @@ public class TwitterConnector extends AbstractConnector {
         }
       }
 
-      String message = composerModel.getPlainText("text");
+      String xml = composerModel.getStringProperty("text");
+      String message = asPlaintextWithLinks(xml);
       StatusUpdate statusUpdate = new StatusUpdate(message);
       if (!mediaIds.isEmpty()) {
         statusUpdate.setMediaIds(mediaIds.stream().mapToLong(i -> i).toArray());

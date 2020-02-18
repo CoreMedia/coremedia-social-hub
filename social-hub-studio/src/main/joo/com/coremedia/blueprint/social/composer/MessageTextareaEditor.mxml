@@ -21,15 +21,14 @@
     <DisplayField value="{config.property.getDisplayName()}" ui="{DisplayFieldSkin.BOLD.getSkin()}"/>
     <Container>
       <items>
-        <!--<richtext:InternalLinkButton itemId="{INTERNAL_LINK_BUTTON_ITEM_ID}"-->
-                                     <!--bindTo="{config.bindTo}"-->
-                                     <!--richTextWindowGroup="{getRichTextWindowGroup()}"-->
-                                     <!--ckEditorValueExpression="{getCKEditorValueExpression()}"-->
-                                     <!--forceReadOnlyValueExpression="{ValueExpressionFactory.createFromValue(false)}"/>-->
         <ui:IconButton itemId="{EXTERNAL_LINK_BUTTON_ITEM_ID}"
                        handler="{openExternalLinkDialog}"
                        tooltip="{resourceManager.getString('com.coremedia.ui.ckeditor.CKEditor', 'cmlink_tooltip')}"
                        iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'add_external_link')}"/>
+        <ui:IconButton itemId="{INTERNAL_LINK_BUTTON_ITEM_ID}"
+                       handler="{openInternalLinkDialog}"
+                       tooltip="{resourceManager.getString('com.coremedia.ui.ckeditor.CKEditor', 'cminternallink_tooltip')}"
+                       iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'add_internal_link')}"/>
         <Container flex="1"/>
         <composer:MessageCharacterCounter bindTo="{config.bindTo}" adapter="{config.adapter}"/>
       </items>

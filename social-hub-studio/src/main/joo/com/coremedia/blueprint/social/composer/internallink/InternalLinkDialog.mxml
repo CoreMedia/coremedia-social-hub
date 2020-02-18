@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:InternalLinkDialogBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+                              xmlns:local="com.coremedia.blueprint.social.composer.internallink.*"
+                              xmlns:exml="http://www.jangaroo.net/exml/0.8"
+                              xmlns="exml:ext.config"
+                              xmlns:ui="exml:com.coremedia.ui.config"
+                              xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
+                              title="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'internal_link_dialog_title')}"
+                              width="400"
+                              closable="false"
+                              header="{false}"
+                              resizable="false"
+                              constrainHeader="true"
+                              ui="{WindowSkin.GRID_200_LIGHT.getSkin()}">
+  <fx:Metadata>
+    [ResourceBundle('com.coremedia.cms.editor.Editor')]
+  </fx:Metadata>
+  <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.ButtonSkin;
+    import com.coremedia.ui.skins.PanelSkin;
+    import com.coremedia.ui.skins.WindowSkin;
+
+    private var config:InternalLinkDialog;
+
+    public native function InternalLinkDialog(config:InternalLinkDialog = null);
+    ]]></fx:Script>
+
+  <local:items>
+    <FieldContainer
+            labelAlign="top"
+            labelSeparator=""
+            fieldLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'internal_link_dialog_drop_area_label')}">
+      <items>
+        <editor:SingleLinkField itemId="linkField"
+                                flex="1"
+                                ui="{PanelSkin.FRAME.getSkin()}"
+                                linkContentType="CMLinkable"
+                                valueExpression="{getContentExpression()}">
+        </editor:SingleLinkField>
+        <ui:IconButton itemId="removeLinkItemButton"
+                       handler="{unlink}"
+                       text="{resourceManager.getString('com.coremedia.ui.ckeditor.CKEditor', 'unlink_text')}"
+                       iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'remove')}">
+          <ui:plugins>
+            <ui:BindPropertyPlugin componentProperty="disabled"
+                                   transformer="{enabledTransformer}"
+                                   bindTo="{getContentExpression()}">
+            </ui:BindPropertyPlugin>
+          </ui:plugins>
+        </ui:IconButton>
+      </items>
+      <plugins>
+        <ui:HorizontalSpacingPlugin/>
+      </plugins>
+      <layout>
+        <layout_HBox align="stretch"/>
+      </layout>
+    </FieldContainer>
+    <Container>
+      <items>
+        <Button itemId="internalLinkSubmitButton"
+                ui="{ButtonSkin.INLINE.getSkin()}"
+                scale="small"
+                text="{resourceManager.getString('com.coremedia.ui.ckeditor.CKEditor', 'internalLinkMenuSubmitBtn')}"
+                handler="{function():void {close();}}"/>
+      </items>
+      <layout>
+        <layout_HBox align="stretch" pack="end"/>
+      </layout>
+    </Container>
+  </local:items>
+  <local:layout>
+    <layout_VBox align="stretch"/>
+  </local:layout>
+</local:InternalLinkDialogBase>

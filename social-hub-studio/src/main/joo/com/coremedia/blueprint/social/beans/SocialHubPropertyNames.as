@@ -49,6 +49,10 @@ public class SocialHubPropertyNames {
   public static const COMPOSER_ADAPTER_TYPE:String = "adapterType";
   public static const COMPOSER_ADAPTER_ID:String = "adapterId";
 
+  public static const COMPOSER_TYPE:String = "COMPOSE_TYPE_";
+  public static const COMPOSER_TYPE_LINK:String = COMPOSER_TYPE + "LINK";
+  public static const COMPOSER_TYPE_CONTENT:String = COMPOSER_TYPE + "CONTENT";
+
 
 }
 }

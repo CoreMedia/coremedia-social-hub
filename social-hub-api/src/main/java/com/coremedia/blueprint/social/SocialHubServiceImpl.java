@@ -11,6 +11,7 @@ import com.coremedia.blueprint.social.config.SocialHubAdaptersCacheKey;
 import com.coremedia.cache.Cache;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
 import com.coremedia.cap.transform.TransformImageService;
@@ -63,6 +64,9 @@ public class SocialHubServiceImpl implements SocialHubService {
 
   @Autowired
   private TransformImageService transformImageService;
+
+  @Autowired
+  private ContentRepository contentRepository;
 
 
   @Override
@@ -143,7 +147,8 @@ public class SocialHubServiceImpl implements SocialHubService {
 
   @Override
   @Nullable
-  public String buildLiveUrl(@NonNull Content content, boolean shorten) {
+  public String buildLiveUrl(@NonNull String contentId, boolean shorten) {
+    Content content= contentRepository.getContent(contentId);
     SettingsCacheKey cacheKey = new SettingsCacheKey(settingsFactory, config);
     Map<String, Object> settings = cache.get(cacheKey);
 

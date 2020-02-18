@@ -1,6 +1,7 @@
 package com.coremedia.blueprint.social.adapter.pinterest;
 
 import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
+import com.coremedia.blueprint.social.api.ComposerType;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialNetworkType;
@@ -22,7 +23,7 @@ public class PinterestComposerModelInterceptor implements ComposerModelIntercept
   }
 
   @Override
-  public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content, ComposerType composerType) {
     if(messageProperty.getName().equals("images")) {
       return content.getLinks("pictures");
     }

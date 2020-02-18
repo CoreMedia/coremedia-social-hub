@@ -3,6 +3,7 @@ package com.coremedia.blueprint.studio.social;
 import com.coremedia.blueprint.social.ComposerFactory;
 import com.coremedia.blueprint.social.ComposerModelImpl;
 import com.coremedia.blueprint.social.api.ComposerModel;
+import com.coremedia.blueprint.social.api.ComposerType;
 import com.coremedia.blueprint.social.api.Message;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.cap.common.IdHelper;
@@ -65,6 +66,7 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
                                @RequestParam("contentId") Integer contentId,
                                @RequestParam("composerMethod") String composerMethod) {
     Content content = contentRepository.getContent(IdHelper.formatContentId(contentId));
+    ComposerType composerType = ComposerType.valueOf(composerMethod);
 
     Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(adapterId);
     if(adapter.isPresent()) {
@@ -72,7 +74,7 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
       ComposerModelImpl model = new ComposerModelImpl(id, adapterId, socialHubAdapter.getType().name());
       messageCache.put(getKey(adapterId, id), model);
 
-      composerFactory.compose(socialHubAdapter, model, content, composerMethod);
+      composerFactory.compose(socialHubAdapter, model, content, composerType);
       return true;
     }
 

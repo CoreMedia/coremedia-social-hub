@@ -1,8 +1,10 @@
 package com.coremedia.blueprint.social.channels {
 import com.coremedia.blueprint.social.SocialHubMainTab;
+import com.coremedia.blueprint.social.SocialHub_properties;
 import com.coremedia.blueprint.social.beans.ComposerModelImpl;
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.SocialHubAdapterImpl;
+import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
 import com.coremedia.blueprint.social.composer.Composer;
 import com.coremedia.blueprint.social.composer.ComposerBase;
 import com.coremedia.blueprint.social.messages.MessagesContainer;
@@ -26,8 +28,8 @@ import ext.toolbar.Toolbar;
 
 public class ChannelContainerBase extends Panel {
   public static const LOADER_ITEM_ID:String = "loader";
-  public static const DROP_LINK_ITEM_ID:String = ComposerBase.COMPOSER_TYPE_LINK;
-  public static const DROP_CONTENT_ITEM_ID:String = ComposerBase.COMPOSER_TYPE_CONTENT;
+  public static const DROP_LINK_ITEM_ID:String = SocialHubPropertyNames.COMPOSER_TYPE_LINK;
+  public static const DROP_CONTENT_ITEM_ID:String = SocialHubPropertyNames.COMPOSER_TYPE_CONTENT;
   public static const DROP_CONTENT_AND_LINK_ITEM_ID:String = "dropContentAndLink";
   public static const DROP_NOT_ALLOWED_ITEM_ID:String = "dropNotAllowed";
   public static const MESSAGE_WRAPPER_ITEM_ID:String = "messagesWrapper";

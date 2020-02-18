@@ -1,6 +1,7 @@
 package com.coremedia.blueprint.social.adapter.youtube;
 
 import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
+import com.coremedia.blueprint.social.api.ComposerType;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialNetworkType;
@@ -25,7 +26,7 @@ public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor
   }
 
   @Override
-  public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object intercept(SocialHubAdapter model, MessageProperty messageProperty, Content content, ComposerType composerType) {
     if(messageProperty.getName().equals("title")) {
       return content.getString("title");
     }

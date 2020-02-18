@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social.channels {
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
+import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
 import com.coremedia.blueprint.social.composer.ComposerBase;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cms.editor.sdk.dragdrop.DragInfo;
@@ -113,8 +114,12 @@ public class AdapterDropAreaTarget extends DropTarget {
     var mayDrop:Boolean = allowDrop(dragInfo, data.view);
 
     var composingType:String = findDropType(e.target);
-    handleDrop && handleDrop(mayDrop, dragInfo.getContents(), composingType, data.view);
-    return mayDrop;
+    if(composingType !== null) {
+      handleDrop && handleDrop(mayDrop, dragInfo.getContents(), composingType, data.view);
+      return mayDrop;
+    }
+
+    return false;
   }
 
   override public function notifyOut(source:DragSource, e:Event, data:Object):void {
@@ -128,8 +133,11 @@ public class AdapterDropAreaTarget extends DropTarget {
   private function findDropType(e:Element):String {
     var id:String =e.id;
     var c:Component= Ext.getCmp(id);
-    while(c === undefined || c.getItemId().indexOf('composerType') === -1) {
+    while(c === undefined || c.getItemId().indexOf(SocialHubPropertyNames.COMPOSER_TYPE) === -1) {
       e = e.parentNode;
+      if(e === null) {
+        break;
+      }
       id = e.id;
       c = Ext.getCmp(id);
     }

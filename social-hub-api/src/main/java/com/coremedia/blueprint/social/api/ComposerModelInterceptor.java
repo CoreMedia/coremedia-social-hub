@@ -12,7 +12,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 public interface ComposerModelInterceptor {
 
   @Nullable
-  Object intercept(SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
+  Object intercept(SocialHubAdapter adapter, MessageProperty messageProperty, Content content, ComposerType composerType);
 
   /**
    * The content type the interceptor should be applied to.
