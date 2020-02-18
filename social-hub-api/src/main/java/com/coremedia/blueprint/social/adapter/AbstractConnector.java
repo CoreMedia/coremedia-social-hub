@@ -40,6 +40,10 @@ public abstract class AbstractConnector implements SocialHubConnector {
   }
 
   protected String asPlaintextWithLinks(String xml) {
+    if(!xml.startsWith("<")) {
+      return xml;
+    }
+
     Document document = Jsoup.parse(xml, "UTF-8");
     Elements links = document.getElementsByTag("a");
     String result =  xml;
