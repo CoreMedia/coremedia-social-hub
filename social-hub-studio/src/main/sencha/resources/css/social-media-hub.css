@@ -1,0 +1,8 @@
+.channel-drop-container {
+  border: dashed 3px #919191;
+  background-color: #FFF !important;
+}
+
+.channel-drop-container:hover {
+  background-color: transparent !important;
+}

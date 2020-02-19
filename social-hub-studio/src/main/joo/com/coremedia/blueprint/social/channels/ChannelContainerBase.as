@@ -1,6 +1,5 @@
 package com.coremedia.blueprint.social.channels {
 import com.coremedia.blueprint.social.SocialHubMainTab;
-import com.coremedia.blueprint.social.SocialHub_properties;
 import com.coremedia.blueprint.social.beans.ComposerModelImpl;
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.SocialHubAdapterImpl;
