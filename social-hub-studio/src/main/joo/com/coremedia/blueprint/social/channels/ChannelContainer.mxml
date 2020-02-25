@@ -7,7 +7,7 @@
                             xmlns:messages="com.coremedia.blueprint.social.messages.*"
                             minWidth="500"
                             id_="{config.adapter.getAdapterId()}"
-                            style="border-radius: 8px;"
+                            style="border-radius: 6px;"
                             ui="{PanelSkin.ACCORDION.getSkin()}">
   <fx:Script><![CDATA[
     import com.coremedia.blueprint.social.beans.SocialHubPropertyNames;
@@ -30,11 +30,100 @@
     ]]></fx:Script>
 
   <local:items>
-    <ui:SwitchingContainer flex="1" activeItemValueExpression="{getActiveItemExpression()}">
+    <ui:SwitchingContainer itemId="statusSwitcher" flex="1" activeItemValueExpression="{getActiveItemExpression()}">
       <ui:items>
         <Panel itemId="{LOADER_ITEM_ID}"/>
+        <Panel itemId="{DROP_LINK_ITEM_ID}" cls="channel-drop-container">
+          <items>
+            <Container height="100"/>
+            <ui:IconDisplayField scale="large"
+                                 iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'send_link_to_content_set')}"/>
+            <Container height="12"/>
+            <DisplayField
+                    html="true"
+                    value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_drop_message_link')}"
+                    ui="{null}"
+                    style="font-size: 18px;line-height: 22px;text-align:center;"/>
+          </items>
+          <layout>
+            <layout_VBox align="middle"/>
+          </layout>
+        </Panel>
+        <Panel itemId="{DROP_CONTENT_ITEM_ID}" cls="channel-drop-container">
+          <items>
+            <Container height="100"/>
+            <ui:IconDisplayField scale="large"
+                                 iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'align_justified')}"/>
+            <Container height="12"/>
+            <DisplayField
+                    html="true"
+                    value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_drop_message_content')}"
+                    ui="{null}"
+                    style="font-size: 18px;line-height: 22px;text-align:center;"/>
+          </items>
+          <layout>
+            <layout_VBox align="middle"/>
+          </layout>
+        </Panel>
+        <Panel itemId="{DROP_CONTENT_AND_LINK_ITEM_ID}">
+          <items>
+            <Container flex="1" itemId="{DROP_LINK_ITEM_ID}" cls="channel-drop-container">
+              <items>
+                <Container height="100"/>
+                <ui:IconDisplayField scale="large"
+                                     iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'send_link_to_content_set')}"/>
+                <Container height="12"/>
+                <DisplayField
+                        html="true"
+                        value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_drop_message_link')}"
+                        ui="{null}"
+                        style="font-size: 18px;line-height: 22px;text-align:center;"/>
+              </items>
+              <layout>
+                <layout_VBox align="middle" />
+              </layout>
+            </Container>
+            <Container itemId="{DROP_CONTENT_ITEM_ID}" flex="1" cls="channel-drop-container">
+              <items>
+                <Container height="100"/>
+                <ui:IconDisplayField scale="large"
+                                     iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'align_justified')}"/>
+                <Container height="12"/>
+                <DisplayField
+                        html="true"
+                        value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_drop_message_content')}"
+                        ui="{null}"
+                        style="font-size: 18px;line-height: 22px;text-align:center;"/>
+              </items>
+              <layout>
+                <layout_VBox align="middle" />
+              </layout>
+            </Container>
+          </items>
+          <layout>
+            <layout_VBox align="stretch"/>
+          </layout>
+        </Panel>
+        <Panel itemId="{DROP_NOT_ALLOWED_ITEM_ID}" cls="channel-drop-container">
+          <items>
+            <Container height="100"/>
+            <ui:IconDisplayField scale="large"
+                                 iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons', 'forbidden')}"/>
+            <Container height="12"/>
+            <DisplayField
+                    html="true"
+                    value="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_drop_not_allowed_message')}"
+                    ui="{null}"
+                    style="font-size: 18px;line-height: 22px;text-align:center;"/>
+          </items>
+          <layout>
+            <layout_VBox align="middle"/>
+          </layout>
+        </Panel>
         <Panel scrollable="true"
-               itemId="{MESSAGE_WRAPPER_ITEM_ID}" flex="1" ui="{PanelSkin.GRID_200.getSkin()}"
+               itemId="{MESSAGE_WRAPPER_ITEM_ID}"
+               flex="1"
+               ui="{PanelSkin.GRID_200.getSkin()}"
                listeners="{{'afterlayout': fixLayout}}"
                style="border-left: solid 1px #dcdbdb; top: -1px;">
           <items>
@@ -92,21 +181,21 @@
         <ui:IconButton iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'reload')}"
                        ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'channel_reload')}"
                        handler="{forceReload}"
-                       ui="{ButtonSkin.MAIN_NAVIGATION.getSkin()}"/>
+                       ui="{ButtonSkin.INVERTED_OUTLINE.getSkin()}"/>
         <ui:IconButton iconCls="{ResourceManager.getInstance().getString('com.coremedia.icons.CoreIcons', 'add')}"
                        ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'create_message')}"
                        itemId="{COMPOSER_BUTTON_ITEM_ID}"
                        handler="{composeMessage}"
                        enableToggle="true"
-                       ui="{ButtonSkin.MAIN_NAVIGATION.getSkin()}">
+                       ui="{ButtonSkin.INVERTED_OUTLINE.getSkin()}">
           <ui:plugins>
             <ui:BindVisibilityPlugin bindTo="{ValueExpressionFactory.createFromValue(!config.adapter.isReadOnly())}"/>
           </ui:plugins>
         </ui:IconButton>
         <ui:MenuIconButton itemId="{COLOR_CHOOSER_BUTTON_ITEM_ID}"
-                           style="border-top-right-radius: 6px;"
+                           style="border-top-right-radius: 3px;"
                            ariaLabel="{resourceManager.getString('com.coremedia.blueprint.social.SocialHub', 'change_color')}"
-                           ui="{ButtonSkin.MAIN_NAVIGATION.getSkin()}"
+                           ui="{ButtonSkin.INVERTED_OUTLINE.getSkin()}"
                            arrowVisible="false"
                            iconCls="{resourceManager.getString('com.coremedia.icons.CoreIcons','arrow_down')}">
           <ui:menu>

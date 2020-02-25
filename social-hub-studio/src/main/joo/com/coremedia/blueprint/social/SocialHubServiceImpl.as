@@ -82,7 +82,7 @@ public class SocialHubServiceImpl implements ISocialHubService {
   }
 
 
-  public function initComposerModel(adapterId:String, contents:Array, callback:Function):void {
+  public function initComposerModel(adapterId:String, contents:Array, composerMethod:String, callback:Function):void {
     var uriPath:String = SESSION.getUser().getUriPath();
     var userId:String = uriPath.substr(uriPath.lastIndexOf('/') + 1, uriPath.length);
     var id:Number = null;
@@ -93,7 +93,8 @@ public class SocialHubServiceImpl implements ISocialHubService {
     var method:RemoteServiceMethod = new RemoteServiceMethod('socialhub/composermodel/' + userId + '/' + adapterId + '/compose', 'POST');
     method.request(
             {
-              'contentId': id
+              'contentId': id,
+              'composerMethod' : composerMethod
             },
             function (response:RemoteServiceMethodResponse):void {
               var result:String = response.response.responseText;

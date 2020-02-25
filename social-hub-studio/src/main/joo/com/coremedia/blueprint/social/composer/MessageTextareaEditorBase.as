@@ -3,6 +3,7 @@ package com.coremedia.blueprint.social.composer {
 import com.coremedia.blueprint.social.beans.SocialHubAdapter;
 import com.coremedia.blueprint.social.beans.MessageProperty;
 import com.coremedia.blueprint.social.composer.externallink.ExternalLinkDialog;
+import com.coremedia.blueprint.social.composer.internallink.InternalLinkDialog;
 import com.coremedia.cms.editor.sdk.util.RichTextPlainTextTransformer;
 import com.coremedia.ui.ckeditor.RichTextArea;
 import com.coremedia.ui.data.ValueExpression;
@@ -29,6 +30,9 @@ public class MessageTextareaEditorBase extends Panel implements MessageFieldEdit
 
   private var ckEditorValueExpression:ValueExpression;
   private var richTextWindowGroup:ZIndexManager;
+
+  private var externalLinkDialog:ExternalLinkDialog = null;
+  private var internalLinkDialog:InternalLinkDialog = null;
 
   public function MessageTextareaEditorBase(config:MessageTextareaEditorBase = null) {
     super(config);
@@ -75,11 +79,26 @@ public class MessageTextareaEditorBase extends Panel implements MessageFieldEdit
   }
 
   protected function openExternalLinkDialog():void {
-    var dialog:ExternalLinkDialog = Ext.create(ExternalLinkDialog, {
+    externalLinkDialog = Ext.create(ExternalLinkDialog, {
       messageEditor: this
     });
-    dialog.show();
+    externalLinkDialog.show();
   }
+
+  protected function openInternalLinkDialog():void {
+    if(internalLinkDialog && internalLinkDialog.isVisible()) {
+      internalLinkDialog.destroy();
+    }
+
+    internalLinkDialog = Ext.create(InternalLinkDialog, {
+      messageEditor: this,
+      renderToParent: this,
+      x: this.getX() + 24,
+      y: this.getY() + 48
+    });
+    internalLinkDialog.show();
+  }
+
 
   public function getRichtextEditor():RichTextArea {
     return queryById("richtextEditor") as RichTextArea;
@@ -104,8 +123,15 @@ public class MessageTextareaEditorBase extends Panel implements MessageFieldEdit
     return null;
   }
 
-
   override protected function onDestroy():void {
+    if(externalLinkDialog !== null) {
+      externalLinkDialog.destroy();
+    }
+
+    if(internalLinkDialog !== null) {
+      internalLinkDialog.destroy();
+    }
+
     super.onDestroy();
     bindTo.removeChangeListener(valueChanged);
   }

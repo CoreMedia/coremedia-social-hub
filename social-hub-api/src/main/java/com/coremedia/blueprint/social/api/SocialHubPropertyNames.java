@@ -14,4 +14,7 @@ public class SocialHubPropertyNames {
   public final static String ENABLED = "enabled";
   public final static String TYPE = "type";
   public final static String ID = "id";
+
+  public final static String COMPOSER_TYPE_LINK = "composerTypeLink";
+  public final static String COMPOSER_TYPE_CONTENT = "composerTypeContent";
 }

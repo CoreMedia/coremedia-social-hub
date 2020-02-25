@@ -65,6 +65,9 @@
               <uri>exml:com.coremedia.blueprint.studio.social.config</uri>
             </namespace>
           </namespaces>
+          <additionalCssNonBundle>
+            <value>resources/css/social-media-hub.css</value>
+          </additionalCssNonBundle>
         </configuration>
       </plugin>
 

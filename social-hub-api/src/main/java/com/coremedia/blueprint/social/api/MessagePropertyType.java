@@ -11,5 +11,6 @@ public enum MessagePropertyType {
   MARKUP,
   DATE,
   ASSETLIST,
-  CHOICE
+  CHOICE,
+  LINK
 }

@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import javax.activation.MimeType;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,9 +40,6 @@ public class SocialHubServiceImpl implements SocialHubService {
   private static final Logger LOG = LoggerFactory.getLogger(SocialHubServiceImpl.class);
   private static final String BLOB_DEFAULT_PROPERTY = "data";
   private static final String MEDIA_MAPPING = "mediaMapping";
-  private static final String PAGE_DOCUMENT_TYOE = "pageDocumentType";
-  private static final String SEGMENT_PROPERTY = "segmentProperty";
-  private static final String CHILDREN_PROPERTY = "childrenProperty";
   private static final String LIVE_CAE_URL = "liveCaeUrl";
 
   @Autowired
@@ -143,35 +139,18 @@ public class SocialHubServiceImpl implements SocialHubService {
 
   @Override
   @Nullable
-  public String buildLiveUrl(@NonNull Content content, boolean shorten) {
+  public String buildLiveUrl(@NonNull String contentId, boolean shorten) {
     SettingsCacheKey cacheKey = new SettingsCacheKey(settingsFactory, config);
     Map<String, Object> settings = cache.get(cacheKey);
 
     String caeUrl = (String) settings.get(LIVE_CAE_URL);
+
     if(StringUtils.isEmpty(caeUrl)) {
+      LOG.error("Failed to build content link for Social Media Hub: no CAE configured for link building.");
       return null;
     }
 
-    String segmentProperty  = (String) settings.getOrDefault(SEGMENT_PROPERTY, "segment");
-    String childrenProperty = (String) settings.getOrDefault(CHILDREN_PROPERTY, "children");
-    String pageType = (String) settings.getOrDefault(PAGE_DOCUMENT_TYOE, "CMChannel");
-
-    List<String> segments = new ArrayList<>();
-    segments.add(content.getString(segmentProperty));
-
-    Content parent = content.getReferrerWithDescriptor(pageType, childrenProperty);
-    while (parent != null) {
-      segments.add(parent.getString(segmentProperty));
-      parent = parent.getReferrerWithDescriptor(pageType, childrenProperty);
-    }
-
-    Collections.reverse(segments);
-    String fullSegment = String.join("/", segments);
-    String fullUrl = caeUrl + fullSegment;
-    if (shorten) {
-      return shortLink(fullUrl);
-    }
-    return fullUrl;
+    return new ContentLinkBuilder().buildLink(caeUrl, contentId);
   }
 
   private Optional<MediaSource> forBlob(@NonNull Content content, @Nullable Blob blob) {

@@ -9,6 +9,7 @@ import com.coremedia.blueprint.social.api.Message;
 import com.coremedia.blueprint.social.api.MessageState;
 import com.coremedia.blueprint.social.api.PrivacyStatus;
 import com.coremedia.blueprint.social.api.PublicationResult;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.cache.Cache;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
@@ -67,7 +68,8 @@ public class YouTubeConnector extends AbstractConnector {
 
   private YouTubeConnectorSettings settings;
 
-  public YouTubeConnector(@NonNull YouTubeConnectorSettings settings, @NonNull Cache cache) {
+  public YouTubeConnector(@NonNull SocialHubService socialHubService, @NonNull YouTubeConnectorSettings settings, @NonNull Cache cache) {
+    super(socialHubService);
     this.settings = settings;
     this.cache = cache;
   }
@@ -170,7 +172,9 @@ public class YouTubeConnector extends AbstractConnector {
 
         VideoSnippet snippet = new VideoSnippet();
         snippet.setChannelId(channelId);
-        snippet.setDescription(composerModel.getPlainText("description"));
+
+        String descriptionXml = composerModel.getStringProperty("description");
+        snippet.setDescription(asPlaintextWithLinks(descriptionXml));
         snippet.setTitle(composerModel.getStringProperty("title"));
         video.setSnippet(snippet);
 
