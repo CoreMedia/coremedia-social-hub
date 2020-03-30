@@ -55,12 +55,17 @@ public class ContentLinkBuilder {
     }.getType());
 
     List<String> links = new ArrayList<>();
-    for (UrlServiceResponseParams url : urls) {
-      if(url.getUrl() == null) {
-        continue;
-      }
+    if(urls != null) {
+      for (UrlServiceResponseParams url : urls) {
+        if(url.getUrl() == null) {
+          continue;
+        }
 
-      links.add(uriComponents.getScheme() + ":" + url.getUrl());
+        links.add(uriComponents.getScheme() + ":" + url.getUrl());
+      }
+    }
+    else {
+      LOG.error("Failed to build internal link: the headless server ({}) did not return URLs for ids {}", serviceUrl, String.join(",", ids));
     }
 
     return links;
