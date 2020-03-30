@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,7 +31,7 @@ public class ContentLinkBuilder {
   @Nullable
   public String buildLink(String baseUrl, String ids) {
     List<String> urls = buildLinks(baseUrl, Arrays.asList(ids));
-    if(!urls.isEmpty()) {
+    if (!urls.isEmpty()) {
       return urls.get(0);
     }
 
@@ -55,9 +59,9 @@ public class ContentLinkBuilder {
     }.getType());
 
     List<String> links = new ArrayList<>();
-    if(urls != null) {
+    if (urls != null) {
       for (UrlServiceResponseParams url : urls) {
-        if(url.getUrl() == null) {
+        if (url.getUrl() == null) {
           continue;
         }
 
@@ -73,6 +77,31 @@ public class ContentLinkBuilder {
 
   private String postLinks(String serviceUrl, String body) {
     try {
+      // Create a trust manager that does not validate certificate chains
+      TrustManager[] trustAllCerts = new TrustManager[]{
+              new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                  return null;
+                }
+
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+              }
+      };
+
+      // Install the all-trusting trust manager
+      try {
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+      } catch (Exception e) {
+      }
+
       URL url = new URL(serviceUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("POST");
