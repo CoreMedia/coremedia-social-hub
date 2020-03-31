@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -39,37 +40,42 @@ public class ContentLinkBuilder {
   }
 
   public List<String> buildLinks(String baseUrl, List<String> ids) {
+    List<String> links = new ArrayList<>();
     if (!baseUrl.endsWith("/")) {
       baseUrl = baseUrl + "/";
     }
     String serviceUrl = baseUrl + URL_SERVICE_URL;
-    UriComponents uriComponents = UriComponentsBuilder.fromUriString(serviceUrl).build();
 
-    List<UrlServiceRequestParams> params = new ArrayList<>();
-    for (String id : ids) {
-      int i = IdHelper.parseContentId(id);
-      params.add(new UrlServiceRequestParams(String.valueOf(i)));
-    }
+    try {
+      UriComponents uriComponents = UriComponentsBuilder.fromUriString(serviceUrl).build();
 
-    Gson gson = new Gson();
-    String body = gson.toJson(params);
-    String result = postLinks(serviceUrl, body);
-
-    List<UrlServiceResponseParams> urls = gson.fromJson(result, new TypeToken<List<UrlServiceResponseParams>>() {
-    }.getType());
-
-    List<String> links = new ArrayList<>();
-    if (urls != null) {
-      for (UrlServiceResponseParams url : urls) {
-        if (url.getUrl() == null) {
-          continue;
-        }
-
-        links.add(uriComponents.getScheme() + ":" + url.getUrl());
+      List<UrlServiceRequestParams> params = new ArrayList<>();
+      for (String id : ids) {
+        int i = IdHelper.parseContentId(id);
+        params.add(new UrlServiceRequestParams(String.valueOf(i)));
       }
-    }
-    else {
-      LOG.error("Failed to build internal link: the headless server ({}) did not return URLs for ids {}", serviceUrl, String.join(",", ids));
+
+      Gson gson = new Gson();
+      String body = gson.toJson(params);
+      String result = postLinks(serviceUrl, body);
+
+      List<UrlServiceResponseParams> urls = gson.fromJson(result, new TypeToken<List<UrlServiceResponseParams>>() {
+      }.getType());
+
+      if (urls != null) {
+        for (UrlServiceResponseParams url : urls) {
+          if (url.getUrl() == null) {
+            continue;
+          }
+
+          links.add(uriComponents.getScheme() + ":" + url.getUrl());
+        }
+      }
+      else {
+        LOG.error("Failed to build internal link: the headless server ({}) did not return URLs for ids {}", serviceUrl, String.join(",", ids));
+      }
+    } catch (Exception e) {
+      LOG.error("Failed to use CAE link building service {}: {}", serviceUrl, e.getMessage(), e);
     }
 
     return links;
@@ -99,6 +105,10 @@ public class ContentLinkBuilder {
         SSLContext sc = SSLContext.getInstance("SSL");
         sc.init(null, trustAllCerts, new java.security.SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+        // Create all-trusting host name verifier
+        HostnameVerifier allHostsValid = (hostname, session) -> true;
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
       } catch (Exception e) {
       }
 
@@ -117,7 +127,7 @@ public class ContentLinkBuilder {
       writer.close();
       return result;
     } catch (Exception e) {
-      LOG.error("Failed to post links to CAE: {}", e.getMessage(), e);
+      LOG.error("Failed to post links to CAE (): {}", serviceUrl, e.getMessage(), e);
     }
 
     return null;
