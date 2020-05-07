@@ -1,9 +1,8 @@
 package com.coremedia.blueprint.studio.social;
 
 import com.coremedia.blueprint.social.api.SocialHubService;
-import com.coremedia.rest.linking.AbstractLinkingResource;
 
-public class AbstractSocialHubResource extends AbstractLinkingResource {
+public class AbstractSocialHubResource {
 
   private SocialHubService socialHubService;
 

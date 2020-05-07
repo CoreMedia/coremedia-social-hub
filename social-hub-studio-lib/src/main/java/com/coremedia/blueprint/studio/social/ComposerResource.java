@@ -10,7 +10,7 @@ import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.rest.cap.content.convert.DatePropertyConverter;
-import com.coremedia.rest.linking.EntityResource;
+import com.coremedia.rest.controller.EntityController;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ import static com.coremedia.blueprint.studio.social.ComposerResource.ID;
  */
 @RestController
 @RequestMapping(value = "socialhub/composermodel/{" + ID + "}/{" + ADAPTER_ID + "}")
-public class ComposerResource extends AbstractSocialHubResource implements EntityResource<ComposerModel> {
+public class ComposerResource extends AbstractSocialHubResource implements EntityController<ComposerModel> {
   private static final Logger LOG = LoggerFactory.getLogger(ComposerResource.class);
   static final String ID = "id";
   static final String ADAPTER_ID = "adapterId";

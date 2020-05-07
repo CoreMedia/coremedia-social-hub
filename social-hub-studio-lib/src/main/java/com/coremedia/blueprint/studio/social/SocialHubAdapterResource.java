@@ -3,7 +3,7 @@ package com.coremedia.blueprint.studio.social;
 import com.coremedia.blueprint.social.api.Message;
 import com.coremedia.blueprint.social.api.MessageState;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
-import com.coremedia.rest.linking.EntityResource;
+import com.coremedia.rest.controller.EntityController;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ import static com.coremedia.blueprint.studio.social.SocialHubAdapterResource.ADA
 
 @RestController
 @RequestMapping(value = "socialhub/adapter/{" + ADAPTER_ID + "}")
-public class SocialHubAdapterResource extends AbstractSocialHubResource implements EntityResource<SocialHubAdapter> {
+public class SocialHubAdapterResource extends AbstractSocialHubResource implements EntityController<SocialHubAdapter> {
   private static final Logger LOG = LoggerFactory.getLogger(SocialHubAdapterResource.class);
 
   public static final String ADAPTER_ID = "adapterId";

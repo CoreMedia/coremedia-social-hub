@@ -7,7 +7,7 @@ import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.MessageState;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.scheduler.AbstractScheduledMessage;
-import com.coremedia.rest.linking.EntityResource;
+import com.coremedia.rest.controller.EntityController;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +27,7 @@ import static com.coremedia.blueprint.studio.social.MessageResource.ID;
 
 @RestController
 @RequestMapping(value = "socialhub/adapter/{" + ADAPTER_ID + "}/message/{" + ID + "}")
-public class MessageResource extends AbstractSocialHubResource implements EntityResource<Message> {
+public class MessageResource extends AbstractSocialHubResource implements EntityController<Message> {
   public static final String ID = "id";
   public static final String ADAPTER_ID = "adapterId";
 
