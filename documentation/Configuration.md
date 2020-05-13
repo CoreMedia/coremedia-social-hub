@@ -232,7 +232,7 @@ Since the Social Media Hub is not shipped with a native connector for this netwo
 on the integration with a social media tool.
 
 ## Colors
-Additional colors used in the Social Media Hub can added in the `Settings` document.
+Additional colors used in the Social Media Hub can be added in the `Settings` document.
 To add a custom color option, you need to configure the hex color codes in the `base`, `background`, `hover` and `pressed` properties.
 The example below adds three additional color options.
 ```xml
