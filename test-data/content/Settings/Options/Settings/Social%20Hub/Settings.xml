@@ -12,6 +12,26 @@
         </Struct>
       </StructProperty>
       <StringProperty Name="liveCaeUrl"></StringProperty>
+      <StructListProperty Name="colors">
+        <Struct>
+          <StringProperty Name="base">#1EA1F2</StringProperty>
+          <StringProperty Name="background">#E8F6FD</StringProperty>
+          <StringProperty Name="hover">#1A91DA</StringProperty>
+          <StringProperty Name="pressed">#1781c2</StringProperty>
+        </Struct>
+        <Struct>
+          <StringProperty Name="base">#E1306C</StringProperty>
+          <StringProperty Name="background">#FAFAFA</StringProperty>
+          <StringProperty Name="hover">#C13584</StringProperty>
+          <StringProperty Name="pressed">#833AB4</StringProperty>
+        </Struct>
+        <Struct>
+          <StringProperty Name="base">#FF0100</StringProperty>
+          <StringProperty Name="background">#F9F9F9</StringProperty>
+          <StringProperty Name="hover">#CC0000</StringProperty>
+          <StringProperty Name="pressed">#d80000</StringProperty>
+        </Struct>
+      </StructListProperty>
     </Struct>
   </settings>
   <identifier></identifier>
