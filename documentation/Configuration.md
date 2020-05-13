@@ -230,3 +230,30 @@ __Connector Configuration__
 
 Since the Social Media Hub is not shipped with a native connector for this network, the actual connector configuration depends
 on the integration with a social media tool.
+
+## Colors
+Additional colors used in the Social Media Hub can added in the `Settings` document.
+To add a custom color option, you need to configure the hex color codes in the `base`, `background`, `hover` and `pressed` properties.
+The example below adds three additional color options.
+```xml
+<StructListProperty Name="colors">
+    <Struct>
+      <StringProperty Name="base">#1EA1F2</StringProperty>
+      <StringProperty Name="background">#E8F6FD</StringProperty>
+      <StringProperty Name="hover">#1A91DA</StringProperty>
+      <StringProperty Name="pressed">#1781c2</StringProperty>
+    </Struct>
+    <Struct>
+      <StringProperty Name="base">#E1306C</StringProperty>
+      <StringProperty Name="background">#FAFAFA</StringProperty>
+      <StringProperty Name="hover">#C13584</StringProperty>
+      <StringProperty Name="pressed">#833AB4</StringProperty>
+    </Struct>
+    <Struct>
+      <StringProperty Name="base">#FF0100</StringProperty>
+      <StringProperty Name="background">#F9F9F9</StringProperty>
+      <StringProperty Name="hover">#CC0000</StringProperty>
+      <StringProperty Name="pressed">#d80000</StringProperty>
+    </Struct>
+</StructListProperty>
+```
