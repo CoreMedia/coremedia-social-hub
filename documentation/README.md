@@ -8,7 +8,7 @@
 
 ## Abstract
 
-The Social Media Hub allows to integrate various social networks into the CoreMedia Studio.
+The Social Media Hub allows users to integrate various social networks into the CoreMedia Studio.
 It provides a separate tab that shows different social network feeds and messages that have been
 scheduled for publishing. 
 The Social Media Hub is implemented as a Blueprint extension.
@@ -17,7 +17,7 @@ The Social Media Hub is implemented as a Blueprint extension.
 
 This is a CoreMedia Labs prototype which means it __does not provide a stable API__.
 The current implementation won't match the one which will be released for a future CoreMedia workspace.
-Therefore, we also don't provide a proper documentation for it.
+Therefore, we also don't provide proper documentation for it.
 If you are interested in a custom integration, feel free to contact us!
 
 
@@ -26,15 +26,15 @@ If you are interested in a custom integration, feel free to contact us!
 
 | Term | Description |
 | ---- | ----------- |
-| adapter | The adapter implementation is responsible for the message composing of a social network, e.g. the _YouTubeSocialHubAdapter_ implements the composing of YouTube messages. |
+| adapter | The adapter implementation is responsible for the message composition of a social network, e.g. the _YouTubeSocialHubAdapter_ implements the composition of YouTube messages. |
 | connector | The connector implementation is responsible for the publication of the composed messages. It can be a native integration of a social network or a social media tool. |
 
 
 ## Versioning
 
-The release versions of the Social Media Hub is matching the version of CoreMedia workspace releases.
+The release versions of the Social Media Hub match the versions of CoreMedia workspace releases.
 E.g. when the CoreMedia workspace has the version __1907.1__, the matching Social Media Hub release will have
-version __1907.1-X__ where 'X' indicates the release version of the Social Media Hub.
+version __1907.1-X__, where 'X' indicates the release version of the Social Media Hub.
 
 
 ## Supported Networks
@@ -49,7 +49,7 @@ __We recommend to implement a SocialHubConnector for a social media tool!__
 
 The existing integrations of Twitter and YouTube are just example implementations.
 The philosophy behind the Social Media Hub is to __prepare__ content for social media publication by pushing content
-items to social media tools which take care of the actual publication.
+items to social media tools that take care of the actual publication.
  
  
 ## Features
