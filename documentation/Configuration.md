@@ -1,7 +1,7 @@
 # Social Media Hub Configuration
 
 The configuration of the Social Media Hub consists of different settings documents that can be
-put in a global or site-specific folders.
+put in global or site-specific folders.
 
 - Global: _/Settings/Options/Settings/Social Hub/_
 - Site specific: _&lt;SITE&gt;/Options/Settings/Social Hub/_
@@ -10,8 +10,8 @@ put in a global or site-specific folders.
 ## General Settings
 
 The _Settings_ document declares overall settings for the Social Media Hub and must be located in the global settings folder.
-It defines the credentials for a __bitly__ account that is used for link shortening and additional CAE and document type model
-information that are required when media should be extracted from content for social media posts.
+It defines the credentials for a __bitly__ account that is used for link shortening, and it defines additional CAE and document type model
+information that is required when media should be extracted from content for social media posts.
 
 ```xml
 <CMSettings folder="/Settings/Options/Settings/Social Hub/" name="Settings">
@@ -36,16 +36,16 @@ information that are required when media should be extracted from content for so
 #### Media Mapping
 
 The _mediaMapping_ struct configures the content with media items that can be pushed to a social network.
-By default, the CoreMedia Blueprint document type model is configured where _CMMedia_ with it's data property contains 
+By default, the CoreMedia Blueprint document type model is configured where _CMMedia_, with its data property, contains 
 a blob with asset data.
 
-Check also the details connector configuration for details on how to configure image variants for message composing.
+Check also the details connector configuration for details on how to configure image variants for composing messages.
 
 ## Adapter Configurations
 
 A Social Media Hub adapter configuration can be put into the global or a site specific configuration folder.
 One or more adapter configurations can be put into one or more settings documents with any name.
-The following sections describes the structure of an adapter configuration and the samples for the existing adapters.
+The following sections describe the structure of an adapter configuration and the samples for the existing adapters.
 
 #### General Adapter Settings
 
@@ -99,8 +99,8 @@ every Social Media Hub adapter. The _SocialHubAdapterFactory#getType_ must match
 ### Connector Configuration
 
 The connector configuration usually contains the credentials for accessing a social network or a social media tool.
-Interfaces that mapping this configuration must extend the interface _ConnectorConfiguration_ which contains additional 
-settings valid for all connector configurations.
+Interfaces that are mapping this configuration must extend the interface _ConnectorConfiguration_, which contains additional 
+settings that are valid for all connector configurations.
 
 The _ConnectorConfiguration_ interface implements the following methods:
 
@@ -216,7 +216,7 @@ __Adapter Configuration__
 
 In order to show a Pinterest board for the configured profile, the board link must
 be provided as part of the adapter configuration. The board link can be copied from
-Pinterest website.
+the Pinterest website.
 
 ```xml
 <StructProperty Name="adapter">
