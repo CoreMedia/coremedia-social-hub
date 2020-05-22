@@ -2,12 +2,12 @@
 
 Developing new adapters may require client-side Studio customization. These customization are easily done by overriding
 the Social Media Hub property files of the Social Media Hub Studio plugin. Examples for overriding property files
-can be found in documentation or the file 'BlueprintFormsStudioPlugin.mxml' inside the CoreMedia Blueprint.
+can be found in documentation or in the file 'BlueprintFormsStudioPlugin.mxml' inside the CoreMedia Blueprint.
 
 ### Customizing Labels and Icons
 
 The property file _SocialHub.properties_ contains the label and icon values for adapters. 
-Entries can simply added or modified by overriding this file.
+Entries can simply be added or modified by overriding this file.
 
 The file expects entries in the following format:
 
