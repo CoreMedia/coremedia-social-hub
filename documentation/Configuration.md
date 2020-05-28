@@ -39,8 +39,6 @@ The _mediaMapping_ struct configures content types and property fields that cont
 By default, the CoreMedia Blueprint document type model is configured where _CMMedia_, with its data property, contains 
 a blob with asset data.
 
-Check also the details connector configuration for details on how to configure image variants for composing messages.
-
 ## Adapter Configurations
 
 A Social Media Hub adapter configuration can be put into the global or a site specific configuration folder.
