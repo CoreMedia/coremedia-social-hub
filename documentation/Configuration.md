@@ -35,7 +35,7 @@ information that is required when media should be extracted from content for soc
 
 #### Media Mapping
 
-The _mediaMapping_ struct configures the content with media items that can be pushed to a social network.
+The _mediaMapping_ struct configures content types and property fields that contain blob data which can be pushed to a social network.
 By default, the CoreMedia Blueprint document type model is configured where _CMMedia_, with its data property, contains 
 a blob with asset data.
 
