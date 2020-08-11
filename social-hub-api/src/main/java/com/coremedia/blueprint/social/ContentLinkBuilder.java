@@ -10,6 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,7 +32,7 @@ public class ContentLinkBuilder {
   @Nullable
   public String buildLink(String baseUrl, String ids) {
     List<String> urls = buildLinks(baseUrl, Arrays.asList(ids));
-    if(!urls.isEmpty()) {
+    if (!urls.isEmpty()) {
       return urls.get(0);
     }
 
@@ -35,32 +40,42 @@ public class ContentLinkBuilder {
   }
 
   public List<String> buildLinks(String baseUrl, List<String> ids) {
+    List<String> links = new ArrayList<>();
     if (!baseUrl.endsWith("/")) {
       baseUrl = baseUrl + "/";
     }
     String serviceUrl = baseUrl + URL_SERVICE_URL;
-    UriComponents uriComponents = UriComponentsBuilder.fromUriString(serviceUrl).build();
 
-    List<UrlServiceRequestParams> params = new ArrayList<>();
-    for (String id : ids) {
-      int i = IdHelper.parseContentId(id);
-      params.add(new UrlServiceRequestParams(String.valueOf(i)));
-    }
+    try {
+      UriComponents uriComponents = UriComponentsBuilder.fromUriString(serviceUrl).build();
 
-    Gson gson = new Gson();
-    String body = gson.toJson(params);
-    String result = postLinks(serviceUrl, body);
-
-    List<UrlServiceResponseParams> urls = gson.fromJson(result, new TypeToken<List<UrlServiceResponseParams>>() {
-    }.getType());
-
-    List<String> links = new ArrayList<>();
-    for (UrlServiceResponseParams url : urls) {
-      if(url.getUrl() == null) {
-        continue;
+      List<UrlServiceRequestParams> params = new ArrayList<>();
+      for (String id : ids) {
+        int i = IdHelper.parseContentId(id);
+        params.add(new UrlServiceRequestParams(String.valueOf(i)));
       }
 
-      links.add(uriComponents.getScheme() + ":" + url.getUrl());
+      Gson gson = new Gson();
+      String body = gson.toJson(params);
+      String result = postLinks(serviceUrl, body);
+
+      List<UrlServiceResponseParams> urls = gson.fromJson(result, new TypeToken<List<UrlServiceResponseParams>>() {
+      }.getType());
+
+      if (urls != null) {
+        for (UrlServiceResponseParams url : urls) {
+          if (url.getUrl() == null) {
+            continue;
+          }
+
+          links.add(uriComponents.getScheme() + ":" + url.getUrl());
+        }
+      }
+      else {
+        LOG.error("Failed to build internal link: the headless server ({}) did not return URLs for ids {}", serviceUrl, String.join(",", ids));
+      }
+    } catch (Exception e) {
+      LOG.error("Failed to use CAE link building service {}: {}", serviceUrl, e.getMessage(), e);
     }
 
     return links;
@@ -68,6 +83,35 @@ public class ContentLinkBuilder {
 
   private String postLinks(String serviceUrl, String body) {
     try {
+      // Create a trust manager that does not validate certificate chains
+      TrustManager[] trustAllCerts = new TrustManager[]{
+              new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                  return null;
+                }
+
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+              }
+      };
+
+      // Install the all-trusting trust manager
+      try {
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+        // Create all-trusting host name verifier
+        HostnameVerifier allHostsValid = (hostname, session) -> true;
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+      } catch (Exception e) {
+      }
+
       URL url = new URL(serviceUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("POST");
@@ -83,7 +127,7 @@ public class ContentLinkBuilder {
       writer.close();
       return result;
     } catch (Exception e) {
-      LOG.error("Failed to post links to CAE: {}", e.getMessage(), e);
+      LOG.error("Failed to post links to CAE (): {}", serviceUrl, e.getMessage(), e);
     }
 
     return null;

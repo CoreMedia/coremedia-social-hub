@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social {
 
+import com.coremedia.blueprint.social.channels.Colors;
 import com.coremedia.cms.editor.configuration.StudioPlugin;
 import com.coremedia.cms.editor.sdk.IEditorContext;
 import com.coremedia.cms.editor.sdk.jobs.BackgroundJobsButtonBase;
@@ -22,6 +23,9 @@ public class SocialHubStudioPluginBase extends StudioPlugin {
     (BackgroundJobsButtonBase as Class).prototype['onJobStarted$v9Xb'] = function ():void {
       //do nothing
     };
+
+    // Init Social Hub color config
+    Colors.init();
   }
 }
 }

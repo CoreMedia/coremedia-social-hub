@@ -3,7 +3,7 @@ package com.coremedia.blueprint.studio.social;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
-import com.coremedia.rest.linking.EntityResource;
+import com.coremedia.rest.controller.EntityController;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import static com.coremedia.blueprint.studio.social.SocialHubAdaptersResource.SI
 
 @RestController
 @RequestMapping(value = "socialhub/adapters/{" + SITE_ID + "}")
-public class SocialHubAdaptersResource extends AbstractSocialHubResource implements EntityResource<SocialHubAdapterModels> {
+public class SocialHubAdaptersResource extends AbstractSocialHubResource implements EntityController<SocialHubAdapterModels> {
   public static final String SITE_ID = "siteId";
 
   private SitesService sitesService;
