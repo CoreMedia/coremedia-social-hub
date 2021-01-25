@@ -97,7 +97,7 @@ public class SocialHubServiceImpl implements ISocialHubService {
               'composerMethod' : composerMethod
             },
             function (response:RemoteServiceMethodResponse):void {
-              var result:String = response.response.responseText;
+              var result:String = response.getResponseJSON().responseText;
               var cm:ComposerModelImpl = getComposerModel(adapterId) as ComposerModelImpl;
               cm.invalidate(callback);
             },
