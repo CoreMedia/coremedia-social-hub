@@ -78,48 +78,51 @@ public class AdapterFactoryService {
 
         String adapterType = struct.getString(SocialHubPropertyNames.TYPE);
         String id = struct.getString(SocialHubPropertyNames.ID);
-        if(isDuplicate(id, adapters)) {
+        if (isDuplicate(id, adapters)) {
           continue;
         }
 
-        int position = 0;
-        Map<String, Object> properties = struct.toNestedMaps();
-        if(properties.containsKey(SocialHubPropertyNames.POSITION)) {
-          Object pos = properties.get(SocialHubPropertyNames.POSITION);
-          if(pos != null) {
-            position = Integer.parseInt(String.valueOf(pos));
-          }
-        }
-
-        Struct connectorStruct = struct.getStruct(SocialHubPropertyNames.CONNECTOR);
-        String displayName = struct.getString(SocialHubPropertyNames.DISPLAY_NAME);
-
-        for (SocialHubAdapterFactory adapterFactory : adapterFactories) {
-          if (adapterFactory.getType().name().equalsIgnoreCase(adapterType)) {
-            Object connectorSettings = createSettings(adapterFactory, connectorStruct, 0);
-            Object adapterSettings = null;
-            if (config.containsKey(SocialHubPropertyNames.ADAPTER)) {
-              Struct adapterStruct = struct.getStruct(SocialHubPropertyNames.ADAPTER);
-              adapterSettings = createSettings(adapterFactory, adapterStruct, 1);
-            }
-
-            AbstractSocialHubAdapter adapter = (AbstractSocialHubAdapter) adapterFactory.createAdapter(connectorSettings, adapterSettings);
-            adapter.setId(id);
-            adapter.setPosition(position);
-            adapter.setType(adapterType);
-            adapter.setDisplayName(displayName);
-            adapter.setScheduler(scheduler);
-
-            adapters.add(adapter);
-            return;
-          }
-        }
-
-        throw new IllegalArgumentException("No Social Media Hub Adapter found for type '" + adapterType + "'");
+        adapters.add(createAdapter(struct, config, adapterType, id));
       } catch (Exception e) {
         LOG.error("Social Media Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
       }
     }
+  }
+
+  private SocialHubAdapter createAdapter(Struct struct, Map<String, Object> config, String adapterType, String id) {
+    int position = 0;
+    Map<String, Object> properties = struct.toNestedMaps();
+    if(properties.containsKey(SocialHubPropertyNames.POSITION)) {
+      Object pos = properties.get(SocialHubPropertyNames.POSITION);
+      if(pos != null) {
+        position = Integer.parseInt(String.valueOf(pos));
+      }
+    }
+
+    Struct connectorStruct = struct.getStruct(SocialHubPropertyNames.CONNECTOR);
+    String displayName = struct.getString(SocialHubPropertyNames.DISPLAY_NAME);
+
+    for (SocialHubAdapterFactory adapterFactory : adapterFactories) {
+      if (adapterFactory.getType().name().equalsIgnoreCase(adapterType)) {
+        Object connectorSettings = createSettings(adapterFactory, connectorStruct, 0);
+        Object adapterSettings = null;
+        if (config.containsKey(SocialHubPropertyNames.ADAPTER)) {
+          Struct adapterStruct = struct.getStruct(SocialHubPropertyNames.ADAPTER);
+          adapterSettings = createSettings(adapterFactory, adapterStruct, 1);
+        }
+
+        AbstractSocialHubAdapter adapter = (AbstractSocialHubAdapter) adapterFactory.createAdapter(connectorSettings, adapterSettings);
+        adapter.setId(id);
+        adapter.setPosition(position);
+        adapter.setType(adapterType);
+        adapter.setDisplayName(displayName);
+        adapter.setScheduler(scheduler);
+
+        return adapter;
+      }
+    }
+
+    throw new IllegalArgumentException("No Social Media Hub Adapter found for type '" + adapterType + "'");
   }
 
   private boolean isDuplicate(String id, List<SocialHubAdapter> adapters) {
