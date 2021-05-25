@@ -63,7 +63,7 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     var method:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), 'POST');
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
-              var bean:RemoteBean = BeanFactoryImpl.resolveBeans(JSON.decode(response.getResponseJSON().responseText)) as RemoteBean;
+              var bean:RemoteBean = response.getResponseJSON() as RemoteBean;
               savedCallback(bean);
 
               if (bean is Message) {
@@ -123,7 +123,7 @@ public class ComposerModelImpl extends RemoteBeanImpl implements ComposerModel {
     var method:RemoteServiceMethod = new RemoteServiceMethod(getUriPath(), 'DELETE');
     method.request({},
             function (response:RemoteServiceMethodResponse):void {
-              var result:Boolean = response.getResponseJSON().responseText;
+              var result:Boolean = response.getResponseJSON();
               if (callback) {
                 callback(result);
               }
