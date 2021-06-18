@@ -60,6 +60,7 @@
               <entry>com.coremedia.blueprint.social.SocialHubStudioPlugin</entry>
             </requiredClasses>
           </production>
+          <extNamespace>com.coremedia.blueprint.social</extNamespace>
           <namespaces>
             <namespace>
               <uri>exml:com.coremedia.blueprint.studio.social.config</uri>
