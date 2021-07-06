@@ -33,7 +33,7 @@ public class ChannelContainerBase extends Panel {
   public static const DROP_NOT_ALLOWED_ITEM_ID:String = "dropNotAllowed";
   public static const MESSAGE_WRAPPER_ITEM_ID:String = "messagesWrapper";
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapterImpl;
 
   private var loadMask:ProgressLoadMask;

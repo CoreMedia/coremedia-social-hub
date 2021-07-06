@@ -10,7 +10,7 @@ public class ExternalLinkDialogBase extends StudioDialog {
   private var shortenLinkCheckboxValueExpression:ValueExpression;
   private var urlValueExpression:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var messageEditor:MessageTextareaEditor;
 
   //the CKEditor

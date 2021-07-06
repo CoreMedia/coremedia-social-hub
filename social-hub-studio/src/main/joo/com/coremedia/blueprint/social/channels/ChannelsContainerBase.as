@@ -7,7 +7,7 @@ import ext.Ext;
 import ext.panel.Panel;
 
 public class ChannelsContainerBase extends Panel {
-  [Bindable]
+  [ExtConfig]
   public var adaptersExpression:ValueExpression;
 
   public function ChannelsContainerBase(config:ChannelsContainerBase = null) {

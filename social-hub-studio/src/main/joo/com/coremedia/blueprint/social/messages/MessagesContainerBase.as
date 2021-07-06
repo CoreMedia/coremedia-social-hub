@@ -18,10 +18,10 @@ import mx.resources.ResourceManager;
 
 public class MessagesContainerBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapterImpl;
 
-  [Bindable]
+  [ExtConfig]
   public var messageType:String;
 
   public var loadMask:ProgressLoadMask;

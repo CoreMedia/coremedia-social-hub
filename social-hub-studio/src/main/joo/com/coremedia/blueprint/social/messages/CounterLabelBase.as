@@ -11,13 +11,13 @@ import mx.resources.ResourceManager;
 
 public class CounterLabelBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var message:MessageImpl;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
-  [Bindable]
+  [ExtConfig]
   public var propertyName:String;
 
   public function CounterLabelBase(config:CounterLabelBase = null) {

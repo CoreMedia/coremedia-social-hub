@@ -32,22 +32,22 @@
     private var config:SocialNotificationToast;
 
 
-    [Bindable]
+    [ExtConfig]
     public var notificationMessage:String;
 
-    [Bindable]
+    [ExtConfig]
     public var notificationSource:String;
 
-    [Bindable]
+    [ExtConfig]
     public var notificationActionLabel:String;
 
-    [Bindable]
+    [ExtConfig]
     public var notificationAction:Function;
 
-    [Bindable]
+    [ExtConfig]
     public var notificationTitle:String;
 
-    [Bindable]
+    [ExtConfig]
     public var notificationValidationState:ValidationState;
 
     public native function SocialNotificationToast(config:SocialNotificationToast = null);

@@ -11,10 +11,10 @@ import ext.toolbar.Toolbar;
 
 public class ColorButtonBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var color:String;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   private var colorMenu:Menu;

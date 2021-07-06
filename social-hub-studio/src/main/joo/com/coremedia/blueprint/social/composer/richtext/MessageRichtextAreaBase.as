@@ -5,7 +5,7 @@ import com.coremedia.ui.data.ValueExpression;
 
 public class MessageRichtextAreaBase extends RichTextArea {
 
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
   public function MessageRichtextAreaBase(config:MessageRichtextAreaBase = null) {

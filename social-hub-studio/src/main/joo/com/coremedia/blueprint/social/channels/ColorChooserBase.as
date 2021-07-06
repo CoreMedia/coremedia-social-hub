@@ -8,7 +8,7 @@ import ext.container.Container;
 
 public class ColorChooserBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   private var colorButtonsExpression:ValueExpression;
