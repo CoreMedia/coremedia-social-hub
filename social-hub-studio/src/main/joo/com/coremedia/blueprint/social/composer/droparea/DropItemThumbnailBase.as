@@ -27,7 +27,7 @@ public class DropItemThumbnailBase extends Container {
   protected static const STANDARD_GRID_100:int = 6;
 
 
-  [Bindable]
+  [ExtConfig]
   public var dropItem:DropItem;
 
   public function DropItemThumbnailBase(config:DropItemThumbnailBase = null) {

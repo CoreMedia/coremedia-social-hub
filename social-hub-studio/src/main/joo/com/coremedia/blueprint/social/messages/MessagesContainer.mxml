@@ -15,7 +15,7 @@
 
     private var config:MessagesContainer;
 
-    [Bindable]
+    [ExtConfig]
     public var title:String;
 
     public native function MessagesContainer(config:MessagesContainer = null);

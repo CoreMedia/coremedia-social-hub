@@ -3,7 +3,7 @@ import ext.container.Container;
 
 public class AddItemButtonBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var uploadButtonHandler:Function;
 
   public function AddItemButtonBase(config:AddItemButtonBase = null) {

@@ -16,10 +16,10 @@ import mx.resources.ResourceManager;
 
 public class MessageFooterBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var message:MessageImpl;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   public function MessageFooterBase(config:MessageFooterBase = null) {

@@ -10,7 +10,7 @@ public class SocialHubServices {
     var method:RemoteServiceMethod = new RemoteServiceMethod(SHORTEN_URL_URI, 'POST');
     method.request({'url': url},
             function (response:RemoteServiceMethodResponse):void {
-              var result:String = response.response.responseText;
+              var result:String = response.getResponseJSON().toJson();
               callback(result);
             }
     );

@@ -24,13 +24,13 @@ public class ComposerBase extends Window {
   public static const COMPOSER_WINDOW_ID:String = "composerWindow";
   private var scheduleDateExpression:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
-  [Bindable]
+  [ExtConfig]
   public var channelContainer:ChannelContainer;
 
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
   private var editors:Object;

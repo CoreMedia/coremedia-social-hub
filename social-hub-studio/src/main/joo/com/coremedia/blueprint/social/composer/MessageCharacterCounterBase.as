@@ -10,10 +10,10 @@ import ext.panel.Panel;
 
 public class MessageCharacterCounterBase extends Panel {
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
   private var counterExpression:ValueExpression;

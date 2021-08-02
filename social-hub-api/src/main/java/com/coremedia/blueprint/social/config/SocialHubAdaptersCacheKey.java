@@ -4,6 +4,8 @@ import com.coremedia.blueprint.social.SocialHubConfig;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.cache.Cache;
 import com.coremedia.cache.CacheKey;
+import com.coremedia.cap.common.CapConnection;
+import com.coremedia.cap.common.CapSession;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
 import com.google.common.base.MoreObjects;
@@ -11,23 +13,25 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SocialHubAdaptersCacheKey extends CacheKey<Map<String, List<SocialHubAdapter>>> {
+
+  private final static Logger LOG = LoggerFactory.getLogger(SocialHubAdaptersCacheKey.class);
 
   private AdapterFactoryService adapterFactory;
   private SitesService sitesService;
   private SocialHubConfig config;
+  private CapConnection capConnection;
 
-  public SocialHubAdaptersCacheKey(AdapterFactoryService adapterFactory, SitesService sitesService, SocialHubConfig config) {
+  public SocialHubAdaptersCacheKey(AdapterFactoryService adapterFactory, SitesService sitesService, SocialHubConfig config, CapConnection capConnection) {
     this.adapterFactory = adapterFactory;
     this.sitesService = sitesService;
     this.config = config;
+    this.capConnection = capConnection;
   }
 
 
@@ -39,25 +43,42 @@ public class SocialHubAdaptersCacheKey extends CacheKey<Map<String, List<SocialH
 
   @Override
   public Map<String, List<SocialHubAdapter>> evaluate(Cache cache) {
-    Set<Site> sites = sitesService.getSites();
-    if (!sites.isEmpty()) {
-      // global adapters for all sites
-      List<SocialHubAdapter> globalAdapters = loadGlobalAdapters(cache);
-      // site local
-      ImmutableMap.Builder<String, List<SocialHubAdapter>> builder = ImmutableMap.builder();
-      for (Site site : sites) {
-        List<SocialHubAdapter> siteAdapters = loadSiteAdapters(site, cache);
-        // merge global and site
-        List<SocialHubAdapter> merged = new ArrayList<>();
-        merged.addAll(globalAdapters);
-        merged.addAll(siteAdapters);
-        if (!merged.isEmpty()) {
-          builder.put(site.getId(), ImmutableList.copyOf(merged));
+    Map<String, List<SocialHubAdapter>> adapterMappings = Collections.emptyMap();
+    CapSession previousSession = null;
+
+    try {
+      // Switch to connection session, otherwise a call to SitesService#getSites()
+      // would just return the readable sites for the current user.
+      previousSession = capConnection.getConnectionSession().activate();
+      Set<Site> sites = sitesService.getSites();
+      LOG.info("Calculating SocialHubAdapters for {} sites: {}", sites.size(), sites);
+      if (!sites.isEmpty()) {
+        // global adapters for all sites
+        List<SocialHubAdapter> globalAdapters = loadGlobalAdapters(cache);
+        // site local
+        ImmutableMap.Builder<String, List<SocialHubAdapter>> builder = ImmutableMap.builder();
+        for (Site site : sites) {
+          List<SocialHubAdapter> siteAdapters = loadSiteAdapters(site, cache);
+          // merge global and site
+          List<SocialHubAdapter> merged = new ArrayList<>();
+          merged.addAll(globalAdapters);
+          merged.addAll(siteAdapters);
+          if (!merged.isEmpty()) {
+            builder.put(site.getId(), ImmutableList.copyOf(merged));
+          }
         }
+
+        adapterMappings = builder.build();
       }
-      return builder.build();
+
+    } finally {
+      // Restore the previous user session
+      if (previousSession != null) {
+        previousSession.activate();
+      }
     }
-    return Collections.emptyMap();
+
+    return adapterMappings;
   }
 
 

@@ -10,6 +10,7 @@ import com.coremedia.blueprint.social.config.SettingsFactory;
 import com.coremedia.blueprint.social.config.SocialHubAdaptersCacheKey;
 import com.coremedia.cache.Cache;
 import com.coremedia.cap.common.Blob;
+import com.coremedia.cap.common.CapConnection;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
@@ -27,12 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.activation.MimeType;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,10 +56,13 @@ public class SocialHubServiceImpl implements SocialHubService {
   @Autowired
   private TransformImageService transformImageService;
 
+  @Autowired
+  private CapConnection capConnection;
+
 
   @Override
   public List<SocialHubAdapter> getAdapters(@NonNull Site site) {
-    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(adapterFactory, sitesService, config);
+    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(adapterFactory, sitesService, config, capConnection);
     Map<String, List<SocialHubAdapter>> adapterMap = cache.get(cacheKey);
     if (adapterMap.containsKey(site.getId())) {
       return adapterMap.get(site.getId());
@@ -73,7 +72,7 @@ public class SocialHubServiceImpl implements SocialHubService {
 
   @Override
   public Set<SocialHubAdapter> getAdapters() {
-    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(adapterFactory, sitesService, config);
+    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(adapterFactory, sitesService, config, capConnection);
     Map<String, List<SocialHubAdapter>> adapterMap = cache.get(cacheKey);
     return adapterMap.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
   }
@@ -95,13 +94,13 @@ public class SocialHubServiceImpl implements SocialHubService {
       String key = entry.getKey();
       String propertyName = (String) entry.getValue();
 
-      if(content.getType().isSubtypeOf(key)) {
+      if (content.getType().isSubtypeOf(key)) {
         Blob blob = content.getBlob(propertyName);
 
-        if(variant != null) {
+        if (variant != null) {
           List<VariantBlob> transformedBlobs = transformImageService.getVariants(content, propertyName);
           for (VariantBlob transformedBlob : transformedBlobs) {
-            if(transformedBlob.getVariantName().equals(variant)) {
+            if (transformedBlob.getVariantName().equals(variant)) {
               return forBlob(content, transformedBlob.getBlob());
             }
           }
@@ -113,7 +112,7 @@ public class SocialHubServiceImpl implements SocialHubService {
       }
     }
 
-    if(content.getType().getDescriptorsByName().containsKey(BLOB_DEFAULT_PROPERTY)) {
+    if (content.getType().getDescriptorsByName().containsKey(BLOB_DEFAULT_PROPERTY)) {
       Blob blob = content.getBlob(MEDIA_MAPPING);
       return forBlob(content, blob);
     }
@@ -145,7 +144,7 @@ public class SocialHubServiceImpl implements SocialHubService {
 
     String caeUrl = (String) settings.get(LIVE_CAE_URL);
 
-    if(StringUtils.isEmpty(caeUrl)) {
+    if (StringUtils.isEmpty(caeUrl)) {
       LOG.error("Failed to build content link for Social Media Hub: no CAE configured for link building.");
       return null;
     }

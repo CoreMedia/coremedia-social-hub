@@ -35,7 +35,7 @@ public class AdapterDropAreaTarget extends DropTarget {
                                         handleOut:Function = null,
                                         handleDrop:Function = null,
                                         hideOnExit:Boolean = false) {
-    super(dropArea.getEl(), DropTarget({ddGroup: ["ContentDD", "ContentLinkDD"]}));
+    super(dropArea.getEl(), DropTarget({"ddGroup": ["ContentDD", "ContentLinkDD"]}));
     addToGroup("ContentDD");
     addToGroup("ContentLinkDD");
 

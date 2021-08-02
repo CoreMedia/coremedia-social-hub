@@ -19,13 +19,13 @@ import ext.container.Container;
 public class InternalLinkButtonBase extends IconButton {
 
   //the toolbar window group
-  [Bindable]
+  [ExtConfig]
   public var richTextWindowGroup:ZIndexManager;
 
   /**
    * Value Expression pointing to the ckEditor. This config parameter is mandatory.
    */
-  [Bindable]
+  [ExtConfig]
   public var ckEditorValueExpression:ValueExpression;
 
   private var internalLinkWindow:InternalLinkWindow;

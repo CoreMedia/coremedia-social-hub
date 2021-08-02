@@ -15,10 +15,10 @@ import ext.container.Container;
 public class DynamicMessageContainerBase extends Container {
   private const PROPERTY_EDITOR_XTYPE:String = "com.coremedia.blueprint.social.studio.config.message.field.";
 
-  [Bindable]
+  [ExtConfig]
   public var message:MessageImpl;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   public function DynamicMessageContainerBase(config:DynamicMessageContainerBase = null) {

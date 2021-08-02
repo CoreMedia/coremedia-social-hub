@@ -20,7 +20,7 @@ import mx.resources.ResourceManager;
 
 public class MessageLinkListBase extends LinkListPropertyFieldGridPanel {
 
-  [Bindable]
+  [ExtConfig]
   public var valueExpression:ValueExpression;
 
   private var listExpression:ValueExpression;

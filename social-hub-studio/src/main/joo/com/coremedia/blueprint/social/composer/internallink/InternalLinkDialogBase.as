@@ -15,7 +15,7 @@ import ext.Ext;
 public class InternalLinkDialogBase extends StudioDialog {
   private var submitButtonDisabledExpression:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var messageEditor:MessageTextareaEditor;
 
   private var contentExpression:ValueExpression;

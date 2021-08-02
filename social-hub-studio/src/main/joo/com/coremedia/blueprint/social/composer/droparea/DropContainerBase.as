@@ -6,7 +6,7 @@ import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentPropertyNames;
 import com.coremedia.cms.editor.sdk.components.html5.BrowsePlugin;
 import com.coremedia.cms.editor.sdk.editorContext;
-import com.coremedia.cms.editor.sdk.sites.Site;
+import com.coremedia.cms.studio.multisite.models.sites.Site;
 import com.coremedia.cms.editor.sdk.upload.FileWrapper;
 import com.coremedia.cms.editor.sdk.upload.UploadManager;
 import com.coremedia.cms.editor.sdk.upload.UploadSettings;
@@ -23,13 +23,13 @@ import ext.dd.DropZone;
 import js.XMLHttpRequest;
 
 public class DropContainerBase extends Container implements MessageFieldEditor {
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var property:MessageProperty;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   private var itemsExpression:ValueExpression;

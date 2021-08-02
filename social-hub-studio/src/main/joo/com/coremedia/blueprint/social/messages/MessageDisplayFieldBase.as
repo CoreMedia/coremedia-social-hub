@@ -6,10 +6,10 @@ import ext.container.Container;
 
 public class MessageDisplayFieldBase extends Container {
 
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var messageContainerDescriptor:MessageContainerDescriptor;
 
   public function MessageDisplayFieldBase(config:MessageDisplayFieldBase = null) {

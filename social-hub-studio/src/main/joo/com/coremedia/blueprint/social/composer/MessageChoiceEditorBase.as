@@ -14,13 +14,13 @@ import mx.resources.ResourceManager;
 
 public class MessageChoiceEditorBase extends Panel implements MessageFieldEditor {
 
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var property:MessageProperty;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   public function MessageChoiceEditorBase(config:MessageChoiceEditorBase = null) {

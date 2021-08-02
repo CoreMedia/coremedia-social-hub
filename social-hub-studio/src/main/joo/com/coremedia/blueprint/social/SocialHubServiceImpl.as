@@ -12,8 +12,8 @@ import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.common.SESSION;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cms.editor.sdk.editorContext;
-import com.coremedia.cms.editor.sdk.sites.Site;
-import com.coremedia.cms.editor.sdk.sites.SitesService;
+import com.coremedia.cms.studio.multisite.models.sites.Site;
+import com.coremedia.cms.studio.multisite.models.sites.SitesService;
 import com.coremedia.ui.data.Blob;
 import com.coremedia.ui.data.ValueExpression;
 import com.coremedia.ui.data.ValueExpressionFactory;
@@ -97,7 +97,7 @@ public class SocialHubServiceImpl implements ISocialHubService {
               'composerMethod' : composerMethod
             },
             function (response:RemoteServiceMethodResponse):void {
-              var result:String = response.response.responseText;
+              var result:String = response.getResponseJSON().toJson();
               var cm:ComposerModelImpl = getComposerModel(adapterId) as ComposerModelImpl;
               cm.invalidate(callback);
             },

@@ -11,13 +11,13 @@ import ext.panel.Panel;
 
 public class MessageTextEditorBase extends Panel implements MessageFieldEditor {
 
-  [Bindable]
+  [ExtConfig]
   public var bindTo:ValueExpression;
 
-  [Bindable]
+  [ExtConfig]
   public var property:MessageProperty;
 
-  [Bindable]
+  [ExtConfig]
   public var adapter:SocialHubAdapter;
 
   public function MessageTextEditorBase(config:MessageTextEditorBase = null) {
