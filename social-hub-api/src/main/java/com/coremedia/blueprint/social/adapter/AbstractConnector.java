@@ -40,7 +40,7 @@ public abstract class AbstractConnector implements SocialHubConnector {
   }
 
   protected String asPlaintextWithLinks(String xml) {
-    if(!xml.startsWith("<")) {
+    if(xml == null || !xml.startsWith("<")) {
       return xml;
     }
 
