@@ -1,0 +1,58 @@
+{
+  "name": "@coremedia-blueprint/studio-client.main.social-hub-studio",
+  "author": "Blueprint",
+  "version": "1.0.0-SNAPSHOT",
+  "private": true,
+  "dependencies": {
+    "@coremedia/studio-client.cap-base-models": "2107.3.0",
+    "@coremedia/studio-client.cap-rest-client": "2107.3.0",
+    "@coremedia/studio-client.cap-rest-client-impl": "2107.3.0",
+    "@coremedia/studio-client.client-core": "2107.3.0",
+    "@coremedia/studio-client.client-core-impl": "2107.3.0",
+    "@coremedia/studio-client.content-link-list-models": "2107.3.0",
+    "@coremedia/studio-client.core-icons": "2107.3.0",
+    "@coremedia/studio-client.ext.base-components": "2107.3.0",
+    "@coremedia/studio-client.ext.cap-base-components": "2107.3.0",
+    "@coremedia/studio-client.ext.content-link-list-components": "2107.3.0",
+    "@coremedia/studio-client.ext.form-services-toolkit": "2107.3.0",
+    "@coremedia/studio-client.ext.interaction-components": "2107.3.0",
+    "@coremedia/studio-client.ext.ui-components": "2107.3.0",
+    "@coremedia/studio-client.link-list-models": "2107.3.0",
+    "@coremedia/studio-client.main.editor-components": "2107.3.0",
+    "@coremedia/studio-client.multi-site-models": "2107.3.0",
+    "@jangaroo/ext-ts": "^1.0.0-alpha",
+    "@jangaroo/runtime": "^1.0.0-alpha"
+  },
+  "devDependencies": {
+    "@jangaroo/build": "^1.0.0-alpha",
+    "@jangaroo/core": "^1.0.0-alpha",
+    "@jangaroo/publish": "^1.0.0-alpha",
+    "eslint": "7.27.0",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist && rimraf ./build",
+    "build": "jangaroo build",
+    "watch": "jangaroo watch",
+    "publish": "jangaroo publish",
+    "lint": "eslint --fix \"src/**/*.ts\""
+  },
+  "exports": {
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./dist/src/*.js"
+    }
+  },
+  "coremedia": {
+    "projectExtensionFor": "studio-client.main-static"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "exports": {
+      "./*": {
+        "types": "./src/*.d.ts",
+        "default": "./src/*.js"
+      }
+    }
+  }
+}

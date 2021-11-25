@@ -1,8 +1,0 @@
-{
-  "studioPlugins": [
-    {
-      "mainClass": "com.coremedia.blueprint.social.SocialHubStudioPlugin",
-      "name": "Social Media Hub"
-    }
-  ]
-}

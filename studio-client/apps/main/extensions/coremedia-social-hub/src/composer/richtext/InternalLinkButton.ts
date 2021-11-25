@@ -1,0 +1,42 @@
+import Config from "@jangaroo/runtime/Config";
+import { asConfig, bind } from "@jangaroo/runtime";
+import InternalLinkButtonBase from "./InternalLinkButtonBase";
+import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
+import CKEditor_properties from "@coremedia/studio-client.ext.ui-components/ckeditor/CKEditor_properties";
+import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
+import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+interface InternalLinkButtonConfig extends Config<InternalLinkButtonBase>, Partial<Pick<InternalLinkButton,
+  "bindTo" |
+  "forceReadOnlyValueExpression"
+>> {
+}
+
+
+
+    class InternalLinkButton extends InternalLinkButtonBase{
+  declare Config: InternalLinkButtonConfig;
+
+  static override readonly xtype:string = "com.coremedia.blueprint.social.composer.richtext.internalLinkButton";
+
+  constructor(config:Config<InternalLinkButton> = null){
+    super((()=> ConfigUtils.apply(Config(InternalLinkButton, {
+        iconCls:  CKEditor_properties.cminternallink_iconCls,
+        text:  CKEditor_properties.cminternallink_text,
+        tooltip: CKEditor_properties.cminternallink_tooltip,
+        enableToggle: true,
+        toggleHandler: bind(this,this.onToggle)
+
+}),config))());
+  }
+
+    /**
+     * A property path expression leading to the Bean whose property is edited.
+     * This property editor assumes that this bean has a property 'properties'.
+     */
+  bindTo:ValueExpression = null;
+
+    /**
+     * An optional ValueExpression which makes the component read-only if it is evaluated to true.
+     */
+  forceReadOnlyValueExpression:ValueExpression = null;}
+export default InternalLinkButton;
