@@ -1,6 +1,7 @@
 {
   "name": "@coremedia-blueprint/studio-client.main.social-hub-studio",
-  "author": "Blueprint",
+  "author": "CoreMedia GmbH",
+  "license": "CoreMedia Open Source License",
   "version": "1.0.0-SNAPSHOT",
   "private": true,
   "dependencies": {
