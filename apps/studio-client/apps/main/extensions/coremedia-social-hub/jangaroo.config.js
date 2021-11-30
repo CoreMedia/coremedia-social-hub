@@ -14,9 +14,4 @@ module.exports = {
   additionalCssNonBundle: [
     "resources/css/social-media-hub.css",
   ],
-  command: {
-    build: {
-      ignoreTypeErrors: true
-    },
-  },
 };
