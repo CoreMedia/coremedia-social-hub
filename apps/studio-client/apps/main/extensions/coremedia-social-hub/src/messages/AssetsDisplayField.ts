@@ -57,7 +57,7 @@ class AssetsDisplayField extends AssetsDisplayFieldBase{
                       ifUnreadable: CoreIcons_properties.no_rights,
                       convert: ContentLocalizationUtil.getIconStyleClassForContentType}),
         Config(DataField, { name: "name",
-                      ifUnreadable: ContentLocalizationUtil.formatNotReadableNameFromBeanRecord,
+                      ifUnreadable: ContentLocalizationUtil.formatNotReadableName,
                       sortType: (s:string):string => s.toLowerCase()}),
         Config(DataField, { name: "editor",
                       mapping: "editor.name"})
