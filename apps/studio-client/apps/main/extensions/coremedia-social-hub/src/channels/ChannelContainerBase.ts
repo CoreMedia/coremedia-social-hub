@@ -75,7 +75,7 @@ class ChannelContainerBase extends Panel {
 
   #handleContentDrop(mayDrop:boolean, contents:Array<any>, composingType:string):void {
     if (mayDrop) {
-      socialHubService.initComposerModel(this.adapter.getAdapterId(), contents, composingType,():void => 
+      socialHubService.initComposerModel(this.adapter.getAdapterId(), contents, composingType,():void =>
         this.composeMessage()
       );
     }
@@ -244,8 +244,8 @@ class ChannelContainerBase extends Panel {
     var styleIndex:number = style.indexOf("background-color");
     if (styleIndex !== -1) {
       var b =as( Ext.getCmp(as(e.target.getAttribute("data-componentid"),  String)),  Button);
-      if (b && asConfig(b).menu) {
-        if (asConfig(b).menu.isVisible()) {
+      if (b && b.menu) {
+        if (b.menu.isVisible()) {
           return;
         }
       }
