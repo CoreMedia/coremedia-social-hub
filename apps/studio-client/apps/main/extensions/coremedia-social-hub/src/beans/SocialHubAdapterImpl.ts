@@ -78,7 +78,7 @@ class SocialHubAdapterImpl extends RemoteBeanImpl implements SocialHubAdapter {
 
   getColor():string {
     var saveStateExpression = ValueExpressionFactory.create("socialHub." + this.getAdapterId() + ".color", editorContext._.getPreferences());
-    var color:string = saveStateExpression.getValue();
+    var color:string = saveStateExpression.getValue() as string;
     if (!color) {
       color = Colors.getColor();
       this.setColor(color);
