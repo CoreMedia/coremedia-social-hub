@@ -63,7 +63,7 @@ class DropItemThumbnailBase extends Container {
       return url;
     }).loadValue((url:string):void => {
       var image:ImageComponent = Ext.create(ImageComponent, {});
-      image.setSrc(url);
+      image.src = url;
       image.setStyle("max-height:" + (DropItemThumbnailBase.PREVIEW_HEIGHT - DropItemThumbnailBase.PREVIEW_CONTAINER_BORDER_WIDTH) + "px; max-width:" + (DropItemThumbnailBase.PREVIEW_WIDTH - DropItemThumbnailBase.PREVIEW_CONTAINER_BORDER_WIDTH -2) + "px;");
       previewContainer.add(image);
       var imgEl = image.getEl();
