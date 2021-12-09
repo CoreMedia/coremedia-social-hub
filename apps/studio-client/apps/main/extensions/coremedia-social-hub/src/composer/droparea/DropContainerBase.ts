@@ -1,5 +1,5 @@
 import Config from "@jangaroo/runtime/Config";
-import { as, asConfig, bind, mixin } from "@jangaroo/runtime";
+import { as, bind, mixin } from "@jangaroo/runtime";
 import SocialHubSettings_properties from "../../SocialHubSettings_properties";
 import SocialHub_properties from "../../SocialHub_properties";
 import MessageProperty from "../../beans/MessageProperty";
@@ -15,19 +15,17 @@ import ContentPropertyNames from "@coremedia/studio-client.cap-rest-client/conte
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
 import EventUtil from "@coremedia/studio-client.client-core/util/EventUtil";
-import BrowsePlugin from "@coremedia/studio-client.main.editor-components/sdk/components/html5/BrowsePlugin";
 import editorContext from "@coremedia/studio-client.main.editor-components/sdk/editorContext";
 import FileWrapper from "@coremedia/studio-client.main.editor-components/sdk/upload/FileWrapper";
 import UploadManager from "@coremedia/studio-client.main.editor-components/sdk/upload/UploadManager";
 import UploadSettings from "@coremedia/studio-client.main.editor-components/sdk/upload/UploadSettings";
-import Site from "@coremedia/studio-client.multi-site-models/Site";
 import Component from "@jangaroo/ext-ts/Component";
 import StringUtil from "@jangaroo/ext-ts/String";
 import Container from "@jangaroo/ext-ts/container/Container";
 import DropZone from "@jangaroo/ext-ts/dd/DropZone";
 import MessageBoxWindow from "@jangaroo/ext-ts/window/MessageBox";
-import int from "@jangaroo/runtime/int";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+import Button from "@jangaroo/ext-ts/button/Button";
+
 interface DropContainerBaseConfig extends Config<Container>, Partial<Pick<DropContainerBase,
   "bindTo" |
   "property" |
@@ -93,7 +91,7 @@ class DropContainerBase extends Container implements MessageFieldEditor {
   handleContentDrop(contents:Array<any>):void {
     EventUtil.invokeLater(():void => {//otherwise the progress bar does not appear :(
       for (var i = 0; i < contents.length; i++) {
-        DropItem.create(contents[i], (item:DropItem):void => 
+        DropItem.create(contents[i], (item:DropItem):void =>
           this.#addDropItem(item)
         );
       }
@@ -120,11 +118,11 @@ class DropContainerBase extends Container implements MessageFieldEditor {
       var siteRoot = site.getSiteRootFolder();
       ValueExpressionFactory.create(ContentPropertyNames.PATH, siteRoot).loadValue(():void => {
         var contentPath = siteRoot.getPath() + "/" + siteRelativePath;
-        uploadSettings.load(():void => 
+        uploadSettings.load(():void =>
           UploadManager.bulkUpload(uploadSettings, contentPath, files, (response:XMLHttpRequest):void => {
             for(var w of files as FileWrapper[]) {
               var content =as( w.getResultObject(),  Content);
-              DropItem.create(content, (item:DropItem):void => 
+              DropItem.create(content, (item:DropItem):void =>
                 this.#addDropItem(item)
               );
             }
@@ -204,9 +202,9 @@ class DropContainerBase extends Container implements MessageFieldEditor {
    * The upload button handler, converts the selected files to FileWrapper objects.
    * @param browsePlugin the browse plugin used for the file selection and contains the file selection.
    */
-  protected uploadButtonHandler(browsePlugin:BrowsePlugin):void {
+  protected uploadButtonHandler(button:Button):void {
     var fileWrappers = [];
-    var fileList:any = browsePlugin.getFileList();
+    var fileList:any = button.plugins[0].getFileList();
     for (var i = 0; i < fileList.length; i++) {
       var fileObject:any = fileList.item(i);
       var wrapper = this.createFileWrapper(fileObject);
