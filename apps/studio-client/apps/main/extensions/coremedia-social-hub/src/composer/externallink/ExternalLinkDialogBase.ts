@@ -82,7 +82,7 @@ class ExternalLinkDialogBase extends StudioDialog {
     var url:string = this.getUrlValueExpression().getValue();
     var doShorten:boolean = this.getShortenLinkCheckboxExpression().getValue();
     if(doShorten) {
-      SocialHubServices.shortenUrl(url, (shortened:string):void => 
+      SocialHubServices.shortenUrl(url, (shortened:string):void =>
         this.#insertLink(shortened, true)
       );
     }
@@ -92,7 +92,7 @@ class ExternalLinkDialogBase extends StudioDialog {
   }
 
   #insertLink(url:string, shortened:boolean):void {
-    var attributes = {};
+    var attributes:any = {};
     var removeAttributes = [];
     var data = this.getData();
 
