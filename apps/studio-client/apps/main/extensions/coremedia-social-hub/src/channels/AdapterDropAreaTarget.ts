@@ -1,5 +1,5 @@
 import Config from "@jangaroo/runtime/Config";
-import { asConfig } from "@jangaroo/runtime";
+import { as } from "@jangaroo/runtime";
 import { AnyFunction } from "@jangaroo/runtime/types";
 import SocialHubSettings_properties from "../SocialHubSettings_properties";
 import SocialHubAdapter from "../beans/SocialHubAdapter";
@@ -14,7 +14,6 @@ import Component from "@jangaroo/ext-ts/Component";
 import DragSource from "@jangaroo/ext-ts/dd/DragSource";
 import DropTarget from "@jangaroo/ext-ts/dd/DropTarget";
 import Event from "@jangaroo/ext-ts/event/Event";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
 
 
 /**
@@ -37,7 +36,7 @@ class AdapterDropAreaTarget extends DropTarget {
                                         handleOut:AnyFunction = null,
                                         handleDrop:AnyFunction = null,
                                         hideOnExit:boolean = false) {
-    super(dropArea.getEl(), Config(DropTarget, {"ddGroup": ["ContentDD", "ContentLinkDD"]}));
+    super(dropArea.getEl(), Config(DropTarget, {"ddGroup": "ContentLinkDD"}));
     this.addToGroup("ContentDD");
     this.addToGroup("ContentLinkDD");
 
@@ -136,7 +135,7 @@ class AdapterDropAreaTarget extends DropTarget {
     var id =e.id;
     var c= Ext.getCmp(id);
     while(c === undefined || c.getItemId().indexOf(SocialHubPropertyNames.COMPOSER_TYPE) === -1) {
-      e = e.parentNode;
+      e = as(e.parentNode, Element);
       if(e === null) {
         break;
       }
