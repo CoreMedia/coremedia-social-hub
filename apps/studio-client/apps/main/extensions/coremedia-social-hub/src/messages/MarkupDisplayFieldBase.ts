@@ -72,7 +72,7 @@ class MarkupDisplayFieldBase extends MessageDisplayFieldBase {
       for(var script of this.messageContainerDescriptor.getScripts() as string[]) {
         var url = script;
         if (url.indexOf("?") === -1) {
-          url = url + "?" + new Date().time;
+          url = url + "?" + new Date().getTime();
         }
         this.#loadScript(url,bind( this,this.#refresh));
       }
