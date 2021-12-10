@@ -5,6 +5,7 @@
   "version": "1.0.0-SNAPSHOT",
   "private": true,
   "dependencies": {
+    "@coremedia/studio-client.app-context-models": "2110.1.0",
     "@coremedia/studio-client.cap-base-models": "2110.1.0",
     "@coremedia/studio-client.cap-rest-client": "2110.1.0",
     "@coremedia/studio-client.cap-rest-client-impl": "2110.1.0",

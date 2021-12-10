@@ -10,7 +10,7 @@ import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/Va
 import beanFactory from "@coremedia/studio-client.client-core/data/beanFactory";
 import EventUtil from "@coremedia/studio-client.client-core/util/EventUtil";
 import StudioDialog from "@coremedia/studio-client.ext.base-components/dialogs/StudioDialog";
-import AnchorUtil from "@coremedia/studio-client.main.ckeditor4-components/src/AnchorUtil";
+import AnchorUtil from "@coremedia/studio-client.main.ckeditor4-components/AnchorUtil";
 import Ext from "@jangaroo/ext-ts";
 interface InternalLinkDialogBaseConfig extends Config<StudioDialog>, Partial<Pick<InternalLinkDialogBase,
   "messageEditor"

@@ -22,6 +22,7 @@ importers:
 
   apps/main/extensions/coremedia-social-hub:
     specifiers:
+      '@coremedia/studio-client.app-context-models': 2110.1.0
       '@coremedia/studio-client.cap-base-models': 2110.1.0
       '@coremedia/studio-client.cap-rest-client': 2110.1.0
       '@coremedia/studio-client.cap-rest-client-impl': 2110.1.0
@@ -47,6 +48,7 @@ importers:
       eslint: 7.27.0
       rimraf: ^3.0.2
     dependencies:
+      '@coremedia/studio-client.app-context-models': 2110.1.0
       '@coremedia/studio-client.cap-base-models': 2110.1.0
       '@coremedia/studio-client.cap-rest-client': 2110.1.0
       '@coremedia/studio-client.cap-rest-client-impl': 2110.1.0

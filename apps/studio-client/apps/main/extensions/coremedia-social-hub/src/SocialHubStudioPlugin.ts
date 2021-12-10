@@ -1,25 +1,25 @@
 import Config from "@jangaroo/runtime/Config";
-import { asConfig } from "@jangaroo/runtime";
+import { cast } from "@jangaroo/runtime";
 import SocialHubComposerProperties_properties from "./SocialHubComposerProperties_properties";
 import SocialHubMainTab from "./SocialHubMainTab";
 import SocialHubStudioPluginBase from "./SocialHubStudioPluginBase";
-import SocialHub_properties from "./SocialHub_properties";
 import ComposerModelImpl from "./beans/ComposerModelImpl";
 import MessageImpl from "./beans/MessageImpl";
 import SocialHubAdapterImpl from "./beans/SocialHubAdapterImpl";
 import SocialHubAdaptersImpl from "./beans/SocialHubAdaptersImpl";
 import ContentTypes_properties from "@coremedia/studio-client.cap-base-models/content/ContentTypes_properties";
-import CoreIcons_properties from "@coremedia/studio-client.core-icons/CoreIcons_properties";
-import AddItemsPlugin from "@coremedia/studio-client.ext.ui-components/plugins/AddItemsPlugin";
-import CopyResourceBundleProperties from "@coremedia/studio-client.main.editor-components/configuration/CopyResourceBundleProperties";
+import CopyResourceBundleProperties
+  from "@coremedia/studio-client.main.editor-components/configuration/CopyResourceBundleProperties";
 import RegisterRestResource from "@coremedia/studio-client.main.editor-components/configuration/RegisterRestResource";
 import OpenTabAction from "@coremedia/studio-client.main.editor-components/sdk/actions/OpenTabAction";
-import ExtensionsMenuToolbar from "@coremedia/studio-client.main.editor-components/sdk/desktop/ExtensionsMenuToolbar";
-import JobErrorCodes_properties from "@coremedia/studio-client.main.editor-components/sdk/jobs/JobErrorCodes_properties";
-import Button from "@jangaroo/ext-ts/button/Button";
-import Container from "@jangaroo/ext-ts/container/Container";
+import JobErrorCodes_properties
+  from "@coremedia/studio-client.main.editor-components/sdk/jobs/JobErrorCodes_properties";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
 import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+import IEditorContext from "@coremedia/studio-client.main.editor-components/sdk/IEditorContext";
+import studioApps from "@coremedia/studio-client.app-context-models/apps/studioApps";
+import StudioAppsImpl from "@coremedia/studio-client.app-context-models/apps/StudioAppsImpl";
+
 interface SocialHubStudioPluginConfig extends Config<SocialHubStudioPluginBase> {
 }
 
@@ -27,33 +27,18 @@ interface SocialHubStudioPluginConfig extends Config<SocialHubStudioPluginBase> 
 class SocialHubStudioPlugin extends SocialHubStudioPluginBase{
   declare Config: SocialHubStudioPluginConfig;
 
+  override init(editorContext: IEditorContext): void {
+    super.init(editorContext);
+
+    cast(StudioAppsImpl, studioApps._).getSubAppLauncherRegistry().registerSubAppLauncher("cmSocialHub", (): void => {
+      const openTagsAction = new OpenTabAction({ singleton: true,
+        tab: Config(SocialHubMainTab)
+      });
+      openTagsAction.execute();
+    });
+  }
   constructor(config:Config<SocialHubStudioPlugin> = null){
     super( ConfigUtils.apply(Config(SocialHubStudioPlugin, {
-
-  rules:[
-
-    Config(ExtensionsMenuToolbar, {
-      plugins:[
-        Config(AddItemsPlugin, {
-          containers:[
-            Config(Container, {
-              items:[
-                Config(Button, { itemId: "socialHubButton",
-                        tooltip: SocialHub_properties.menu_title_tooltip,
-                        iconCls:  CoreIcons_properties.social_hub,
-                        text:  SocialHub_properties.menu_title_text,
-                  baseAction: new OpenTabAction({ singleton: true,
-                      tab: Config(SocialHubMainTab)
-                  })
-                })
-              ]
-            })
-          ]
-        })
-      ]
-    })
-
-  ],
 
   configuration:[
     new RegisterRestResource({ beanClass: SocialHubAdapterImpl}),

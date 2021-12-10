@@ -11,6 +11,32 @@ module.exports = {
       },
     ],
   },
+  appManifests: {
+    en: {
+      categories: [
+        "Social Media Hub",
+      ],
+      cmServiceShortcuts: [
+        {
+          cmKey: "cmSocialHub",
+          cmCategory: "Social Media Hub",
+          name: "Social Media Hub",
+          url: "",
+          icons: [
+            {
+              src: "packages/com.coremedia.blueprint__social-hub-studio/appIcons/social-hub_24.svg",
+              sizes: "24x24",
+              type: "image/svg",
+            },
+          ],
+          cmService: {
+            name: "launchSubAppService",
+            method: "launchSubApp",
+          },
+        },
+      ],
+    },
+  },
   additionalCssNonBundle: [
     "resources/css/social-media-hub.css",
   ],

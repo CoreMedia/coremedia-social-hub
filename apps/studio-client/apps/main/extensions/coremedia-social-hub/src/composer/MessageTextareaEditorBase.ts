@@ -10,7 +10,7 @@ import RichTextPlainTextTransformer
   from "@coremedia/studio-client.cap-base-models/content/RichTextPlainTextTransformer";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
-import RichTextArea from "@coremedia/studio-client.main.ckeditor4-components/src/RichTextArea";
+import RichTextArea from "@coremedia/studio-client.main.ckeditor4-components/RichTextArea";
 import ValidationState from "@coremedia/studio-client.ext.ui-components/mixins/ValidationState";
 import ValidationStateMixin from "@coremedia/studio-client.ext.ui-components/mixins/ValidationStateMixin";
 import Ext from "@jangaroo/ext-ts";
