@@ -3,15 +3,16 @@ import { bind, is } from "@jangaroo/runtime";
 import MessageTextareaEditor from "../MessageTextareaEditor";
 import InternalLinkButton from "./InternalLinkButton";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
-import AnchorUtil from "@coremedia/studio-client.ext.ui-components/ckeditor/AnchorUtil";
+import AnchorUtil from "@coremedia/studio-client.main.ckeditor4-components/src/AnchorUtil";
 import IconButton from "@coremedia/studio-client.ext.ui-components/components/IconButton";
-import InternalLinkWindow from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/InternalLinkWindow";
+import InternalLinkWindow from "@coremedia/studio-client.main.ckeditor4-components/src/fields/InternalLinkWindow";
 import PropertyEditorUtil from "@coremedia/studio-client.main.editor-components/sdk/util/PropertyEditorUtil";
 import Ext from "@jangaroo/ext-ts";
 import ZIndexManager from "@jangaroo/ext-ts/ZIndexManager";
 import Button from "@jangaroo/ext-ts/button/Button";
 import Container from "@jangaroo/ext-ts/container/Container";
 interface InternalLinkButtonBaseConfig extends Config<IconButton>, Partial<Pick<InternalLinkButtonBase,
+  "bindTo" |
   "richTextWindowGroup" |
   "ckEditorValueExpression"
 >> {
@@ -25,6 +26,12 @@ interface InternalLinkButtonBaseConfig extends Config<IconButton>, Partial<Pick<
  */
 class InternalLinkButtonBase extends IconButton {
   declare Config: InternalLinkButtonBaseConfig;
+
+  /**
+   * A property path expression leading to the Bean whose property is edited.
+   * This property editor assumes that this bean has a property 'properties'.
+   */
+  bindTo: ValueExpression = null;
 
   //the toolbar window group
   richTextWindowGroup:ZIndexManager = null;
@@ -85,7 +92,7 @@ class InternalLinkButtonBase extends IconButton {
   }
 
   #getRenderToContainer():Container {
-    return this.findParentBy((container:Container):boolean => 
+    return this.findParentBy((container:Container):boolean =>
       is( container,  MessageTextareaEditor)
     );
   }

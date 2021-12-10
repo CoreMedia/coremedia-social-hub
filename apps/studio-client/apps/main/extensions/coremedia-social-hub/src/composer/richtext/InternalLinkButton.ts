@@ -1,10 +1,10 @@
 import Config from "@jangaroo/runtime/Config";
-import { asConfig, bind } from "@jangaroo/runtime";
+import { bind } from "@jangaroo/runtime";
 import InternalLinkButtonBase from "./InternalLinkButtonBase";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
-import CKEditor_properties from "@coremedia/studio-client.ext.ui-components/ckeditor/CKEditor_properties";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+import CKEditor_properties from "@coremedia/studio-client.main.ckeditor4-components/CKEditor_properties";
+
 interface InternalLinkButtonConfig extends Config<InternalLinkButtonBase>, Partial<Pick<InternalLinkButton,
   "bindTo" |
   "forceReadOnlyValueExpression"
@@ -28,12 +28,6 @@ interface InternalLinkButtonConfig extends Config<InternalLinkButtonBase>, Parti
 
 }),config))());
   }
-
-    /**
-     * A property path expression leading to the Bean whose property is edited.
-     * This property editor assumes that this bean has a property 'properties'.
-     */
-  bindTo:ValueExpression = null;
 
     /**
      * An optional ValueExpression which makes the component read-only if it is evaluated to true.
