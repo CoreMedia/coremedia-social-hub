@@ -1,22 +1,23 @@
 import Config from "@jangaroo/runtime/Config";
-import { as, asConfig, bind, mixin } from "@jangaroo/runtime";
+import { as, bind, mixin } from "@jangaroo/runtime";
 import SocialHub_properties from "../SocialHub_properties";
 import MessageProperty from "../beans/MessageProperty";
 import SocialHubAdapter from "../beans/SocialHubAdapter";
 import MessageFieldEditor from "./MessageFieldEditor";
 import ExternalLinkDialog from "./externallink/ExternalLinkDialog";
 import InternalLinkDialog from "./internallink/InternalLinkDialog";
-import RichTextPlainTextTransformer from "@coremedia/studio-client.cap-base-models/content/RichTextPlainTextTransformer";
+import RichTextPlainTextTransformer
+  from "@coremedia/studio-client.cap-base-models/content/RichTextPlainTextTransformer";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
-import RichTextArea from "@coremedia/studio-client.ext.ui-components/ckeditor/RichTextArea";
+import RichTextArea from "@coremedia/studio-client.main.ckeditor4-components/src/RichTextArea";
 import ValidationState from "@coremedia/studio-client.ext.ui-components/mixins/ValidationState";
 import ValidationStateMixin from "@coremedia/studio-client.ext.ui-components/mixins/ValidationStateMixin";
 import Ext from "@jangaroo/ext-ts";
 import StringUtil from "@jangaroo/ext-ts/String";
 import ZIndexManager from "@jangaroo/ext-ts/ZIndexManager";
 import Panel from "@jangaroo/ext-ts/panel/Panel";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+
 interface MessageTextareaEditorBaseConfig extends Config<Panel>, Partial<Pick<MessageTextareaEditorBase,
   "bindTo" |
   "property" |
@@ -97,12 +98,13 @@ class MessageTextareaEditorBase extends Panel implements MessageFieldEditor {
       this.#internalLinkDialog.destroy();
     }
 
-    this.#internalLinkDialog = Ext.create(InternalLinkDialog, {
+    const config = {
       messageEditor: this,
       renderToParent: this,
       x: this.getX() + 24,
       y: this.getY() + 48
-    });
+    };
+    this.#internalLinkDialog = Ext.create(InternalLinkDialog, config);
     this.#internalLinkDialog.show();
   }
 
