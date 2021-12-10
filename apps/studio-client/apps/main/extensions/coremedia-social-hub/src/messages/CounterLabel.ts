@@ -42,9 +42,6 @@ class CounterLabel extends CounterLabelBase{
             transformer: (count:number):boolean =>  count > 0,
             bindTo: ValueExpressionFactory.createFromValue(config.message).extendBy(config.propertyName)})
   ],
-  layout: Config(HBoxLayout, { align: "stretch"
-  })
-
 }),config))());
   }}
 export default CounterLabel;
