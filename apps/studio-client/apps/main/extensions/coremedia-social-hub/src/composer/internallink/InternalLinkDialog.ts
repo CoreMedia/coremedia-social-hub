@@ -1,16 +1,15 @@
 import Config from "@jangaroo/runtime/Config";
-import { asConfig, bind } from "@jangaroo/runtime";
+import { bind } from "@jangaroo/runtime";
 import SocialHub_properties from "../../SocialHub_properties";
 import InternalLinkDialogBase from "./InternalLinkDialogBase";
 import CoreIcons_properties from "@coremedia/studio-client.core-icons/CoreIcons_properties";
-import CKEditor_properties from "@coremedia/studio-client.ext.ui-components/ckeditor/CKEditor_properties";
+import CKEditor_properties from "@coremedia/studio-client.main.ckeditor4-components/CKEditor_properties";
 import IconButton from "@coremedia/studio-client.ext.ui-components/components/IconButton";
 import BindPropertyPlugin from "@coremedia/studio-client.ext.ui-components/plugins/BindPropertyPlugin";
 import HorizontalSpacingPlugin from "@coremedia/studio-client.ext.ui-components/plugins/HorizontalSpacingPlugin";
 import ButtonSkin from "@coremedia/studio-client.ext.ui-components/skins/ButtonSkin";
 import PanelSkin from "@coremedia/studio-client.ext.ui-components/skins/PanelSkin";
 import WindowSkin from "@coremedia/studio-client.ext.ui-components/skins/WindowSkin";
-import Editor_properties from "@coremedia/studio-client.main.editor-components/Editor_properties";
 import SingleLinkField from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/SingleLinkField";
 import Button from "@jangaroo/ext-ts/button/Button";
 import Container from "@jangaroo/ext-ts/container/Container";
@@ -18,7 +17,7 @@ import FieldContainer from "@jangaroo/ext-ts/form/FieldContainer";
 import HBoxLayout from "@jangaroo/ext-ts/layout/container/HBox";
 import VBoxLayout from "@jangaroo/ext-ts/layout/container/VBox";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+
 interface InternalLinkDialogConfig extends Config<InternalLinkDialogBase> {
 }
 
@@ -35,7 +34,7 @@ interface InternalLinkDialogConfig extends Config<InternalLinkDialogBase> {
                               header: false,
                               resizable: false,
                               constrainHeader: true,
-                              ui:  WindowSkin.GRID_200_LIGHT.getSkin(),
+                              ui:  WindowSkin.GRID_200.getSkin(),
 
   items:[
     Config(FieldContainer, {

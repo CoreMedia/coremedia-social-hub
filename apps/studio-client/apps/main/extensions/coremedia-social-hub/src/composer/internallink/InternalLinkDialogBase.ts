@@ -10,7 +10,7 @@ import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/Va
 import beanFactory from "@coremedia/studio-client.client-core/data/beanFactory";
 import EventUtil from "@coremedia/studio-client.client-core/util/EventUtil";
 import StudioDialog from "@coremedia/studio-client.ext.base-components/dialogs/StudioDialog";
-import AnchorUtil from "@coremedia/studio-client.ext.ui-components/ckeditor/AnchorUtil";
+import AnchorUtil from "@coremedia/studio-client.main.ckeditor4-components/src/AnchorUtil";
 import Ext from "@jangaroo/ext-ts";
 interface InternalLinkDialogBaseConfig extends Config<StudioDialog>, Partial<Pick<InternalLinkDialogBase,
   "messageEditor"
@@ -93,7 +93,7 @@ class InternalLinkDialogBase extends StudioDialog {
 
   protected getSubmitButtonDisabledExpression():ValueExpression {
     if (!this.#submitButtonDisabledExpression) {
-      this.#submitButtonDisabledExpression = ValueExpressionFactory.createFromFunction(():boolean => 
+      this.#submitButtonDisabledExpression = ValueExpressionFactory.createFromFunction(():boolean =>
          this.#getContent() === null
       );
     }
@@ -339,7 +339,7 @@ class InternalLinkDialogBase extends StudioDialog {
     var content:Content = null;
     var contentArray =as( this.getContentExpression().getValue(),  Array);
     if (contentArray && contentArray.length === 1) {
-      content = contentArray[0];
+      content = as(contentArray[0], Content);
     }
     return content;
   }
@@ -352,11 +352,12 @@ class InternalLinkDialogBase extends StudioDialog {
   }
 
 
-  unlink():void {
+  override unlink():this {
     // hot fixed for now...
     // not using resetModel here as it triggers 3 change events at once, we just want to achieve the same behaviour
     // as when the content is changed via the link list field.
     this.getContentExpression().setValue([]);
+    return this;
   }
 
 
