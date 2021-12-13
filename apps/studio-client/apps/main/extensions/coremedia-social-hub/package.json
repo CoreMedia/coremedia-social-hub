@@ -23,13 +23,13 @@
     "@coremedia/studio-client.main.ckeditor4-components": "2110.1.0",
     "@coremedia/studio-client.main.editor-components": "2110.1.0",
     "@coremedia/studio-client.multi-site-models": "2110.1.0",
-    "@jangaroo/ext-ts": "^1.0.0-alpha",
-    "@jangaroo/runtime": "^1.0.0-alpha"
+    "@jangaroo/ext-ts": "^1.0.0",
+    "@jangaroo/runtime": "^1.0.0"
   },
   "devDependencies": {
-    "@jangaroo/build": "^1.0.0-alpha",
-    "@jangaroo/core": "^1.0.0-alpha",
-    "@jangaroo/publish": "^1.0.0-alpha",
+    "@jangaroo/build": "^1.0.0",
+    "@jangaroo/core": "^1.0.0",
+    "@jangaroo/publish": "^1.0.0",
     "eslint": "7.27.0",
     "rimraf": "^3.0.2"
   },
