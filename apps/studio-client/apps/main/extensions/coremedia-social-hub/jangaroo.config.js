@@ -43,4 +43,7 @@ module.exports = jangarooConfig({
       ],
     },
   },
+  autoLoad: [
+    "./src/init",
+  ],
 });
