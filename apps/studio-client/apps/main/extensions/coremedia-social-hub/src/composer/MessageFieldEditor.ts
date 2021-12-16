@@ -1,6 +1,7 @@
 
 abstract class MessageFieldEditor {
 
-  abstract getErrorMessage():string;
+  abstract getErrorMessage(): string;
 }
+
 export default MessageFieldEditor;

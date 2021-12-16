@@ -1,38 +1,39 @@
 import SocialHubPropertyNames from "./SocialHubPropertyNames";
 
 class MessageContainerDescriptor {
-  #data:any = null;
+  #data: any = null;
 
-  constructor(data:any) {
+  constructor(data: any) {
     this.#data = data;
   }
 
-  getValue():any {
+  getValue(): any {
     return this.#data.value;
   }
 
-  getType():string {
+  getType(): string {
     return this.#data.type;
   }
 
-  showLabel():boolean {
+  showLabel(): boolean {
     return this.#data.showLabel;
   }
 
-  getScripts():Array<any> {
+  getScripts(): Array<any> {
     return this.#data[SocialHubPropertyNames.DESCRIPTOR_SCRIPTS] || [];
   }
 
-  getScriplets():Array<any> {
+  getScriplets(): Array<any> {
     return this.#data[SocialHubPropertyNames.DESCRIPTOR_SCRIPLETS] || [];
   }
 
-  isExcluded():boolean {
+  isExcluded(): boolean {
     return this.#data[SocialHubPropertyNames.DESCRIPTOR_EXCLUDED];
   }
 
-  getPropertyName():string {
+  getPropertyName(): string {
     return this.#data[SocialHubPropertyNames.DESCRIPTOR_PROPERTY_NAME];
   }
 }
+
 export default MessageContainerDescriptor;

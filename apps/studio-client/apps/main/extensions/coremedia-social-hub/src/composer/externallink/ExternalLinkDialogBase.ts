@@ -1,100 +1,99 @@
-import Config from "@jangaroo/runtime/Config";
-import SocialHubServices from "../../beans/SocialHubServices";
-import MessageTextareaEditor from "../MessageTextareaEditor";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
 import StudioDialog from "@coremedia/studio-client.ext.base-components/dialogs/StudioDialog";
+import Config from "@jangaroo/runtime/Config";
+import SocialHubServices from "../../beans/SocialHubServices";
+import MessageTextareaEditor from "../MessageTextareaEditor";
+
 interface ExternalLinkDialogBaseConfig extends Config<StudioDialog>, Partial<Pick<ExternalLinkDialogBase,
   "messageEditor"
 >> {
 }
 
-
-
 class ExternalLinkDialogBase extends StudioDialog {
   declare Config: ExternalLinkDialogBaseConfig;
-  #submitButtonDisabledExpression:ValueExpression = null;
-  #shortenLinkCheckboxValueExpression:ValueExpression = null;
-  #urlValueExpression:ValueExpression = null;
 
-  messageEditor:MessageTextareaEditor = null;
+  #submitButtonDisabledExpression: ValueExpression = null;
+
+  #shortenLinkCheckboxValueExpression: ValueExpression = null;
+
+  #urlValueExpression: ValueExpression = null;
+
+  messageEditor: MessageTextareaEditor = null;
 
   //the CKEditor
-  #editor:any;
+  #editor: any;
 
-  constructor(config:Config<ExternalLinkDialogBase> = null) {
+  constructor(config: Config<ExternalLinkDialogBase> = null) {
     super(config);
   }
 
-
-  protected override afterRender():void {
+  protected override afterRender(): void {
     super.afterRender();
     this.#editor = this.messageEditor.getRichtextEditor().getCKEditor();
 
-    var selection = this.#editor.getSelection();
-    var element = null;
+    const selection = this.#editor.getSelection();
+    let element = null;
 
     // Fill in all the relevant fields if there's already one link selected.
-    if (( element = this.#getSelectedLink(this.#editor) ) && element.hasAttribute("_xlink:href")) {
+    if ((element = this.#getSelectedLink(this.#editor)) && element.hasAttribute("_xlink:href")) {
       selection.selectElement(element);
       this.getUrlValueExpression().setValue(element.getText());
     }
   }
 
   #getSelectedLink(editor) {
-    var range;
+    let range;
     try {
       range = editor.getSelection().getRanges(true)[ 0 ];
       range.shrink(CKEDITOR["SHRINK_TEXT"]);
-      var root = range.getCommonAncestor();
+      const root = range.getCommonAncestor();
       return root.getAscendant("a", true);
-    }
-    catch(e) {
+    } catch (e) {
       return null;
     }
   }
 
-  protected getSubmitButtonDisabledExpression():ValueExpression {
-    if(!this.#submitButtonDisabledExpression) {
-      this.#submitButtonDisabledExpression = ValueExpressionFactory.createFromFunction(():boolean => {
-        var url:string = this.getUrlValueExpression().getValue();
+  protected getSubmitButtonDisabledExpression(): ValueExpression {
+    if (!this.#submitButtonDisabledExpression) {
+      this.#submitButtonDisabledExpression = ValueExpressionFactory.createFromFunction((): boolean => {
+        const url: string = this.getUrlValueExpression().getValue();
         return !url || url.length === 0 || url.indexOf("http") === -1;
       });
     }
     return this.#submitButtonDisabledExpression;
   }
 
-  protected getUrlValueExpression():ValueExpression {
-    if(!this.#urlValueExpression) {
+  protected getUrlValueExpression(): ValueExpression {
+    if (!this.#urlValueExpression) {
       this.#urlValueExpression = ValueExpressionFactory.createFromValue("");
     }
     return this.#urlValueExpression;
   }
 
-  protected getShortenLinkCheckboxExpression():ValueExpression {
-    if(!this.#shortenLinkCheckboxValueExpression) {
+  protected getShortenLinkCheckboxExpression(): ValueExpression {
+    if (!this.#shortenLinkCheckboxValueExpression) {
       this.#shortenLinkCheckboxValueExpression = ValueExpressionFactory.createFromValue(false);
     }
     return this.#shortenLinkCheckboxValueExpression;
   }
 
-  protected okPressed():void {
-    var url:string = this.getUrlValueExpression().getValue();
-    var doShorten:boolean = this.getShortenLinkCheckboxExpression().getValue();
-    if(doShorten) {
-      SocialHubServices.shortenUrl(url, (shortened:string):void =>
-        this.#insertLink(shortened, true)
+  protected okPressed(): void {
+    const url: string = this.getUrlValueExpression().getValue();
+    const doShorten: boolean = this.getShortenLinkCheckboxExpression().getValue();
+    if (doShorten) {
+      SocialHubServices.shortenUrl(url, (shortened: string): void =>
+        this.#insertLink(shortened, true),
       );
-    }
-    else {
+    } else {
       this.#insertLink(url, doShorten);
     }
   }
 
-  #insertLink(url:string, shortened:boolean):void {
-    var attributes:any = {};
-    var removeAttributes = [];
-    var data = this.getData();
+  #insertLink(url: string, shortened: boolean): void {
+    const attributes: any = {};
+    const removeAttributes = [];
+    const data = this.getData();
 
     attributes["_xlink:href"] = url;
     attributes["href"] = "#";
@@ -102,22 +101,22 @@ class ExternalLinkDialogBase extends StudioDialog {
     this.#editor.fire("saveSnapshot");
     attributes["_xlink:show"] = "new";
 
-    var element:any = this.#editor.getSelection().getSelectedElement();
+    let element: any = this.#editor.getSelection().getSelectedElement();
     if (element && element.getName() === "a") {
       // We're only editing an existing link, so just overwrite the attributes.
-      var href = element.getAttribute("_xlink:href");
-      var textView = element.getHtml();
+      const href = element.getAttribute("_xlink:href");
+      const textView = element.getHtml();
 
       // IE BUG: Setting the name attribute to an existing link doesn't work.
       // Must re-create the link from weired syntax to workaround.
       if (CKEDITOR["env"].ie && attributes.name != element.getAttribute("name")) {
-        var newElement = new CKEDITOR["dom"].element('<a name="' + CKEDITOR["tools"].htmlEncode(attributes.name) + '">',
-                this.#editor.document);
+        const newElement = new CKEDITOR["dom"].element("<a name=\"" + CKEDITOR["tools"].htmlEncode(attributes.name) + "\">",
+          this.#editor.document);
 
         selection = this.#editor.getSelection();
 
         element.moveChildren(newElement);
-        element.copyAttributes(newElement, { name : 1 });
+        element.copyAttributes(newElement, { name: 1 });
         newElement.replace(element);
         element = newElement;
 
@@ -135,23 +134,26 @@ class ExternalLinkDialogBase extends StudioDialog {
     } else {
       // Create element if current selection is collapsed.
       var selection = this.#editor.getSelection();
-      var ranges = selection.getRanges();
+      const ranges = selection.getRanges();
       if (ranges.length == 1 && ranges[0].collapsed) {
-        var text = new CKEDITOR["dom"].text(attributes["_xlink:href"], this.#editor.document);
+        const text = new CKEDITOR["dom"].text(attributes["_xlink:href"], this.#editor.document);
         ranges[0].insertNode(text);
         ranges[0].selectNodeContents(text);
         selection.selectRanges(ranges);
       }
 
       // Apply style.
-      var style = new CKEDITOR["style"]({ element : "a", attributes : attributes });
+      const style = new CKEDITOR["style"]({
+        element: "a",
+        attributes: attributes,
+      });
       style.type = CKEDITOR["STYLE_INLINE"];		// need to override... dunno why.
       this.#editor.applyStyle(style);
 
       // Id. Apply only to the first link.
       if (data && data.adv && data.adv.advId) {
-        var links = this.#editor.document.$.getElementsByTagName("a");
-        for (var i = 0; i < links.length; i++) {
+        const links = this.#editor.document.$.getElementsByTagName("a");
+        for (let i = 0; i < links.length; i++) {
           if (links[i].href == attributes["_xlink:href"]) {
             links[i].id = data.adv.advId;
             break;
@@ -165,4 +167,5 @@ class ExternalLinkDialogBase extends StudioDialog {
     this.close();
   }
 }
+
 export default ExternalLinkDialogBase;

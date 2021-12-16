@@ -1,7 +1,3 @@
-import Config from "@jangaroo/runtime/Config";
-import { asConfig, bind } from "@jangaroo/runtime";
-import SocialHub_properties from "../../SocialHub_properties";
-import ExternalLinkDialogBase from "./ExternalLinkDialogBase";
 import StatefulTextField from "@coremedia/studio-client.ext.ui-components/components/StatefulTextField";
 import BindPropertyPlugin from "@coremedia/studio-client.ext.ui-components/plugins/BindPropertyPlugin";
 import BlockEnterPlugin from "@coremedia/studio-client.ext.ui-components/plugins/BlockEnterPlugin";
@@ -16,78 +12,90 @@ import HBoxLayout from "@jangaroo/ext-ts/layout/container/HBox";
 import VBoxLayout from "@jangaroo/ext-ts/layout/container/VBox";
 import Fill from "@jangaroo/ext-ts/toolbar/Fill";
 import Toolbar from "@jangaroo/ext-ts/toolbar/Toolbar";
+import { bind } from "@jangaroo/runtime";
+import Config from "@jangaroo/runtime/Config";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+import SocialHub_properties from "../../SocialHub_properties";
+import ExternalLinkDialogBase from "./ExternalLinkDialogBase";
+
 interface ExternalLinkDialogConfig extends Config<ExternalLinkDialogBase> {
 }
 
-
-
-    class ExternalLinkDialog extends ExternalLinkDialogBase{
+class ExternalLinkDialog extends ExternalLinkDialogBase {
   declare Config: ExternalLinkDialogConfig;
 
-  constructor(config:Config<ExternalLinkDialog> = null){
+  constructor(config: Config<ExternalLinkDialog> = null) {
     super((()=> ConfigUtils.apply(Config(ExternalLinkDialog, {
-                              title: SocialHub_properties.external_link_dialog_title,
-                              width: 400,
-                              height: 160,
-                              modal: true,
-                              constrainHeader: true,
-                              ui:  WindowSkin.GRID_200.getSkin(),
+      title: SocialHub_properties.external_link_dialog_title,
+      width: 400,
+      height: 160,
+      modal: true,
+      constrainHeader: true,
+      ui: WindowSkin.GRID_200.getSkin(),
 
-  items:[
-    Config(FieldContainer, {
-            fieldLabel:  SocialHub_properties.external_link_dialog_url_text,
-      items:[
-        Config(StatefulTextField, { name: "link", flex: 1,
-          plugins:[
-            Config(BlockEnterPlugin),
-            Config(BindPropertyPlugin, { bindTo: this.getUrlValueExpression(),
-                                   ifUndefined: "",
-                                   bidirectional: true})
-          ]
-        })
-      ],
-      layout: Config(HBoxLayout, { align: "stretch"
-      })
-    }),
-    Config(Container, { height: 6}),
-    Config(FieldContainer, {
-            fieldLabel:  SocialHub_properties.external_link_dialog_shorten_text,
-      items:[
-        Config(Checkbox, {
-          plugins:[
-            Config(BindPropertyPlugin, { bidirectional: true,
-                                   ifUndefined: "false",
-                                   bindTo: this.getShortenLinkCheckboxExpression()})
-          ]
-        })
-      ],
-      layout: Config(HBoxLayout, { align: "stretch"
-      })
-    })
-  ],
-  layout: Config(VBoxLayout, { align: "stretch"
-  }),
-  fbar: Config(Toolbar, {
-      items:[
-        Config(Fill),
-        Config(Button, { ui:  ButtonSkin.FOOTER_PRIMARY.getSkin(),
-                scale: "small",
-                text:  Editor_properties.dialog_defaultSubmitButton_text,
-                handler: bind(this,this.okPressed),
-          plugins:[
-            Config(BindPropertyPlugin, { componentProperty: "disabled",
-                                   bindTo: this.getSubmitButtonDisabledExpression()})
-          ]
+      items: [
+        Config(FieldContainer, {
+          fieldLabel: SocialHub_properties.external_link_dialog_url_text,
+          items: [
+            Config(StatefulTextField, {
+              name: "link",
+              flex: 1,
+              plugins: [
+                Config(BlockEnterPlugin),
+                Config(BindPropertyPlugin, {
+                  bindTo: this.getUrlValueExpression(),
+                  ifUndefined: "",
+                  bidirectional: true,
+                }),
+              ],
+            }),
+          ],
+          layout: Config(HBoxLayout, { align: "stretch" }),
         }),
-        Config(Button, { ui:  ButtonSkin.FOOTER_SECONDARY.getSkin(),
-                scale: "small",
-                text:  Editor_properties.dialog_defaultCancelButton_text,
-                handler: bind(this,this.close)})
-      ]
-  })
+        Config(Container, { height: 6 }),
+        Config(FieldContainer, {
+          fieldLabel: SocialHub_properties.external_link_dialog_shorten_text,
+          items: [
+            Config(Checkbox, {
+              plugins: [
+                Config(BindPropertyPlugin, {
+                  bidirectional: true,
+                  ifUndefined: "false",
+                  bindTo: this.getShortenLinkCheckboxExpression(),
+                }),
+              ],
+            }),
+          ],
+          layout: Config(HBoxLayout, { align: "stretch" }),
+        }),
+      ],
+      layout: Config(VBoxLayout, { align: "stretch" }),
+      fbar: Config(Toolbar, {
+        items: [
+          Config(Fill),
+          Config(Button, {
+            ui: ButtonSkin.FOOTER_PRIMARY.getSkin(),
+            scale: "small",
+            text: Editor_properties.dialog_defaultSubmitButton_text,
+            handler: bind(this, this.okPressed),
+            plugins: [
+              Config(BindPropertyPlugin, {
+                componentProperty: "disabled",
+                bindTo: this.getSubmitButtonDisabledExpression(),
+              }),
+            ],
+          }),
+          Config(Button, {
+            ui: ButtonSkin.FOOTER_SECONDARY.getSkin(),
+            scale: "small",
+            text: Editor_properties.dialog_defaultCancelButton_text,
+            handler: bind(this, this.close),
+          }),
+        ],
+      }),
 
-}),config))());
-  }}
+    }), config))());
+  }
+}
+
 export default ExternalLinkDialog;

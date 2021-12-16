@@ -1,5 +1,14 @@
-import Config from "@jangaroo/runtime/Config";
+import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
+import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
+import Ext from "@jangaroo/ext-ts";
+import Component from "@jangaroo/ext-ts/Component";
+import ComponentManager from "@jangaroo/ext-ts/ComponentManager";
+import StringUtil from "@jangaroo/ext-ts/String";
+import Button from "@jangaroo/ext-ts/button/Button";
+import Container from "@jangaroo/ext-ts/container/Container";
+import Window from "@jangaroo/ext-ts/window/Window";
 import { as, asConfig, bind, is } from "@jangaroo/runtime";
+import Config from "@jangaroo/runtime/Config";
 import SocialHub_properties from "../SocialHub_properties";
 import ComposerModel from "../beans/ComposerModel";
 import ComposerModelImpl from "../beans/ComposerModelImpl";
@@ -12,17 +21,8 @@ import ChannelContainer from "../channels/ChannelContainer";
 import socialHubService from "../socialHubService";
 import Composer from "./Composer";
 import MessageFieldEditor from "./MessageFieldEditor";
-import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
-import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
-import Ext from "@jangaroo/ext-ts";
-import Component from "@jangaroo/ext-ts/Component";
-import ComponentManager from "@jangaroo/ext-ts/ComponentManager";
-import StringUtil from "@jangaroo/ext-ts/String";
-import Button from "@jangaroo/ext-ts/button/Button";
-import Container from "@jangaroo/ext-ts/container/Container";
-import Window from "@jangaroo/ext-ts/window/Window";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
 import trace from "@jangaroo/runtime/trace";
+
 interface ComposerBaseConfig extends Config<Window>, Partial<Pick<ComposerBase,
   "adapter" |
   "channelContainer" |
@@ -30,42 +30,43 @@ interface ComposerBaseConfig extends Config<Window>, Partial<Pick<ComposerBase,
 >> {
 }
 
-
-
 class ComposerBase extends Window {
   declare Config: ComposerBaseConfig;
-  static readonly COMPOSER_WINDOW_ID:string = "composerWindow";
-  #scheduleDateExpression:ValueExpression = null;
 
-  adapter:SocialHubAdapter = null;
+  static readonly COMPOSER_WINDOW_ID: string = "composerWindow";
 
-  channelContainer:ChannelContainer = null;
+  #scheduleDateExpression: ValueExpression = null;
 
-  bindTo:ValueExpression = null;
+  adapter: SocialHubAdapter = null;
 
-  #editors:any = null;
-  #errorMessagesExpression:ValueExpression = null;
+  channelContainer: ChannelContainer = null;
 
-  constructor(config:Config<ComposerBase> = null) {
+  bindTo: ValueExpression = null;
+
+  #editors: any = null;
+
+  #errorMessagesExpression: ValueExpression = null;
+
+  constructor(config: Config<ComposerBase> = null) {
     config.id = ComposerBase.COMPOSER_WINDOW_ID + config.adapter.getAdapterId();
     super(config);
   }
 
-  static isOpened(adapter:SocialHubAdapter):boolean {
-    var cmp =as( Ext.getCmp(ComposerBase.COMPOSER_WINDOW_ID + adapter.getAdapterId()),  ComposerBase);
+  static isOpened(adapter: SocialHubAdapter): boolean {
+    const cmp = as(Ext.getCmp(ComposerBase.COMPOSER_WINDOW_ID + adapter.getAdapterId()), ComposerBase);
     return (cmp && cmp.isVisible());
   }
 
-  override close():void {
+  override close(): void {
     this.closeComposer();
     super.close();
   }
 
-  static scrollIntoView():void {
-    var adapters:SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
+  static scrollIntoView(): void {
+    const adapters: SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
     if (adapters) {
-      for(var adapter of adapters.getAdapters() as SocialHubAdapter[]) {
-        var cmp =as( Ext.getCmp(ComposerBase.COMPOSER_WINDOW_ID + adapter.getAdapterId()),  ComposerBase);
+      for (const adapter of adapters.getAdapters() as SocialHubAdapter[]) {
+        const cmp = as(Ext.getCmp(ComposerBase.COMPOSER_WINDOW_ID + adapter.getAdapterId()), ComposerBase);
         if (cmp && cmp.isVisible()) {
           cmp.#scrollIntoView();
         }
@@ -76,11 +77,11 @@ class ComposerBase extends Window {
   /**
    * Should be necessary, but hide and bringToFront don't work without errors from overrides
    */
-  static closeAll():void {
-    var adapters:SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
+  static closeAll(): void {
+    const adapters: SocialHubAdapters = socialHubService.getAdaptersExpression().getValue();
     if (adapters) {
-      for(var adapter of adapters.getAdapters() as SocialHubAdapter[]) {
-        var cmp =as( Ext.getCmp(ComposerBase.COMPOSER_WINDOW_ID + adapter.getAdapterId()),  ComposerBase);
+      for (const adapter of adapters.getAdapters() as SocialHubAdapter[]) {
+        const cmp = as(Ext.getCmp(ComposerBase.COMPOSER_WINDOW_ID + adapter.getAdapterId()), ComposerBase);
         if (cmp && cmp.isVisible()) {
           cmp.channelContainer.setComposerButtonState(false);
           cmp.destroy();
@@ -89,27 +90,27 @@ class ComposerBase extends Window {
     }
   }
 
-  protected override afterRender():void {
+  protected override afterRender(): void {
     super.afterRender();
-    this.getScheduledDateExpression().addChangeListener(bind(this,this.#scheduleDateChanged));
+    this.getScheduledDateExpression().addChangeListener(bind(this, this.#scheduleDateChanged));
 
-    var container =as( this.queryById(Composer.EDITOR_PANEL),  Container);
-    var properties = this.adapter.getMessageProperties();
-    var props = properties.concat([]).reverse();
+    const container = as(this.queryById(Composer.EDITOR_PANEL), Container);
+    const properties = this.adapter.getMessageProperties();
+    const props = properties.concat([]).reverse();
 
     this.#editors = {};
 
-    for(var property of props as MessageProperty[]) {
-      var propertyType = property.getPropertyType();
-      var config:Record<string,any> = {};
+    for (const property of props as MessageProperty[]) {
+      const propertyType = property.getPropertyType();
+      const config: Record<string, any> = {};
 
-      var xType = "com.coremedia.blueprint.social.studio.config.editor." + propertyType.toLowerCase();
+      const xType = "com.coremedia.blueprint.social.studio.config.editor." + propertyType.toLowerCase();
       config.xtype = xType;
       config.adapter = this.adapter;
       config.property = property;
       config.bindTo = this.bindTo.extendBy(SocialHubPropertyNames.MESSAGE_PROPERTIES).extendBy(property.getName());
 
-      var editor = this.#createEditor(config);
+      const editor = this.#createEditor(config);
       container.insert(0, editor);
 
       //store editor instances for validation
@@ -117,54 +118,55 @@ class ComposerBase extends Window {
     }
   }
 
-  #scrollIntoView():void {
-    var x:number = this.channelContainer.getX() + (this.channelContainer.getWidth() / 2) - (450 / 2); //100px offset from left favourites toolbar?
-    var y:number = this.channelContainer.getPosition()[1] + 14;
+  #scrollIntoView(): void {
+    const x: number = this.channelContainer.getX() + (this.channelContainer.getWidth() / 2) - (450 / 2); //100px offset from left favourites toolbar?
+    const y: number = this.channelContainer.getPosition()[1] + 14;
     this.setPosition(x, y);
   }
 
-  #createEditor(config:any):Component {
+  #createEditor(config: any): Component {
     try {
       return ComponentManager.create(config);
-    } catch(e){if(is (e,Error)) {
-      trace("[ERROR]", 'Failed to create composer component "' + config.xtype + '" ' + e);
-    }else throw e;}
+    } catch (e) {
+      if (is(e, Error)) {
+        trace("[ERROR]", "Failed to create composer component \"" + config.xtype + "\" " + e);
+      } else throw e;
+    }
     return null;
   }
 
-
-  protected getScheduledDateExpression():ValueExpression {
+  protected getScheduledDateExpression(): ValueExpression {
     if (!this.#scheduleDateExpression) {
       this.#scheduleDateExpression = this.bindTo.extendBy(SocialHubPropertyNames.MESSAGE_PROPERTIES).extendBy(SocialHubPropertyNames.COMPOSER_PUBLICATION_DATE);
     }
     return this.#scheduleDateExpression;
   }
 
-  protected finishComposing():void {
-    var msgs = this.#validateEditors();
+  protected finishComposing(): void {
+    const msgs = this.#validateEditors();
     this.getErrorMessagesExpression().setValue(msgs.reverse());
     if (msgs.length === 0) {
       this.#sendMessage();
     }
   }
 
-  protected getErrorMessagesExpression():ValueExpression {
+  protected getErrorMessagesExpression(): ValueExpression {
     if (!this.#errorMessagesExpression) {
       this.#errorMessagesExpression = ValueExpressionFactory.createFromValue([]);
     }
     return this.#errorMessagesExpression;
   }
 
-  #validateEditors():Array<any> {
-    var result = [];
-    for (var key in this.#editors) {
-      var property = this.#getProperty(key);
+  #validateEditors(): Array<any> {
+    const result = [];
+    for (const key in this.#editors) {
+      const property = this.#getProperty(key);
       if (!property.isRequired()) {
         continue;
       }
 
-      var editor:MessageFieldEditor = this.#editors[key];
-      var msg = editor.getErrorMessage();
+      const editor: MessageFieldEditor = this.#editors[key];
+      const msg = editor.getErrorMessage();
       if (msg && StringUtil.trim(msg).length > 0) {
         result.push(msg);
       }
@@ -172,9 +174,9 @@ class ComposerBase extends Window {
     return result;
   }
 
-  #getProperty(name:string):MessageProperty {
-    var properties = this.adapter.getMessageProperties();
-    for(var property of properties as MessageProperty[]) {
+  #getProperty(name: string): MessageProperty {
+    const properties = this.adapter.getMessageProperties();
+    for (const property of properties as MessageProperty[]) {
       if (property.getName() === name) {
         return property;
       }
@@ -182,32 +184,32 @@ class ComposerBase extends Window {
     return null;
   }
 
-  #sendMessage():void {
-    var composerModel:ComposerModel = this.bindTo.getValue();
-    var a = this.adapter;
+  #sendMessage(): void {
+    const composerModel: ComposerModel = this.bindTo.getValue();
+    const a = this.adapter;
 
     //check if we should wait for the elastic worker or not
-    var publicationDate = composerModel.getPublicationDate();
-    var waitForJob:boolean = publicationDate === null || !this.adapter.isSchedulingSupported();
+    const publicationDate = composerModel.getPublicationDate();
+    const waitForJob: boolean = publicationDate === null || !this.adapter.isSchedulingSupported();
 
     //publication date messages don't need a toast
-    var network = SocialHub_properties[this.adapter.getType().toLowerCase() + "_title"];
+    const network = SocialHub_properties[this.adapter.getType().toLowerCase() + "_title"];
     if (waitForJob) {
-      var title = SocialHub_properties.compose_job_notification_start_title;
+      let title = SocialHub_properties.compose_job_notification_start_title;
       title = StringUtil.format(title, network);
-      var msg = SocialHub_properties.compose_job_notification_start;
-      var toast = StringUtil.format(msg, network);
+      const msg = SocialHub_properties.compose_job_notification_start;
+      const toast = StringUtil.format(msg, network);
       socialHubService.showToast(title, toast);
     }
 
-    var c = this.channelContainer;
-    var apt = this.adapter;
-    composerModel.send(waitForJob, (message:Message):void => {
+    const c = this.channelContainer;
+    const apt = this.adapter;
+    composerModel.send(waitForJob, (message: Message): void => {
       this.close();
       if (c.rendered && !waitForJob) {
         c.reload(true);
       }
-    }, (error:any):void => {
+    }, (error: any): void => {
       if (waitForJob) {
         ComposerModelImpl.showResultToast(apt, error);
       }
@@ -221,36 +223,36 @@ class ComposerBase extends Window {
     this.channelContainer.setComposerButtonState(false);
   }
 
-  closeComposer():void {
-    var composerModel:ComposerModel = this.bindTo.getValue();
+  closeComposer(): void {
+    const composerModel: ComposerModel = this.bindTo.getValue();
     composerModel.reset();
     this.channelContainer.setComposerButtonState(false);
     super.close();
   }
 
-  protected getComposerTitle(ch:SocialHubAdapter):string {
-    var title = SocialHub_properties.composer_title;
+  protected getComposerTitle(ch: SocialHubAdapter): string {
+    const title = SocialHub_properties.composer_title;
     return StringUtil.format(title, ch.getDisplayName());
   }
 
   //-------------------- Helper ----------------------------------------------------------------------------------------
 
-  #scheduleDateChanged(ve:ValueExpression):void {
-    var btn =as( this.queryById("postBtn"),  Button);
+  #scheduleDateChanged(ve: ValueExpression): void {
+    const btn = as(this.queryById("postBtn"), Button);
 
-    var value:Date = ve.getValue();
+    const value: Date = ve.getValue();
     if (value) {
       btn.setText(SocialHub_properties.schedule_button_text);
-    }
-    else {
+    } else {
       btn.setText(SocialHub_properties.post_button_text);
     }
   }
 
-  protected override onDestroy():void {
+  protected override onDestroy(): void {
     this.channelContainer.onComposerClose();
-    this.getScheduledDateExpression().removeChangeListener(bind(this,this.#scheduleDateChanged));
+    this.getScheduledDateExpression().removeChangeListener(bind(this, this.#scheduleDateChanged));
     super.onDestroy();
   }
 }
+
 export default ComposerBase;

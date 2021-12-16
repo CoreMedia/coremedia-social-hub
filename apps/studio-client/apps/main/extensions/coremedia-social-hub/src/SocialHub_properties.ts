@@ -292,7 +292,7 @@ const SocialHub_properties: SocialHub_properties = {
   commentCount_youtube_text: "Comment(s)",
   commentCount_youtube_icon: CoreIcons_properties.status_comment,
   viewCount_youtube_text: "View(s)",
-  viewCount_youtube_icon: CoreIcons_properties.view_menu
+  viewCount_youtube_icon: CoreIcons_properties.view_menu,
 };
 
 export default SocialHub_properties;

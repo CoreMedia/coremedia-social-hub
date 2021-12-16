@@ -19,7 +19,7 @@ const SocialHubSettings_properties: SocialHubSettings_properties = {
   social_hub_content_blob_property: "data",
   social_hub_content_composer_document_type: "CMArticle",
   social_hub_content_composer_link_type: "CMTeasable",
-  social_hub_content_upload_path: "Editorial"
+  social_hub_content_upload_path: "Editorial",
 };
 
 export default SocialHubSettings_properties;

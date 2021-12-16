@@ -1,13 +1,3 @@
-import Config from "@jangaroo/runtime/Config";
-import { as, asConfig, bind, is } from "@jangaroo/runtime";
-import SocialHubMainTab from "../SocialHubMainTab";
-import SocialHub_properties from "../SocialHub_properties";
-import ComposerModelImpl from "../beans/ComposerModelImpl";
-import SocialHubAdapter from "../beans/SocialHubAdapter";
-import SocialHubAdapterImpl from "../beans/SocialHubAdapterImpl";
-import SocialHubPropertyNames from "../beans/SocialHubPropertyNames";
-import Composer from "../composer/Composer";
-import ComposerBase from "../composer/ComposerBase";
 import MessagesContainer from "../messages/MessagesContainer";
 import socialHubService from "../socialHubService";
 import AdapterDropAreaTarget from "./AdapterDropAreaTarget";
@@ -28,73 +18,88 @@ import Event from "@jangaroo/ext-ts/event/Event";
 import ContainerLayout from "@jangaroo/ext-ts/layout/container/Container";
 import Panel from "@jangaroo/ext-ts/panel/Panel";
 import Toolbar from "@jangaroo/ext-ts/toolbar/Toolbar";
+import { as, asConfig, bind, is } from "@jangaroo/runtime";
+import Config from "@jangaroo/runtime/Config";
 import int from "@jangaroo/runtime/int";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
+import SocialHubMainTab from "../SocialHubMainTab";
+import SocialHub_properties from "../SocialHub_properties";
+import ComposerModelImpl from "../beans/ComposerModelImpl";
+import SocialHubAdapter from "../beans/SocialHubAdapter";
+import SocialHubAdapterImpl from "../beans/SocialHubAdapterImpl";
+import SocialHubPropertyNames from "../beans/SocialHubPropertyNames";
+import Composer from "../composer/Composer";
+import ComposerBase from "../composer/ComposerBase";
+
 interface ChannelContainerBaseConfig extends Config<Panel>, Partial<Pick<ChannelContainerBase,
   "adapter"
 >> {
 }
 
-
-
 class ChannelContainerBase extends Panel {
   declare Config: ChannelContainerBaseConfig;
-  static readonly LOADER_ITEM_ID:string = "loader";
-  static readonly DROP_LINK_ITEM_ID:string = SocialHubPropertyNames.COMPOSER_TYPE_LINK;
-  static readonly DROP_CONTENT_ITEM_ID:string = SocialHubPropertyNames.COMPOSER_TYPE_CONTENT;
-  static readonly DROP_CONTENT_AND_LINK_ITEM_ID:string = "dropContentAndLink";
-  static readonly DROP_NOT_ALLOWED_ITEM_ID:string = "dropNotAllowed";
-  static readonly MESSAGE_WRAPPER_ITEM_ID:string = "messagesWrapper";
 
-  adapter:SocialHubAdapterImpl = null;
+  static readonly LOADER_ITEM_ID: string = "loader";
 
-  #loadMask:ProgressLoadMask = null;
+  static readonly DROP_LINK_ITEM_ID: string = SocialHubPropertyNames.COMPOSER_TYPE_LINK;
 
-  #dropTarget:AdapterDropAreaTarget = null;
+  static readonly DROP_CONTENT_ITEM_ID: string = SocialHubPropertyNames.COMPOSER_TYPE_CONTENT;
 
-  #activeItemExpression:ValueExpression = null;
+  static readonly DROP_CONTENT_AND_LINK_ITEM_ID: string = "dropContentAndLink";
 
-  constructor(config:Config<ChannelContainerBase> = null) {
+  static readonly DROP_NOT_ALLOWED_ITEM_ID: string = "dropNotAllowed";
+
+  static readonly MESSAGE_WRAPPER_ITEM_ID: string = "messagesWrapper";
+
+  adapter: SocialHubAdapterImpl = null;
+
+  #loadMask: ProgressLoadMask = null;
+
+  #dropTarget: AdapterDropAreaTarget = null;
+
+  #activeItemExpression: ValueExpression = null;
+
+  constructor(config: Config<ChannelContainerBase> = null) {
     super(config);
   }
 
-  protected override afterRender():void {
+  protected override afterRender(): void {
     super.afterRender();
     this.#addButtonStyleListeners();
 
     this.reload(false);
 
-    var container =as( this.queryById("statusSwitcher"),  Container);
-    this.#dropTarget = new AdapterDropAreaTarget(container,as( this,  ChannelContainer), null, null, null,bind( this,this.#handleContentDrop));
+    const container = as(this.queryById("statusSwitcher"), Container);
+    this.#dropTarget = new AdapterDropAreaTarget(container, as(this, ChannelContainer), null, null, null, bind(this, this.#handleContentDrop));
   }
 
-  protected override afterLayout(layout:ContainerLayout):void {
+  protected override afterLayout(layout: ContainerLayout): void {
     super.afterLayout(layout);
     this.refreshColors(this.adapter.getColor());
   }
 
-  #handleContentDrop(mayDrop:boolean, contents:Array<any>, composingType:string):void {
+  #handleContentDrop(mayDrop: boolean, contents: Array<any>, composingType: string): void {
     if (mayDrop) {
-      socialHubService.initComposerModel(this.adapter.getAdapterId(), contents, composingType,():void =>
-        this.composeMessage()
+      socialHubService.initComposerModel(this.adapter.getAdapterId(), contents, composingType, (): void =>
+        this.composeMessage(),
       );
     }
   }
 
-  protected fixLayout():void {
+  protected fixLayout(): void {
     //TODO some odd FireFox vertical scrolling problem, didn't find a better way to solve it but to remove the width.
-    try{
-      var wrapper =as( this.queryById("messagesWrapper"),  Panel);
-      var style:string = (wrapper as unknown)["el"].getFirstChild().getFirstChild().getFirstChild().dom.getAttribute("style");
-      var newStyle:string = style.split(";")[0];
+    try {
+      const wrapper = as(this.queryById("messagesWrapper"), Panel);
+      const style: string = (wrapper as unknown)["el"].getFirstChild().getFirstChild().getFirstChild().dom.getAttribute("style");
+      const newStyle: string = style.split(";")[0];
       (wrapper as unknown)["el"].getFirstChild().getFirstChild().getFirstChild().dom.setAttribute("style", newStyle);
-    }
-    catch(e){if(is(e,Error)) {
+    } catch (e) {
+      if (is(e, Error)) {
       //ignore
-    }else throw e;}
+      } else throw e;
+    }
   }
 
-  protected forceReload():void {
+  protected forceReload(): void {
     this.reload(true);
   }
 
@@ -102,22 +107,21 @@ class ChannelContainerBase extends Panel {
    *
    * @param invalidate false when adapter should not be invalidated.
    */
-  reload(invalidate:boolean = true):void {
+  reload(invalidate: boolean = true): void {
     this.getActiveItemExpression().setValue(ChannelContainerBase.LOADER_ITEM_ID);
     this.#createLoadMask();
     this.#loadMask.show();
     this.#loadMask.progress = 0;
 
     if (invalidate) {
-      this.adapter.invalidate(bind(this,this.#loadMessages));
-    }
-    else {
+      this.adapter.invalidate(bind(this, this.#loadMessages));
+    } else {
       this.#loadMessages(false);
     }
   }
 
-  #createLoadMask():void {
-    var loadMaskConfig = Config(ProgressLoadMask);
+  #createLoadMask(): void {
+    const loadMaskConfig = Config(ProgressLoadMask);
     // todo: workaround to style the mask smaller. This should be done better in the component itself, including tranparent svg
     loadMaskConfig.style = "{position: relative; height: 100px; width: 100px; position: absolute; left: 50%; margin-left: -50px; top: 40%; margin-top: -50px;}";
     loadMaskConfig.msg = "";
@@ -125,13 +129,13 @@ class ChannelContainerBase extends Panel {
     this.#loadMask = new ProgressLoadMask(loadMaskConfig);
   }
 
-  #loadMessages(invalidate:boolean = true):void {
-    var history =as( this.queryById(ChannelContainer.MESSAGE_HISTORY_ITEM_ID),  MessagesContainer);
+  #loadMessages(invalidate: boolean = true): void {
+    const history = as(this.queryById(ChannelContainer.MESSAGE_HISTORY_ITEM_ID), MessagesContainer);
     history.clear();
-    var queue =as( this.queryById(ChannelContainer.MESSAGE_SCHEDULED_ITEM_ID),  MessagesContainer);
+    const queue = as(this.queryById(ChannelContainer.MESSAGE_SCHEDULED_ITEM_ID), MessagesContainer);
     queue.clear();
 
-    var messages:Array<any> = this.adapter.getScheduledMessages() || [];
+    let messages: Array<any> = this.adapter.getScheduledMessages() || [];
     messages = messages.concat(this.adapter.getSentMessages() || []);
     if (messages.length === 0) {
       //nothing to load
@@ -157,46 +161,46 @@ class ChannelContainerBase extends Panel {
     }
   }
 
-  getActiveItemExpression():ValueExpression {
+  getActiveItemExpression(): ValueExpression {
     if (!this.#activeItemExpression) {
       this.#activeItemExpression = ValueExpressionFactory.createFromValue(ChannelContainerBase.LOADER_ITEM_ID);
     }
     return this.#activeItemExpression;
   }
 
-  onComposerClose():void {
+  onComposerClose(): void {
     if (this.rendered) {
       this.refreshColors(this.adapter.getColor());
     }
   }
 
-  refreshColors(color:string):void {
-    var topToolbar =as( this.getDockedItems("toolbar[dock=\"top\"]")[0],  Toolbar);
+  refreshColors(color: string): void {
+    const topToolbar = as(this.getDockedItems("toolbar[dock=\"top\"]")[0], Toolbar);
     topToolbar.el.dom.setAttribute("style", "background-color:" + color);
     this.adapter.setColor(color);
 
-    var buttons:Array<any> = topToolbar.query(createComponentSelector()._xtype(IconButton.xtype).build());
-    for(var b of buttons as Button[]) {
-      var style =as( b.el.dom.getAttribute("style"),  String);
+    const buttons: Array<any> = topToolbar.query(createComponentSelector()._xtype(IconButton.xtype).build());
+    for (const b of buttons as Button[]) {
+      let style = as(b.el.dom.getAttribute("style"), String);
       style = style.replace(/#[0-9a-f]{6}|#[0-9a-f]{3}/gi, this.adapter.getColor());
       b.el.dom.setAttribute("style", style);
     }
 
-    var backgroundColor = Colors.getBackgroundColor(color);
-    var adapterStyle =as( this.el.dom.getAttribute("style"),  String);
+    const backgroundColor = Colors.getBackgroundColor(color);
+    const adapterStyle = as(this.el.dom.getAttribute("style"), String);
     this.el.dom.setAttribute("style", adapterStyle + "background-color:" + backgroundColor);
   }
 
-  protected composeMessage():void {
+  protected composeMessage(): void {
     this.setComposerButtonState(true);
     if (ComposerBase.isOpened(this.adapter)) {
       return;
     }
 
-    var that = this;
-    var pos:Array<any> = that.getPosition();
-    var composer =as( socialHubService.getComposerModel(this.adapter.getAdapterId()),  ComposerModelImpl);
-    var baseConfig:Record<string,any> = {
+    const that = this;
+    const pos: Array<any> = that.getPosition();
+    const composer = as(socialHubService.getComposerModel(this.adapter.getAdapterId()), ComposerModelImpl);
+    const baseConfig: Record<string, any> = {
       x: that.getX() + (that.getWidth() / 2) - (450 / 2), //100px offset from left favourites toolbar?
       y: pos[1] + 14,
       adapter: this.adapter,
@@ -204,46 +208,46 @@ class ChannelContainerBase extends Panel {
       bindTo: ValueExpressionFactory.createFromValue(composer),
       xtype: Composer.xtype,
       animateTarget: this.#getComposerButton().getEl(),
-      renderTo: this.findParentByType(SocialHubMainTab.xtype).getLayout().getTarget()
+      renderTo: this.findParentByType(SocialHubMainTab.xtype).getLayout().getTarget(),
     };
 
-    var composerBase =as( ComponentManager.create(baseConfig),  ComposerBase);
-    composer.invalidate(():void => {
+    const composerBase = as(ComponentManager.create(baseConfig), ComposerBase);
+    composer.invalidate((): void => {
       composerBase.show();
     });
   }
 
-  #addButtonStyleListeners():void {
-    var topToolbar =as( this.getDockedItems("toolbar[dock=\"top\"]")[0],  Toolbar);
-    var buttons:Array<any> = topToolbar.query(createComponentSelector()._xtype(IconButton.xtype).build());
-    for(var b of buttons as Button[]) {
+  #addButtonStyleListeners(): void {
+    const topToolbar = as(this.getDockedItems("toolbar[dock=\"top\"]")[0], Toolbar);
+    const buttons: Array<any> = topToolbar.query(createComponentSelector()._xtype(IconButton.xtype).build());
+    for (const b of buttons as Button[]) {
       this.#applyColorSelection(b);
     }
-    var menuButton = topToolbar.query(createComponentSelector()._xtype(MenuIconButton.xtype).build())[0];
+    const menuButton = topToolbar.query(createComponentSelector()._xtype(MenuIconButton.xtype).build())[0];
     this.#applyColorSelection(menuButton);
   }
 
-  #getComposerButton():Button {
-    var topToolbar =as( this.getDockedItems("toolbar[dock=\"top\"]")[0],  Toolbar);
-    return as( topToolbar.queryById(ChannelContainer.COMPOSER_BUTTON_ITEM_ID),  Button);
+  #getComposerButton(): Button {
+    const topToolbar = as(this.getDockedItems("toolbar[dock=\"top\"]")[0], Toolbar);
+    return as(topToolbar.queryById(ChannelContainer.COMPOSER_BUTTON_ITEM_ID), Button);
   }
 
-  #getColorButton():Button {
-    var topToolbar =as( this.getDockedItems("toolbar[dock=\"top\"]")[0],  Toolbar);
-    return as( topToolbar.queryById(ChannelContainer.COLOR_CHOOSER_BUTTON_ITEM_ID),  Button);
+  #getColorButton(): Button {
+    const topToolbar = as(this.getDockedItems("toolbar[dock=\"top\"]")[0], Toolbar);
+    return as(topToolbar.queryById(ChannelContainer.COLOR_CHOOSER_BUTTON_ITEM_ID), Button);
   }
 
-  #applyColorSelection(component:Component):void {
-    component.el.on("mouseover",bind( this,this.#hoverButton));
-    component.el.on("mouseleave",bind( this,this.#hoverExitButton));
+  #applyColorSelection(component: Component): void {
+    component.el.on("mouseover", bind(this, this.#hoverButton));
+    component.el.on("mouseleave", bind(this, this.#hoverExitButton));
   }
 
   //TODO move to custom component
-  #hoverExitButton(e:Event):void {
-    var style =as( e.target.getAttribute("style"),  String);
-    var styleIndex:number = style.indexOf("background-color");
+  #hoverExitButton(e: Event): void {
+    let style = as(e.target.getAttribute("style"), String);
+    const styleIndex: number = style.indexOf("background-color");
     if (styleIndex !== -1) {
-      var b =as( Ext.getCmp(as(e.target.getAttribute("data-componentid"),  String)),  Button);
+      const b = as(Ext.getCmp(as(e.target.getAttribute("data-componentid"), String)), Button);
       if (b && b.menu) {
         if (b.menu.isVisible()) {
           return;
@@ -257,7 +261,7 @@ class ChannelContainerBase extends Panel {
     }
   }
 
-  setComposerButtonState(disabled:boolean):void {
+  setComposerButtonState(disabled: boolean): void {
     if (this.rendered) {
       this.#getColorButton().setDisabled(disabled);
       this.#getComposerButton().setDisabled(disabled);
@@ -266,38 +270,37 @@ class ChannelContainerBase extends Panel {
     }
   }
 
-  #hoverButton(e:Event):void {
+  #hoverButton(e: Event): void {
     if (e.target.tagName.toLowerCase() === "a") {
-      var b =as( Ext.getCmp(e.target.id),  Button);
-      var color = this.adapter.getHoverColor();
+      const b = as(Ext.getCmp(e.target.id), Button);
+      let color = this.adapter.getHoverColor();
       if (b.pressed) {
         color = this.adapter.getPressedColor();
       }
 
-      var style:any = e.target.getAttribute("style");
+      let style: any = e.target.getAttribute("style");
       if (style.indexOf("background-color") === -1) {
         style = style + "background-color:" + color;
-      }
-      else {
+      } else {
         style = style.replace(/#[0-9a-f]{6}|#[0-9a-f]{3}/gi, color);
       }
-      e.target.setAttribute("style",String( style));
+      e.target.setAttribute("style", String(style));
     }
   }
 
-  protected format(msg:string, length:int):string {
+  protected format(msg: string, length: int): string {
     if (msg && msg.length > length) {
       return msg.substr(0, length) + "...";
     }
     return msg;
   }
 
-  protected override onDestroy():void {
+  protected override onDestroy(): void {
     super.onDestroy();
     this.#dropTarget && this.#dropTarget.unreg();
   }
 
-  protected resolveHistoryTitle(ad:SocialHubAdapter):string {
+  protected resolveHistoryTitle(ad: SocialHubAdapter): string {
     if (ad.isNativeHistory()) {
       return SocialHub_properties.channel_History_extern_title;
     }
@@ -305,4 +308,5 @@ class ChannelContainerBase extends Panel {
     return SocialHub_properties.channel_history_title;
   }
 }
+
 export default ChannelContainerBase;

@@ -1,13 +1,3 @@
-import Config from "@jangaroo/runtime/Config";
-import { as, asConfig, mixin } from "@jangaroo/runtime";
-import { AnyFunction } from "@jangaroo/runtime/types";
-import ISocialHubService from "./ISocialHubService";
-import SocialHubMainTab from "./SocialHubMainTab";
-import SocialHubSettings_properties from "./SocialHubSettings_properties";
-import SocialHub_properties from "./SocialHub_properties";
-import ComposerModel from "./beans/ComposerModel";
-import ComposerModelImpl from "./beans/ComposerModelImpl";
-import MediaItem from "./beans/MediaItem";
 import SocialHubAdapter from "./beans/SocialHubAdapter";
 import SocialHubAdapters from "./beans/SocialHubAdapters";
 import SocialHubAdaptersImpl from "./beans/SocialHubAdaptersImpl";
@@ -31,19 +21,27 @@ import SitesService from "@coremedia/studio-client.multi-site-models/SitesServic
 import Ext from "@jangaroo/ext-ts";
 import Component from "@jangaroo/ext-ts/Component";
 import ComponentManager from "@jangaroo/ext-ts/ComponentManager";
-import resourceManager from "@jangaroo/runtime/l10n/resourceManager";
-
+import { as, asConfig, mixin } from "@jangaroo/runtime";
+import Config from "@jangaroo/runtime/Config";
+import { AnyFunction } from "@jangaroo/runtime/types";
+import ISocialHubService from "./ISocialHubService";
+import SocialHubMainTab from "./SocialHubMainTab";
+import SocialHubSettings_properties from "./SocialHubSettings_properties";
+import SocialHub_properties from "./SocialHub_properties";
+import ComposerModel from "./beans/ComposerModel";
+import ComposerModelImpl from "./beans/ComposerModelImpl";
+import MediaItem from "./beans/MediaItem";
 
 class SocialHubServiceImpl implements ISocialHubService {
-  #hubExpression:ValueExpression = null;
+  #hubExpression: ValueExpression = null;
 
-  getAdaptersExpression():ValueExpression {
+  getAdaptersExpression(): ValueExpression {
     if (!this.#hubExpression) {
-      this.#hubExpression = ValueExpressionFactory.createFromFunction(():SocialHubAdapters => {
-        var siteService = editorContext._.getSitesService();
-        var preferredSite = siteService.getPreferredSite();
+      this.#hubExpression = ValueExpressionFactory.createFromFunction((): SocialHubAdapters => {
+        const siteService = editorContext._.getSitesService();
+        const preferredSite = siteService.getPreferredSite();
         if (preferredSite) {
-          return as( beanFactory._.getRemoteBean("socialhub/adapters/" + preferredSite.getId()),  SocialHubAdaptersImpl);
+          return as(beanFactory._.getRemoteBean("socialhub/adapters/" + preferredSite.getId()), SocialHubAdaptersImpl);
         }
 
         return null;
@@ -53,17 +51,16 @@ class SocialHubServiceImpl implements ISocialHubService {
     return this.#hubExpression;
   }
 
-
-  getMediaType(content:Content):string {
-    var blobProperty = SocialHubSettings_properties.social_hub_content_blob_property;
-    var blob:Blob = content.getProperties().get(blobProperty);
+  getMediaType(content: Content): string {
+    const blobProperty = SocialHubSettings_properties.social_hub_content_blob_property;
+    const blob: Blob = content.getProperties().get(blobProperty);
     if (blob) {
       if (!blob.isLoaded()) {
         blob.loadData();
         return undefined;
       }
 
-      var contentType = blob.getContentType();
+      const contentType = blob.getContentType();
       if (contentType.indexOf(MediaItem.TYPE_IMAGE) !== -1) {
         return MediaItem.TYPE_IMAGE;
       }
@@ -76,44 +73,43 @@ class SocialHubServiceImpl implements ISocialHubService {
     return null;
   }
 
-  getComposerModel(adapterId:string):ComposerModel {
-    var uriPath = session._.getUser().getUriPath();
-    var userId = uriPath.substr(uriPath.lastIndexOf("/") + 1, uriPath.length);
-    var model =as( beanFactory._.getRemoteBean("socialhub/composermodel/" + userId + "/" + adapterId),  ComposerModelImpl);
+  getComposerModel(adapterId: string): ComposerModel {
+    const uriPath = session._.getUser().getUriPath();
+    const userId = uriPath.substr(uriPath.lastIndexOf("/") + 1, uriPath.length);
+    const model = as(beanFactory._.getRemoteBean("socialhub/composermodel/" + userId + "/" + adapterId), ComposerModelImpl);
     if (!model.isLoaded()) {
       model.load();
     }
     return model;
   }
 
-
-  initComposerModel(adapterId:string, contents:Array<any>, composerMethod:string, callback:AnyFunction):void {
-    var uriPath = session._.getUser().getUriPath();
-    var userId = uriPath.substr(uriPath.lastIndexOf("/") + 1, uriPath.length);
-    var id:number = null;
+  initComposerModel(adapterId: string, contents: Array<any>, composerMethod: string, callback: AnyFunction): void {
+    const uriPath = session._.getUser().getUriPath();
+    const userId = uriPath.substr(uriPath.lastIndexOf("/") + 1, uriPath.length);
+    let id: number = null;
     if (contents.length > 0) {
       id = IdHelper.parseContentId(contents[0]);
     }
 
-    var method = new RemoteServiceMethod("socialhub/composermodel/" + userId + "/" + adapterId + "/compose", "POST");
+    const method = new RemoteServiceMethod("socialhub/composermodel/" + userId + "/" + adapterId + "/compose", "POST");
     method.request(
-            {
-              "contentId": id,
-              "composerMethod" : composerMethod
-            },
-            (response:RemoteServiceMethodResponse):void => {
-              var result:string = response.getResponseJSON().toJson();
-              var cm =as( this.getComposerModel(adapterId),  ComposerModelImpl);
-              cm.invalidate(callback);
-            },
-            (response:RemoteServiceMethodResponse):void => {
-              callback(response.getError());
-            }
+      {
+        "contentId": id,
+        "composerMethod": composerMethod,
+      },
+      (response: RemoteServiceMethodResponse): void => {
+        const result: string = response.getResponseJSON().toJson();
+        const cm = as(this.getComposerModel(adapterId), ComposerModelImpl);
+        cm.invalidate(callback);
+      },
+      (response: RemoteServiceMethodResponse): void => {
+        callback(response.getError());
+      },
     );
   }
 
-  showToast(title:string, msg:string, validationState:ValidationState = null, actionLabel:string = null, action:AnyFunction = null):void {
-    var config = Config(SocialNotificationToast);
+  showToast(title: string, msg: string, validationState: ValidationState = null, actionLabel: string = null, action: AnyFunction = null): void {
+    const config = Config(SocialNotificationToast);
     config.notificationSource = SocialHub_properties.menu_title_text;
     config.notificationTitle = title;
     config.notificationMessage = msg;
@@ -121,13 +117,13 @@ class SocialHubServiceImpl implements ISocialHubService {
     config.notificationAction = action;
     config.notificationActionLabel = actionLabel;
     config.notificationValidationState = validationState;
-    var toast = new SocialNotificationToast(config);
+    const toast = new SocialNotificationToast(config);
     toast.show();
   }
 
-  getAdapter(adapterId:string):SocialHubAdapter {
-    var adapters:SocialHubAdapters = this.getAdaptersExpression().getValue();
-    for(var adapter of adapters.getAdapters() as SocialHubAdapter[]) {
+  getAdapter(adapterId: string): SocialHubAdapter {
+    const adapters: SocialHubAdapters = this.getAdaptersExpression().getValue();
+    for (const adapter of adapters.getAdapters() as SocialHubAdapter[]) {
       if (adapter.getAdapterId() === adapterId) {
         return adapter;
       }
@@ -135,27 +131,26 @@ class SocialHubServiceImpl implements ISocialHubService {
     return null;
   }
 
-  focusAdapter(socialHubAdataper:SocialHubAdapter, callback:AnyFunction):void {
-    var channelContainer =as( Ext.getCmp(ChannelsContainer.ID),  ChannelsContainer);
+  focusAdapter(socialHubAdataper: SocialHubAdapter, callback: AnyFunction): void {
+    const channelContainer = as(Ext.getCmp(ChannelsContainer.ID), ChannelsContainer);
     channelContainer.focusAdapter(socialHubAdataper);
     callback();
   }
 
-  focusAndReload(socialHubAdapter:SocialHubAdapter):void {
-    var findByType:Array<any> = editorContext._.getWorkArea().query(createComponentSelector()._xtype(SocialHubMainTab.xtype, true).build());
+  focusAndReload(socialHubAdapter: SocialHubAdapter): void {
+    const findByType: Array<any> = editorContext._.getWorkArea().query(createComponentSelector()._xtype(SocialHubMainTab.xtype, true).build());
     if (findByType.length > 0) {
-      var cmp:Component = findByType[0];
+      const cmp: Component = findByType[0];
       editorContext._.getWorkArea().setActiveTab(cmp);
 
-      var channelContainer =as( Ext.getCmp(ChannelsContainer.ID),  ChannelsContainer);
-      this.focusAdapter(socialHubAdapter, ():void => {
-        var channelContainer =as( Ext.getCmp(socialHubAdapter.getAdapterId()),  ChannelContainer);
+      const channelContainer = as(Ext.getCmp(ChannelsContainer.ID), ChannelsContainer);
+      this.focusAdapter(socialHubAdapter, (): void => {
+        const channelContainer = as(Ext.getCmp(socialHubAdapter.getAdapterId()), ChannelContainer);
         channelContainer.reload(true);
       });
-    }
-    else {
-      var cfg = Config(SocialHubMainTab);
-      var tab = ComponentManager.create(cfg);
+    } else {
+      const cfg = Config(SocialHubMainTab);
+      const tab = ComponentManager.create(cfg);
       editorContext._.getWorkArea().add(tab);
       editorContext._.getWorkArea().setActiveTab(tab);
     }

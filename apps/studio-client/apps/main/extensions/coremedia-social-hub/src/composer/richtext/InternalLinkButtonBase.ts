@@ -1,24 +1,23 @@
-import Config from "@jangaroo/runtime/Config";
-import { bind, is } from "@jangaroo/runtime";
-import MessageTextareaEditor from "../MessageTextareaEditor";
-import InternalLinkButton from "./InternalLinkButton";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
-import AnchorUtil from "@coremedia/studio-client.main.ckeditor4-components/AnchorUtil";
 import IconButton from "@coremedia/studio-client.ext.ui-components/components/IconButton";
+import AnchorUtil from "@coremedia/studio-client.main.ckeditor4-components/AnchorUtil";
 import InternalLinkWindow from "@coremedia/studio-client.main.ckeditor4-components/fields/InternalLinkWindow";
 import PropertyEditorUtil from "@coremedia/studio-client.main.editor-components/sdk/util/PropertyEditorUtil";
 import Ext from "@jangaroo/ext-ts";
 import ZIndexManager from "@jangaroo/ext-ts/ZIndexManager";
 import Button from "@jangaroo/ext-ts/button/Button";
 import Container from "@jangaroo/ext-ts/container/Container";
+import { bind, is } from "@jangaroo/runtime";
+import Config from "@jangaroo/runtime/Config";
+import MessageTextareaEditor from "../MessageTextareaEditor";
+import InternalLinkButton from "./InternalLinkButton";
+
 interface InternalLinkButtonBaseConfig extends Config<IconButton>, Partial<Pick<InternalLinkButtonBase,
   "bindTo" |
   "richTextWindowGroup" |
   "ckEditorValueExpression"
 >> {
 }
-
-
 
 /**
  * A Button that enables itself when it would be appropriate
@@ -34,15 +33,16 @@ class InternalLinkButtonBase extends IconButton {
   bindTo: ValueExpression = null;
 
   //the toolbar window group
-  richTextWindowGroup:ZIndexManager = null;
+  richTextWindowGroup: ZIndexManager = null;
 
   /**
    * Value Expression pointing to the ckEditor. This config parameter is mandatory.
    */
-  ckEditorValueExpression:ValueExpression = null;
+  ckEditorValueExpression: ValueExpression = null;
 
-  #internalLinkWindow:InternalLinkWindow = null;
-  #effectiveReadOnlyExpression:ValueExpression = null;
+  #internalLinkWindow: InternalLinkWindow = null;
+
+  #effectiveReadOnlyExpression: ValueExpression = null;
 
   /**
    * Create a button that enables itself when it would be appropriate
@@ -50,22 +50,22 @@ class InternalLinkButtonBase extends IconButton {
    *
    * @param config the config object
    */
-  constructor(config:Config<InternalLinkButton> = null) {
+  constructor(config: Config<InternalLinkButton> = null) {
     super(config);
 
     if (!this.ckEditorValueExpression) {
       throw new Error("ckEditorValueExpression is not configured.");
     }
 
-    this.ckEditorValueExpression.addChangeListener(bind(this,this.#configureCKEditor));
+    this.ckEditorValueExpression.addChangeListener(bind(this, this.#configureCKEditor));
     this.#effectiveReadOnlyExpression = PropertyEditorUtil.createReadOnlyValueExpression(
-            config.bindTo,
-            config.forceReadOnlyValueExpression);
+      config.bindTo,
+      config.forceReadOnlyValueExpression);
 
     this.#selectionChange();
   }
 
-  onToggle(button:Button, pressed:boolean):any {
+  onToggle(button: Button, pressed: boolean): any {
     if (!pressed && this.#internalLinkWindow) {
       this.#internalLinkWindow.hide();
     } else {
@@ -73,17 +73,17 @@ class InternalLinkButtonBase extends IconButton {
     }
   }
 
-  getWindow():InternalLinkWindow {
+  getWindow(): InternalLinkWindow {
     if (!this.#internalLinkWindow) {
-      var windowParent = this.#getRenderToContainer();
+      const windowParent = this.#getRenderToContainer();
 
-      var internalLinkWindowConfig = Config(InternalLinkWindow);
+      const internalLinkWindowConfig = Config(InternalLinkWindow);
       internalLinkWindowConfig.bindTo = this.initialConfig.bindTo;
       internalLinkWindowConfig.renderTo = windowParent.el;
 
       this.#internalLinkWindow = new InternalLinkWindow(internalLinkWindowConfig);
-      this.#internalLinkWindow.addListener("beforedestroy",bind( this,this.#windowDestroyed));
-      this.#internalLinkWindow.addListener("hide",bind( this,this.#windowHide));
+      this.#internalLinkWindow.addListener("beforedestroy", bind(this, this.#windowDestroyed));
+      this.#internalLinkWindow.addListener("hide", bind(this, this.#windowHide));
       this.richTextWindowGroup.register(this.#internalLinkWindow);
       this.#internalLinkWindow.setCKEditor(this.ckEditorValueExpression.getValue());
     }
@@ -91,47 +91,48 @@ class InternalLinkButtonBase extends IconButton {
     return this.#internalLinkWindow;
   }
 
-  #getRenderToContainer():Container {
-    return this.findParentBy((container:Container):boolean =>
-      is( container,  MessageTextareaEditor)
+  #getRenderToContainer(): Container {
+    return this.findParentBy((container: Container): boolean =>
+      is(container, MessageTextareaEditor),
     );
   }
 
-  #windowHide():void {
+  #windowHide(): void {
     this.toggle(false);
   }
 
-  #openWindow():void {
+  #openWindow(): void {
     this.getWindow().showBy(this, "tl-bl?");
     this.toggle(true);
   }
 
-  #windowDestroyed():void {
+  #windowDestroyed(): void {
     this.#internalLinkWindow = null;
   }
 
-  #configureCKEditor():void {
-    var ckEditor = this.ckEditorValueExpression.getValue();
+  #configureCKEditor(): void {
+    const ckEditor = this.ckEditorValueExpression.getValue();
     if (ckEditor) {
-      ckEditor.on("selectionChange",bind( this,this.#selectionChange));
+      ckEditor.on("selectionChange", bind(this, this.#selectionChange));
       this.getWindow().setCKEditor(ckEditor);
     }
   }
 
-  #selectionChange():void {
-    var ckEditor = this.ckEditorValueExpression.getValue();
-    var selection:any = ckEditor && ckEditor.getSelection();
-    var ascendant:any = selection && AnchorUtil.getSelectedAnchor(selection);
+  #selectionChange(): void {
+    const ckEditor = this.ckEditorValueExpression.getValue();
+    const selection: any = ckEditor && ckEditor.getSelection();
+    const ascendant: any = selection && AnchorUtil.getSelectedAnchor(selection);
 
     this.setDisabled(this.#effectiveReadOnlyExpression.getValue() ||
                 AnchorUtil.isLinkWithUrlScheme(ascendant) ||
                 AnchorUtil.isLinkAnchorReference(ascendant));
   }
 
-  protected override onDestroy():void {
-    this.ckEditorValueExpression.removeChangeListener(bind(this,this.#configureCKEditor));
+  protected override onDestroy(): void {
+    this.ckEditorValueExpression.removeChangeListener(bind(this, this.#configureCKEditor));
     Ext.destroy(this.#internalLinkWindow);
     super.onDestroy();
   }
 }
+
 export default InternalLinkButtonBase;

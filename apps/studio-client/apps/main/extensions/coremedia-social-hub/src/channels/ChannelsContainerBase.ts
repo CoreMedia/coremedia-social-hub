@@ -1,35 +1,35 @@
-import Config from "@jangaroo/runtime/Config";
-import SocialHubAdapter from "../beans/SocialHubAdapter";
-import ChannelsContainer from "./ChannelsContainer";
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import Ext from "@jangaroo/ext-ts";
 import Panel from "@jangaroo/ext-ts/panel/Panel";
+import Config from "@jangaroo/runtime/Config";
+import SocialHubAdapter from "../beans/SocialHubAdapter";
+import ChannelsContainer from "./ChannelsContainer";
+
 interface ChannelsContainerBaseConfig extends Config<Panel>, Partial<Pick<ChannelsContainerBase,
   "adaptersExpression"
 >> {
 }
 
-
-
 class ChannelsContainerBase extends Panel {
   declare Config: ChannelsContainerBaseConfig;
-  adaptersExpression:ValueExpression = null;
 
-  constructor(config:Config<ChannelsContainerBase> = null) {
+  adaptersExpression: ValueExpression = null;
+
+  constructor(config: Config<ChannelsContainerBase> = null) {
     super(config);
   }
 
-  static #getScroller():any {
+  static #getScroller(): any {
     return Ext.getCmp(ChannelsContainer.ID).el.dom["children"][0].children[0];
   }
 
-  focusAdapter(adapter:SocialHubAdapter):void {
-    var scrolling = ChannelsContainerBase.#getScroller();
-    var channelElement:any = Ext.getCmp(adapter.getAdapterId()).el.dom;
+  focusAdapter(adapter: SocialHubAdapter): void {
+    const scrolling = ChannelsContainerBase.#getScroller();
+    const channelElement: any = Ext.getCmp(adapter.getAdapterId()).el.dom;
     channelElement.scrollIntoView();
 
-    var offset:any = channelElement.offsetLeft;
-    var targetOffset:any = offset - 500;
+    const offset: any = channelElement.offsetLeft;
+    const targetOffset: any = offset - 500;
     scrolling.scrollLeft = targetOffset;
   }
 
@@ -42,4 +42,5 @@ class ChannelsContainerBase extends Panel {
 //    ComposerBase.scrollIntoView();
 //  }
 }
+
 export default ChannelsContainerBase;
