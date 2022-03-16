@@ -14,6 +14,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.coremedia.blueprint</groupId>
+      <artifactId>image-transformation</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>com.coremedia.cms</groupId>
       <artifactId>coremedia-cache</artifactId>
     </dependency>
