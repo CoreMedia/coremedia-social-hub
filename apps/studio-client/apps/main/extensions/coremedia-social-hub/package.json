@@ -30,6 +30,7 @@
     "@jangaroo/build": "^1.1.3",
     "@jangaroo/core": "^1.1.3",
     "@jangaroo/publish": "^1.1.3",
+    "@jangaroo/run": "^1.1.3",
     "eslint": "7.27.0",
     "rimraf": "^3.0.2"
   },
@@ -37,6 +38,8 @@
     "clean": "rimraf ./dist && rimraf ./build",
     "build": "jangaroo build",
     "watch": "jangaroo watch",
+    "start": "jangaroo run",
+    "package": "jangaroo package",
     "publish": "jangaroo publish",
     "lint": "eslint --fix \"src/**/*.ts\""
   },
