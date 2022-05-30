@@ -17,16 +17,13 @@ public class YouTubeSocialHubAdapterFactory implements SocialHubAdapterFactory<Y
   @Autowired
   private Cache cache;
 
-  @Autowired
-  private SocialHubService socialHubService;
-
   @Override
   public SocialNetworkType getType() {
     return SocialNetworkType.YOUTUBE;
   }
 
   @Override
-  public SocialHubAdapter createAdapter(YouTubeConnectorSettings connectorSettings, YouTubeAdapterSettings adapterSettings) {
+  public SocialHubAdapter createAdapter(SocialHubService socialHubService, YouTubeConnectorSettings connectorSettings, YouTubeAdapterSettings adapterSettings) {
     YouTubeConnector connector = new YouTubeConnector(socialHubService, connectorSettings, cache);
     YouTubeSocialHubAdapter adapter = new YouTubeSocialHubAdapter(connector, adapterSettings);
     connector.setAdapter(adapter);

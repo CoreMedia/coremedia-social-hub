@@ -1,6 +1,7 @@
 package com.coremedia.blueprint.social.config;
 
 import com.coremedia.blueprint.social.SocialHubConfig;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -9,8 +10,8 @@ class GlobalSocialHubAdapterCacheKey extends AbstractSocialHubAdapterCacheKey {
   private SocialHubConfig config;
 
 
-  GlobalSocialHubAdapterCacheKey(AdapterFactoryService adapterFactory, SocialHubConfig config) {
-    super(adapterFactory);
+  GlobalSocialHubAdapterCacheKey(SocialHubService socialHubService, AdapterFactoryService adapterFactory, SocialHubConfig config) {
+    super(socialHubService, adapterFactory);
     this.config = config;
   }
 

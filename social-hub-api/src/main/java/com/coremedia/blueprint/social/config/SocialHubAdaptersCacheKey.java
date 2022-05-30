@@ -2,6 +2,7 @@ package com.coremedia.blueprint.social.config;
 
 import com.coremedia.blueprint.social.SocialHubConfig;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.cache.Cache;
 import com.coremedia.cache.CacheKey;
 import com.coremedia.cap.common.CapConnection;
@@ -22,12 +23,14 @@ public class SocialHubAdaptersCacheKey extends CacheKey<Map<String, List<SocialH
 
   private final static Logger LOG = LoggerFactory.getLogger(SocialHubAdaptersCacheKey.class);
 
+  private SocialHubService socialHubService;
   private AdapterFactoryService adapterFactory;
   private SitesService sitesService;
   private SocialHubConfig config;
   private CapConnection capConnection;
 
-  public SocialHubAdaptersCacheKey(AdapterFactoryService adapterFactory, SitesService sitesService, SocialHubConfig config, CapConnection capConnection) {
+  public SocialHubAdaptersCacheKey(SocialHubService socialHubService, AdapterFactoryService adapterFactory, SitesService sitesService, SocialHubConfig config, CapConnection capConnection) {
+    this.socialHubService = socialHubService;
     this.adapterFactory = adapterFactory;
     this.sitesService = sitesService;
     this.config = config;
@@ -54,11 +57,11 @@ public class SocialHubAdaptersCacheKey extends CacheKey<Map<String, List<SocialH
       LOG.info("Calculating SocialHubAdapters for {} sites: {}", sites.size(), sites);
       if (!sites.isEmpty()) {
         // global adapters for all sites
-        List<SocialHubAdapter> globalAdapters = loadGlobalAdapters(cache);
+        List<SocialHubAdapter> globalAdapters = loadGlobalAdapters(socialHubService, cache);
         // site local
         ImmutableMap.Builder<String, List<SocialHubAdapter>> builder = ImmutableMap.builder();
         for (Site site : sites) {
-          List<SocialHubAdapter> siteAdapters = loadSiteAdapters(site, cache);
+          List<SocialHubAdapter> siteAdapters = loadSiteAdapters(socialHubService, site, cache);
           // merge global and site
           List<SocialHubAdapter> merged = new ArrayList<>();
           merged.addAll(globalAdapters);
@@ -83,13 +86,13 @@ public class SocialHubAdaptersCacheKey extends CacheKey<Map<String, List<SocialH
 
 
   @NonNull
-  private List<SocialHubAdapter> loadGlobalAdapters(Cache cache) {
-    return cache.get(new GlobalSocialHubAdapterCacheKey(adapterFactory, config));
+  private List<SocialHubAdapter> loadGlobalAdapters(SocialHubService socialHubService, Cache cache) {
+    return cache.get(new GlobalSocialHubAdapterCacheKey(socialHubService, adapterFactory, config));
   }
 
   @NonNull
-  private List<SocialHubAdapter> loadSiteAdapters(Site site, Cache cache) {
-    return cache.get(new SiteSocialHubAdapterCacheKey(site, adapterFactory, sitesService, config));
+  private List<SocialHubAdapter> loadSiteAdapters(SocialHubService socialHubService, Site site, Cache cache) {
+    return cache.get(new SiteSocialHubAdapterCacheKey(socialHubService, site, adapterFactory, sitesService, config));
   }
 
 

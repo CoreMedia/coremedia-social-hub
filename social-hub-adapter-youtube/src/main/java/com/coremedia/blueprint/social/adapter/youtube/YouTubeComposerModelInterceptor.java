@@ -22,8 +22,7 @@ import java.util.Arrays;
 public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor {
   private SocialHubService socialHubService;
 
-  public YouTubeComposerModelInterceptor(SocialHubService socialHubService) {
-    this.socialHubService = socialHubService;
+  public YouTubeComposerModelInterceptor() {
   }
 
   @Override
@@ -32,7 +31,7 @@ public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor
   }
 
   @Override
-  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object composeContent(SocialHubService socialHubService, SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if(messageProperty.getName().equals("title")) {
       return content.getString("title");
     }
@@ -68,7 +67,7 @@ public class YouTubeComposerModelInterceptor implements ComposerModelInterceptor
 
   @Nullable
   @Override
-  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+  public Object composeLink(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
     if (messageProperty.getName().equals("description")) {
       return socialHubService.buildLiveUrl(content.getId(), false);
     }

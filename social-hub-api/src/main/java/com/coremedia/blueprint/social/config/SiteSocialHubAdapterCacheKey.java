@@ -1,6 +1,7 @@
 package com.coremedia.blueprint.social.config;
 
 import com.coremedia.blueprint.social.SocialHubConfig;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
 import com.google.common.base.MoreObjects;
@@ -14,8 +15,8 @@ class SiteSocialHubAdapterCacheKey extends AbstractSocialHubAdapterCacheKey {
   private SocialHubConfig config;
 
 
-  SiteSocialHubAdapterCacheKey(Site site, AdapterFactoryService adapterFactory, SitesService sitesService, SocialHubConfig config) {
-    super(adapterFactory);
+  SiteSocialHubAdapterCacheKey(SocialHubService socialHubService, Site site, AdapterFactoryService adapterFactory, SitesService sitesService, SocialHubConfig config) {
+    super(socialHubService, adapterFactory);
     this.siteId = site.getId();
     this.sitesService = sitesService;
     this.config = config;

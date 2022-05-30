@@ -5,6 +5,7 @@ import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
 import com.coremedia.blueprint.social.api.ComposerType;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.blueprint.social.api.SocialNetworkType;
 import com.coremedia.cap.content.Content;
 
@@ -22,7 +23,7 @@ public class ComposerFactory {
     this.interceptors = interceptors;
   }
 
-  public void compose(SocialHubAdapter adapter, ComposerModel composerModel, Content content, ComposerType composerType) {
+  public void compose(SocialHubService socialHubService, SocialHubAdapter adapter, ComposerModel composerModel, Content content, ComposerType composerType) {
     Collections.sort(interceptors, Comparator.comparingInt(ComposerModelInterceptor::getPriority));
     Collections.reverse(interceptors);
 
@@ -40,11 +41,11 @@ public class ComposerFactory {
       List<MessageProperty> messageProperties = adapter.getMessageProperties();
       for (MessageProperty messageProperty : messageProperties) {
         if(composerType.equals(ComposerType.COMPOSE_TYPE_CONTENT)) {
-          Object value = interceptor.composeContent(adapter, messageProperty, content);
+          Object value = interceptor.composeContent(socialHubService, adapter, messageProperty, content);
           composerModel.set(messageProperty.getName(), value, false);
         }
         else {
-          Object value = interceptor.composeLink(adapter, messageProperty, content);
+          Object value = interceptor.composeLink(socialHubService, adapter, messageProperty, content);
           composerModel.set(messageProperty.getName(), value, false);
         }
       }

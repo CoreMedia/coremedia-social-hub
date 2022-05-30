@@ -4,6 +4,7 @@ import com.coremedia.blueprint.social.api.ComposerModelInterceptor;
 import com.coremedia.blueprint.social.api.MessageProperty;
 import com.coremedia.blueprint.social.api.MessagePropertyType;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.blueprint.social.api.SocialNetworkType;
 import com.coremedia.cap.content.Content;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -19,7 +20,7 @@ import java.util.List;
 public class DefaultComposerModelInterceptor implements ComposerModelInterceptor {
 
   @Override
-  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object composeContent(SocialHubService socialHubService, SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if(messageProperty.getType().equals(MessagePropertyType.ASSETLIST) && messageProperty.getMimeType() != null && messageProperty.getMimeType().getPrimaryType().equals("image")) {
       List<Content> pictures = content.getLinks("pictures");
       if(pictures.isEmpty() && content.getType().isSubtypeOf("CMPicture")) {
@@ -34,7 +35,7 @@ public class DefaultComposerModelInterceptor implements ComposerModelInterceptor
 
   @Nullable
   @Override
-  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+  public Object composeLink(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
     return null;
   }
 

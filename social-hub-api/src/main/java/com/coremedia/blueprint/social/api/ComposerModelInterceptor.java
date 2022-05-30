@@ -12,10 +12,10 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 public interface ComposerModelInterceptor {
 
   @Nullable
-  Object composeContent(SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
+  Object composeContent(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
 
   @Nullable
-  Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
+  Object composeLink(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content);
 
 
   /**

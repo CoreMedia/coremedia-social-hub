@@ -8,6 +8,7 @@ import com.coremedia.blueprint.social.config.AdapterFactoryService;
 import com.coremedia.blueprint.social.config.SettingsCacheKey;
 import com.coremedia.blueprint.social.config.SettingsFactory;
 import com.coremedia.blueprint.social.config.SocialHubAdaptersCacheKey;
+import com.coremedia.blueprint.social.scheduler.Scheduler;
 import com.coremedia.cache.Cache;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.CapConnection;
@@ -59,10 +60,12 @@ public class SocialHubServiceImpl implements SocialHubService {
   @Autowired
   private CapConnection capConnection;
 
+  @Autowired
+  private Scheduler scheduler;
 
   @Override
   public List<SocialHubAdapter> getAdapters(@NonNull Site site) {
-    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(adapterFactory, sitesService, config, capConnection);
+    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(this, adapterFactory, sitesService, config, capConnection);
     Map<String, List<SocialHubAdapter>> adapterMap = cache.get(cacheKey);
     if (adapterMap.containsKey(site.getId())) {
       return adapterMap.get(site.getId());
@@ -72,7 +75,7 @@ public class SocialHubServiceImpl implements SocialHubService {
 
   @Override
   public Set<SocialHubAdapter> getAdapters() {
-    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(adapterFactory, sitesService, config, capConnection);
+    SocialHubAdaptersCacheKey cacheKey = new SocialHubAdaptersCacheKey(this, adapterFactory, sitesService, config, capConnection);
     Map<String, List<SocialHubAdapter>> adapterMap = cache.get(cacheKey);
     return adapterMap.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
   }
@@ -80,6 +83,11 @@ public class SocialHubServiceImpl implements SocialHubService {
   @Override
   public Optional<SocialHubAdapter> getAdapter(@NonNull String id) {
     return getAdapters().stream().filter(e -> e.getId().equals(id)).findAny();
+  }
+
+  @Override
+  public Scheduler getScheduler() {
+    return scheduler;
   }
 
   @Override

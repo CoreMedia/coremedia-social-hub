@@ -4,6 +4,7 @@ import com.coremedia.blueprint.social.adapter.AbstractSocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
 import com.coremedia.blueprint.social.api.SocialHubAdapterFactory;
 import com.coremedia.blueprint.social.api.SocialHubPropertyNames;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.blueprint.social.scheduler.Scheduler;
 import com.coremedia.cap.common.CapSession;
 import com.coremedia.cap.content.Content;
@@ -36,10 +37,7 @@ public class AdapterFactoryService {
   @Autowired
   private List<SocialHubAdapterFactory> adapterFactories;
 
-  @Autowired
-  private Scheduler scheduler;
-
-  public List<SocialHubAdapter> getAdapters(String configPath) {
+  public List<SocialHubAdapter> getAdapters(SocialHubService socialHubService, String configPath) {
     List<SocialHubAdapter> adapters = new ArrayList<>();
     CapSession originalSession = contentRepository.getConnection().getConnectionSession().activate();
     try {
@@ -48,7 +46,7 @@ public class AdapterFactoryService {
         if (socialHubFolder != null) {
           Set<Content> childDocuments = socialHubFolder.getChildDocuments();
           for (Content childDocument : childDocuments) {
-            createAdaptersForConfig(childDocument, adapters);
+            createAdaptersForConfig(socialHubService, childDocument, adapters);
           }
         }
       }
@@ -60,7 +58,7 @@ public class AdapterFactoryService {
     return adapters;
   }
 
-  private void createAdaptersForConfig(Content settings, List<SocialHubAdapter> adapters) {
+  private void createAdaptersForConfig(SocialHubService socialHubService, Content settings, List<SocialHubAdapter> adapters) {
     Struct settingsStruct = settings.getStruct(SETTINGS);
     if (!settingsStruct.toNestedMaps().containsKey(ADAPTERS)) {
       return;
@@ -82,14 +80,14 @@ public class AdapterFactoryService {
           continue;
         }
 
-        adapters.add(createAdapter(struct, config, adapterType, id));
+        adapters.add(createAdapter(socialHubService, struct, config, adapterType, id));
       } catch (Exception e) {
         LOG.error("Social Media Hub Adapter creation failed for settings document {}: {}", settings.getPath(), e.getMessage(), e);
       }
     }
   }
 
-  private SocialHubAdapter createAdapter(Struct struct, Map<String, Object> config, String adapterType, String id) {
+  private SocialHubAdapter createAdapter(SocialHubService socialHubService, Struct struct, Map<String, Object> config, String adapterType, String id) {
     int position = 0;
     Map<String, Object> properties = struct.toNestedMaps();
     if(properties.containsKey(SocialHubPropertyNames.POSITION)) {
@@ -111,12 +109,12 @@ public class AdapterFactoryService {
           adapterSettings = createSettings(adapterFactory, adapterStruct, 1);
         }
 
-        AbstractSocialHubAdapter adapter = (AbstractSocialHubAdapter) adapterFactory.createAdapter(connectorSettings, adapterSettings);
+        AbstractSocialHubAdapter adapter = (AbstractSocialHubAdapter) adapterFactory.createAdapter(socialHubService, connectorSettings, adapterSettings);
         adapter.setId(id);
         adapter.setPosition(position);
         adapter.setType(adapterType);
         adapter.setDisplayName(displayName);
-        adapter.setScheduler(scheduler);
+        adapter.setScheduler(socialHubService.getScheduler());
 
         return adapter;
       }

@@ -74,7 +74,7 @@ public class ComposerResource extends AbstractSocialHubResource implements Entit
       ComposerModelImpl model = new ComposerModelImpl(id, adapterId, socialHubAdapter.getType().name());
       messageCache.put(getKey(adapterId, id), model);
 
-      composerFactory.compose(socialHubAdapter, model, content, composerType);
+      composerFactory.compose(getSocialHubService(), socialHubAdapter, model, content, composerType);
       return true;
     }
 

@@ -1,6 +1,7 @@
 package com.coremedia.blueprint.social.config;
 
 import com.coremedia.blueprint.social.api.SocialHubAdapter;
+import com.coremedia.blueprint.social.api.SocialHubService;
 import com.coremedia.cache.Cache;
 import com.coremedia.cache.CacheKey;
 
@@ -8,10 +9,12 @@ import java.util.List;
 
 abstract class AbstractSocialHubAdapterCacheKey extends CacheKey<List<SocialHubAdapter>> {
 
+  protected SocialHubService socialHubService;
   protected AdapterFactoryService socialHubAdapterFactory;
 
 
-  AbstractSocialHubAdapterCacheKey(AdapterFactoryService socialHubAdapterFactory) {
+  AbstractSocialHubAdapterCacheKey(SocialHubService socialHubService, AdapterFactoryService socialHubAdapterFactory) {
+    this.socialHubService = socialHubService;
     this.socialHubAdapterFactory = socialHubAdapterFactory;
   }
 
@@ -27,6 +30,6 @@ abstract class AbstractSocialHubAdapterCacheKey extends CacheKey<List<SocialHubA
 
   @Override
   public List<SocialHubAdapter> evaluate(Cache cache) {
-    return socialHubAdapterFactory.getAdapters(getConfigPath());
+    return socialHubAdapterFactory.getAdapters(socialHubService, getConfigPath());
   }
 }

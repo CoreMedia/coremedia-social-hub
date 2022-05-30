@@ -18,5 +18,5 @@ public interface SocialHubAdapterFactory<ConnectorSettings, AdapterSettings> {
    * for a detailed and localized visualization in Studio.
    * </p>
    */
-  SocialHubAdapter createAdapter(ConnectorSettings settings, AdapterSettings adapterSettings);
+  SocialHubAdapter createAdapter(SocialHubService socialHubService, ConnectorSettings settings, AdapterSettings adapterSettings);
 }

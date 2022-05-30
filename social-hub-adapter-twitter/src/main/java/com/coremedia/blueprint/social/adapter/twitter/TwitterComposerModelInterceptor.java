@@ -18,10 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TwitterComposerModelInterceptor implements ComposerModelInterceptor {
 
-  private SocialHubService socialHubService;
-
-  public TwitterComposerModelInterceptor(SocialHubService socialHubService) {
-    this.socialHubService = socialHubService;
+  public TwitterComposerModelInterceptor() {
   }
 
   @Override
@@ -30,7 +27,7 @@ public class TwitterComposerModelInterceptor implements ComposerModelInterceptor
   }
 
   @Override
-  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object composeContent(SocialHubService socialHubService, SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if (messageProperty.getName().equals("assets")) {
       return content.getLinks("pictures");
     }
@@ -56,7 +53,7 @@ public class TwitterComposerModelInterceptor implements ComposerModelInterceptor
 
   @Nullable
   @Override
-  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+  public Object composeLink(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
     if (messageProperty.getName().equals("text")) {
       return socialHubService.buildLiveUrl(content.getId(), false);
     }

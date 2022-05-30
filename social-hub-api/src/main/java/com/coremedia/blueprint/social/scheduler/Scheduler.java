@@ -42,18 +42,10 @@ public class Scheduler {
   @Autowired
   private ModelService modelService;
 
-  @Autowired
-  private SocialHubService socialHubService;
-
 
   private ModelService getModelService() {
     return modelService;
   }
-
-  private SocialHubService getSocialHubService() {
-    return socialHubService;
-  }
-
 
   public Optional<Message> getMessage(MessageState state, String id) {
     AbstractScheduledMessage message = modelService.get(id, COLLECTION_NAME, AbstractScheduledMessage.class);
@@ -171,13 +163,13 @@ public class Scheduler {
   }
 
 
-  public void publish(String id, String collection) {
+  public void publish(SocialHubService socialHubService, String id, String collection) {
     log.debug("Publishing message {}", id);
     try {
       AbstractScheduledMessage message = getModelService().get(id, collection, AbstractScheduledMessage.class);
 
       if (message != null) {
-        Optional<SocialHubAdapter> adapter = getSocialHubService().getAdapter(message.getAdapterId());
+        Optional<SocialHubAdapter> adapter = socialHubService.getAdapter(message.getAdapterId());
         if (adapter.isPresent()) {
           PublicationResult result = adapter.get().publish(message);
           if (!result.isFailed()) {

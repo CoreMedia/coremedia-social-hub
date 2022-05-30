@@ -1,5 +1,6 @@
 package com.coremedia.blueprint.social.api;
 
+import com.coremedia.blueprint.social.scheduler.Scheduler;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.common.annotations.Experimental;
@@ -68,4 +69,6 @@ public interface SocialHubService {
    * @return a media source object which is the facade for the actual data access
    */
   Optional<MediaSource> createMediaSource(@NonNull Content content, @Nullable ConnectorSettings connectorSettings);
+
+  Scheduler getScheduler();
 }

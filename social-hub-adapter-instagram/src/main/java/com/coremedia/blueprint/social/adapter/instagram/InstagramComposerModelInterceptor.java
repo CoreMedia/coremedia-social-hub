@@ -22,10 +22,7 @@ import java.util.List;
 public class InstagramComposerModelInterceptor implements ComposerModelInterceptor {
 
 
-  private SocialHubService socialHubService;
-
-  public InstagramComposerModelInterceptor(SocialHubService socialHubService) {
-    this.socialHubService = socialHubService;
+  public InstagramComposerModelInterceptor() {
   }
 
 
@@ -35,7 +32,7 @@ public class InstagramComposerModelInterceptor implements ComposerModelIntercept
   }
 
   @Override
-  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object composeContent(SocialHubService socialHubService, SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if(messageProperty.getName().equals("images")) {
       List<Content> pictures = new ArrayList<>(content.getLinks("pictures"));
       if(!pictures.isEmpty()) {
@@ -66,7 +63,7 @@ public class InstagramComposerModelInterceptor implements ComposerModelIntercept
 
   @Nullable
   @Override
-  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+  public Object composeLink(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
     if (messageProperty.getName().equals("caption")) {
       return socialHubService.buildLiveUrl(content.getId(), false);
     }

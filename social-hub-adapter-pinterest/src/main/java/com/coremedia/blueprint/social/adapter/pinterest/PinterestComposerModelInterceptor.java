@@ -20,8 +20,7 @@ public class PinterestComposerModelInterceptor implements ComposerModelIntercept
 
   private SocialHubService socialHubService;
 
-  public PinterestComposerModelInterceptor(SocialHubService socialHubService) {
-    this.socialHubService = socialHubService;
+  public PinterestComposerModelInterceptor() {
   }
 
 
@@ -31,7 +30,7 @@ public class PinterestComposerModelInterceptor implements ComposerModelIntercept
   }
 
   @Override
-  public Object composeContent(SocialHubAdapter model, MessageProperty messageProperty, Content content) {
+  public Object composeContent(SocialHubService socialHubService, SocialHubAdapter model, MessageProperty messageProperty, Content content) {
     if(messageProperty.getName().equals("images")) {
       return content.getLinks("pictures");
     }
@@ -58,7 +57,7 @@ public class PinterestComposerModelInterceptor implements ComposerModelIntercept
 
   @Nullable
   @Override
-  public Object composeLink(SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
+  public Object composeLink(SocialHubService socialHubService, SocialHubAdapter adapter, MessageProperty messageProperty, Content content) {
     if (messageProperty.getName().equals("note")) {
       return socialHubService.buildLiveUrl(content.getId(), false);
     }
