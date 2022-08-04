@@ -60,7 +60,7 @@ class MessagesContainerBase extends Container {
   reload(invalidate: boolean = true): void {
     this.clear();
     if (invalidate) {
-      this.adapter.invalidate(bind(this, this.#loadMessages));
+      this.adapter.invalidate(() => bind(this, this.#loadMessages));
     } else {
       this.#loadMessages(false);
     }

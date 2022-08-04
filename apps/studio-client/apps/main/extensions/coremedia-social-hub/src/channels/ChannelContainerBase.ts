@@ -114,7 +114,7 @@ class ChannelContainerBase extends Panel {
     this.#loadMask.progress = 0;
 
     if (invalidate) {
-      this.adapter.invalidate(bind(this, this.#loadMessages));
+      this.adapter.invalidate(() => bind(this, this.#loadMessages));
     } else {
       this.#loadMessages(false);
     }
