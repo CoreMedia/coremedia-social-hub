@@ -190,7 +190,7 @@ const SocialHub_properties: SocialHub_properties = {
   channel_queue_today: "Today",
   change_color: "Choose toolbar color",
   overview_title: "Overview",
-  twitter_title: "Twitter",
+  twitter_title: "X (Twitter)",
   twitter: CoreIcons_properties.twitter,
   facebook_title: "Facebook",
   facebook: CoreIcons_properties.facebook,
