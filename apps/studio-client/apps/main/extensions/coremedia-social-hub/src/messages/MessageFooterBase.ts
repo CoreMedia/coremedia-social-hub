@@ -1,4 +1,3 @@
-import Editor_properties from "@coremedia/studio-client.main.editor-components/Editor_properties";
 import Actions_properties from "@coremedia/studio-client.main.editor-components/sdk/actions/Actions_properties";
 import MessageBoxUtil from "@coremedia/studio-client.main.editor-components/sdk/util/MessageBoxUtil";
 import DateUtil from "@jangaroo/ext-ts/Date";
@@ -15,6 +14,7 @@ import SocialHubAdapterImpl from "../beans/SocialHubAdapterImpl";
 import SocialHubPropertyNames from "../beans/SocialHubPropertyNames";
 import socialHubService from "../socialHubService";
 import MessagesContainer from "./MessagesContainer";
+import BaseModels_properties from "@coremedia/studio-client.base-models/BaseModels_properties";
 
 interface MessageFooterBaseConfig extends Config<Container>, Partial<Pick<MessageFooterBase,
   "message" |
@@ -39,7 +39,7 @@ class MessageFooterBase extends Container {
   }
 
   protected transformDate(date: Date): string {
-    const format = Editor_properties.dateFormat;
+    const format = BaseModels_properties.dateFormat;
     return DateUtil.format(date, format);
   }
 

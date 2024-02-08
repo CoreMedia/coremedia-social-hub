@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.activation.MimeType;
+import jakarta.activation.MimeType;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;

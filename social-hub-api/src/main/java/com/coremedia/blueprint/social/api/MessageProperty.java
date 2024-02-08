@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import com.coremedia.common.annotations.Experimental;
 
-import javax.activation.MimeType;
+import jakarta.activation.MimeType;
 
 /**
  * Defines one property of a Message

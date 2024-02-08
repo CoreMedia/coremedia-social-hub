@@ -2,12 +2,11 @@ import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpr
 import ValueExpressionFactory from "@coremedia/studio-client.client-core/data/ValueExpressionFactory";
 import EventUtil from "@coremedia/studio-client.client-core/util/EventUtil";
 import ProgressLoadMask from "@coremedia/studio-client.ext.ui-components/components/ProgressLoadMask";
-import Editor_properties from "@coremedia/studio-client.main.editor-components/Editor_properties";
 import TimeUtil from "@coremedia/studio-client.main.editor-components/sdk/util/TimeUtil";
 import DateUtil from "@jangaroo/ext-ts/Date";
 import Container from "@jangaroo/ext-ts/container/Container";
 import DisplayField from "@jangaroo/ext-ts/form/field/Display";
-import { as, asConfig, bind, cast } from "@jangaroo/runtime";
+import { as, bind } from "@jangaroo/runtime";
 import Config from "@jangaroo/runtime/Config";
 import SocialHub_properties from "../SocialHub_properties";
 import Message from "../beans/Message";
@@ -17,6 +16,7 @@ import SocialHubPropertyNames from "../beans/SocialHubPropertyNames";
 import ChannelContainerBase from "../channels/ChannelContainerBase";
 import DynamicMessageContainer from "./DynamicMessageContainer";
 import MessagesContainer from "./MessagesContainer";
+import BaseModels_properties from "@coremedia/studio-client.base-models/BaseModels_properties";
 
 interface MessagesContainerBaseConfig extends Config<Container>, Partial<Pick<MessagesContainerBase,
   "adapter" |
@@ -152,7 +152,7 @@ class MessagesContainerBase extends Container {
       return SocialHub_properties.message_footer_scheduled_now;
     }
 
-    let value = this.#getWeekday(publicationDate) + ", " + DateUtil.format(publicationDate, Editor_properties.shortDateFormat);
+    let value = this.#getWeekday(publicationDate) + ", " + DateUtil.format(publicationDate, BaseModels_properties.shortDateFormat);
     if (TimeUtil.isToday(publicationDate)) {
       value = SocialHub_properties.channel_queue_today;
     }
