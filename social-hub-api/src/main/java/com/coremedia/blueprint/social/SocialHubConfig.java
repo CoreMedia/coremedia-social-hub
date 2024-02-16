@@ -1,10 +1,15 @@
 package com.coremedia.blueprint.social;
 
+import com.coremedia.cap.transform.TransformImageServiceConfiguration;
 import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import({
+        TransformImageServiceConfiguration.class
+})
 @ConfigurationProperties(prefix = "socialhub")
 public class SocialHubConfig {
 
