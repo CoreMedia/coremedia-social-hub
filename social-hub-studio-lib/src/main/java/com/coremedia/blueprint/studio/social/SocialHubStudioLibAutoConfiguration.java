@@ -12,8 +12,8 @@ import com.coremedia.springframework.xml.ResourceAwareXmlBeanDefinitionReader;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Scope;
 
@@ -23,14 +23,14 @@ import java.util.List;
 /**
  *
  */
-@Configuration
+@AutoConfiguration
 @ImportResource(reader = ResourceAwareXmlBeanDefinitionReader.class,
         value = {
                 "classpath:/com/coremedia/cap/common/uapi-services.xml",
                 "classpath:/META-INF/coremedia/component-social-hub-api.xml"
         }
 )
-public class SocialHubStudioLibConfiguration {
+public class SocialHubStudioLibAutoConfiguration {
 
   @Value("${studio.timeZones:Europe/Berlin}")
   private String timeZones;
