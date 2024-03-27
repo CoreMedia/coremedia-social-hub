@@ -1,4 +1,3 @@
-import StudioAppsImpl from "@coremedia/studio-client.app-context-models/apps/StudioAppsImpl";
 import studioApps from "@coremedia/studio-client.app-context-models/apps/studioApps";
 import ContentTypes_properties from "@coremedia/studio-client.cap-base-models/content/ContentTypes_properties";
 import CopyResourceBundleProperties
@@ -8,7 +7,6 @@ import IEditorContext from "@coremedia/studio-client.main.editor-components/sdk/
 import OpenTabAction from "@coremedia/studio-client.main.editor-components/sdk/actions/OpenTabAction";
 import JobErrorCodes_properties
   from "@coremedia/studio-client.main.editor-components/sdk/jobs/JobErrorCodes_properties";
-import { cast } from "@jangaroo/runtime";
 import Config from "@jangaroo/runtime/Config";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
 import SocialHubComposerProperties_properties from "./SocialHubComposerProperties_properties";
@@ -29,7 +27,7 @@ class SocialHubStudioPlugin extends SocialHubStudioPluginBase {
   override init(editorContext: IEditorContext): void {
     super.init(editorContext);
 
-    cast(StudioAppsImpl, studioApps._).getSubAppLauncherRegistry().registerSubAppLauncher("cmSocialHub", (): void => {
+    studioApps._.getShortcutRunnerRegistry().registerShortcutRunner({ cmKey: "cmSocialHub" }, (): void => {
       const openTagsAction = new OpenTabAction({
         singleton: true,
         tab: Config(SocialHubMainTab),
