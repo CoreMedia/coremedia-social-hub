@@ -23,14 +23,14 @@
     "@coremedia/studio-client.link-list-models": "2404.1.0",
     "@coremedia/studio-client.main.editor-components": "2404.1.0",
     "@coremedia/studio-client.multi-site-models": "2404.1.0",
-    "@jangaroo/ext-ts": "2.0.0-alpha.9",
-    "@jangaroo/runtime": "3.0.0-alpha.6"
+    "@jangaroo/ext-ts": "^2.0.0",
+    "@jangaroo/runtime": "^3.0.0"
   },
   "devDependencies": {
-    "@jangaroo/build": "3.0.0-alpha.6",
-    "@jangaroo/core": "3.0.0-alpha.6",
-    "@jangaroo/publish": "3.0.0-alpha.6",
-    "@jangaroo/run": "3.0.0-alpha.6",
+    "@jangaroo/build": "^3.0.0",
+    "@jangaroo/core": "^3.0.0",
+    "@jangaroo/publish": "^3.0.0",
+    "@jangaroo/run": "^3.0.0",
     "eslint": "^8.56.0",
     "rimraf": "^5.0.5"
   },
