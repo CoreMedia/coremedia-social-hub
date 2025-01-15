@@ -30,7 +30,7 @@
     "@jangaroo/build": "^3.1.0",
 
     "@jangaroo/core": "^3.1.0",
-    "@jangaroo/publish": "^3.0.1",
+    "@jangaroo/publish": "^3.1.0",
     "@jangaroo/run": "^3.1.0",
     "eslint": "^8.57.0",
 
